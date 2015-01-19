@@ -5,10 +5,30 @@
     <string name="app_id">433645486786215</string>
     <string name="action_settings">Configuració</string>
 
+    <string name="controlLogin">Iniciar Sessió</string>
+    <string name="btnControlLogin">Entrar</string>
+    <string name="rememberUser">Recordar</string>
+    <string name="username">Nom Usuari</string>
+    <string name="password">Contrasenya</string>
+
     <style name="ButtonText">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">#ffffff</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_margin">3dp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:shadowColor">#000000</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">2</item>
+    </style>
+
+    <style name="ButtonText2">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">#2E64FE</item>
         <item name="android:gravity">center</item>
         <item name="android:layout_margin">3dp</item>
         <item name="android:textStyle">normal</item>

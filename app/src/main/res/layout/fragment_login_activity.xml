@@ -10,14 +10,79 @@
     
     android:background="@drawable/balloon_bg">
 
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:layout_centerInParent="true">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/linearlayout_bg"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="28dp">
+
+        <TextView
+            android:layout_width="224dp"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:paddingLeft="80dp"
+            android:text="@string/controlLogin"
+            android:textColor="#3B96CE"
+            android:textStyle="bold"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/username"
+            android:paddingBottom="10dp"
+            android:textColorHint="#FFFFFF"
+            android:textColor="#FFFFFF">
+
+            <requestFocus />
+        </EditText>
+
+        <EditText
+            android:layout_width="262dp"
+            android:layout_height="match_parent"
+            android:hint="@string/password"
+            android:inputType="textPassword"
+            android:paddingBottom="10dp"
+            android:textColorHint="#FFFFFF" />
+
+        <Button
+            android:id="@+id/btnPersonalLogin"
+            style="@style/ButtonText2"
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:layout_gravity="center_horizontal"
+            android:background="#3B96CE"
+            android:paddingBottom="3dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="@string/btnControlLogin"
+            android:textColor="#FFFFFF" />
+
+        <CheckBox
+            android:id="@+id/chkRemember"
+            android:layout_width="126dp"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="@string/rememberUser"
+            android:textColor="#FFFFFF" />
+    </LinearLayout>
+
     <LinearLayout 
         android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
         android:background="@drawable/linearlayout_bg"
         android:padding="10dp"
-        >
+        android:layout_centerInParent="true">
         
     	<Button
     	    android:id="@+id/btn_google_sign_in"
@@ -60,5 +125,6 @@
 	       	style="@style/ButtonText"
 	       />
         </LinearLayout>
+    </LinearLayout>
 
 </RelativeLayout>
