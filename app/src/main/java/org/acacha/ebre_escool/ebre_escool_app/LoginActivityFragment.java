@@ -1,16 +1,24 @@
 package org.acacha.ebre_escool.ebre_escool_app;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.app.Activity;
+import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 
 import com.facebook.widget.LoginButton;
+
+import java.util.Arrays;
 
 /**
  * A simple {@link Fragment} subclass. Activities that contain this fragment
@@ -38,6 +46,10 @@ public class LoginActivityFragment extends Fragment {
 	private Button btnGoogleSignIn;
 
 	private Button btnLoginTwitter;
+
+    private Button btnLoginForm;
+
+    private String[] addresses;
 
 	/**
 	 * Use this factory method to create a new instance of this fragment using
@@ -89,9 +101,44 @@ public class LoginActivityFragment extends Fragment {
         
         btnLoginTwitter = (Button) view.findViewById(R.id.btn_twitter_sign_in);
 		btnLoginTwitter.setOnClickListener((OnClickListener) getActivity());
+
+        btnLoginForm = (Button) view.findViewById(R.id.btnPersonalLogin);
+        btnLoginForm.setOnClickListener((OnClickListener) getActivity());
+
+        //Autocomplete username
+        ArrayAdapter<String> adapter = this.getEmailAddressAdapter(getActivity());
+
+        AutoCompleteTextView textView = (AutoCompleteTextView) view.findViewById(R.id.username);
+
+        // Numero de caracteres necesarios para que se empiece
+        // a mostrar la lista
+        textView.setThreshold(1);
+
+        // Se establece el Adapter
+        textView.setAdapter(adapter);
+
+        String proposedValue = null;
+        for (String s: addresses)    {
+            if (s.endsWith("@iesebre.com")){
+                proposedValue = s;
+            }
+        }
+
+        if (proposedValue != null) {
+            textView.setText(proposedValue);
+        }
 		
 		return view;
 	}
+
+    private ArrayAdapter<String> getEmailAddressAdapter(Context context) {
+        Account[] accounts = AccountManager.get(context).getAccountsByType("com.google");
+        addresses = new String[accounts.length];
+        for (int i = 0; i < accounts.length; i++) {
+            addresses[i] = accounts[i].name;
+        }
+        return new ArrayAdapter<String>(context, android.R.layout.simple_dropdown_item_1line, addresses);
+    }
 
 	// TODO: Rename method, update argument and hook method into UI event
 	public void onButtonPressed(Uri uri) {

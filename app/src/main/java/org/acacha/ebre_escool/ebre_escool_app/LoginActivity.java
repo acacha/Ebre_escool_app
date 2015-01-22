@@ -1,6 +1,10 @@
 package org.acacha.ebre_escool.ebre_escool_app;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.ConnectException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
@@ -41,14 +45,16 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+
 
 public class LoginActivity extends FragmentActivity implements 
 	OnClickListener,ConnectionCallbacks,OnConnectionFailedListener, LoginActivityFragment.OnFragmentInteractionListener {
@@ -65,10 +71,12 @@ public class LoginActivity extends FragmentActivity implements
 	// Profile pic image size in pixels
 	private static final int PROFILE_PIC_SIZE = 400;
 
-	
+
+    private static final int REQUEST_CODE_FORM_LOGIN = 90;
 	private static final int REQUEST_CODE_GOOGLE_LOGIN = 91;
 	private static final int REQUEST_CODE_FACEBOOK_LOGIN = 92;
 	private static final int REQUEST_CODE_TWITTER_LOGIN = 93;
+
 	/*
 	private static final int SOCIAL_LOGIN_GOOGLE = 101;
 	private static final int SOCIAL_LOGIN_FACEBOOk = 102;
@@ -139,7 +147,26 @@ public class LoginActivity extends FragmentActivity implements
 			getSupportFragmentManager().beginTransaction()
 					.add(R.id.login_activitycontainer, new LoginActivityFragment()).commit();
 		}
-		
+
+        Class next_activity = null;
+        SharedPreferences settings = getSharedPreferences(AndroidSkeletonUtils.PREFS_NAME, 0);
+
+        int login_type = 0;
+        //User already logged and remember checkbox selected -> Bypass login page
+        if (settings.getBoolean(AndroidSkeletonUtils.REMEMBER_LOGIN_PREFERENCE, false)) {
+            next_activity = MainActivity.class;
+            Log.d(TAG, "User selected to remember login. Skipping login page...");
+
+            //Getting which type of login is done
+            //REQUEST_CODE_TWITTER_LOGIN | REQUEST_CODE_FACEBOOK_LOGIN | REQUEST_CODE_GOOGLE_LOGIN
+            login_type = settings.getInt(AndroidSkeletonUtils.LOGIN_TYPE_PREFERENCE, 0);
+        }
+
+        if (next_activity!=null) {
+            Intent i = new Intent(LoginActivity.this, MainActivity.class);
+            startActivityForResult(i, login_type);
+        }
+
 		//GOOGLE
 		mGoogleApiClient = new GoogleApiClient.Builder(this)
 		.addConnectionCallbacks(this)
@@ -210,6 +237,9 @@ public class LoginActivity extends FragmentActivity implements
 
 					Log.d("Twitter OAuth Token", "> " + accessToken.getToken());
 
+                    settings.edit().putInt( AndroidSkeletonUtils.LOGIN_TYPE_PREFERENCE,
+                            REQUEST_CODE_TWITTER_LOGIN).commit();
+
 					Intent i = new Intent(LoginActivity.this, MainActivity.class);
 		    		startActivityForResult(i, REQUEST_CODE_TWITTER_LOGIN);
 				} catch (Exception e) {
@@ -233,6 +263,10 @@ public class LoginActivity extends FragmentActivity implements
             // OPENED_TOKEN_UPDATED state, the selection fragment should already be showing.
             if (state.equals(SessionState.OPENED)) {
             	Log.d(TAG,"onSessionStateChange: Logged to facebook");
+                SharedPreferences settings =
+                        getSharedPreferences(AndroidSkeletonUtils.PREFS_NAME, 0);
+                settings.edit().putInt( AndroidSkeletonUtils.LOGIN_TYPE_PREFERENCE,
+                        REQUEST_CODE_FACEBOOK_LOGIN).commit();
             	Intent i = new Intent(LoginActivity.this, MainActivity.class);
         		startActivityForResult(i, REQUEST_CODE_FACEBOOK_LOGIN);
             } else if (state.isClosed()) {
@@ -275,6 +309,11 @@ public class LoginActivity extends FragmentActivity implements
             
         	//Login ok
         	Log.d(TAG,"Login to facebook Ok!");
+
+            SharedPreferences settings =
+                    getSharedPreferences(AndroidSkeletonUtils.PREFS_NAME, 0);
+            settings.edit().putInt( AndroidSkeletonUtils.LOGIN_TYPE_PREFERENCE,
+                    REQUEST_CODE_FACEBOOK_LOGIN).commit();
         	Intent i = new Intent(LoginActivity.this, MainActivity.class);
     		startActivityForResult(i, REQUEST_CODE_FACEBOOK_LOGIN);
         	
@@ -491,6 +530,10 @@ public class LoginActivity extends FragmentActivity implements
 			// Signin with Twitter button clicked
 			loginToTwitter();
 			break;
+        case R.id.btnPersonalLogin:
+                // Signin with Login Form
+                loginToEbreEscool(v);
+                break;
 		}
 	}
 	
@@ -519,6 +562,10 @@ public class LoginActivity extends FragmentActivity implements
 		// Get user's information
 		getProfileInformation();
 
+        SharedPreferences settings =
+                getSharedPreferences(AndroidSkeletonUtils.PREFS_NAME, 0);
+        settings.edit().putInt( AndroidSkeletonUtils.LOGIN_TYPE_PREFERENCE,
+                REQUEST_CODE_GOOGLE_LOGIN).commit();
 		Intent i = new Intent(LoginActivity.this, MainActivity.class);
 		startActivityForResult(i, REQUEST_CODE_GOOGLE_LOGIN);
 		
@@ -650,8 +697,71 @@ public class LoginActivity extends FragmentActivity implements
 		// return twitter login status from Shared Preferences
 		return mSharedPreferences.getBoolean(PREF_KEY_TWITTER_LOGIN, false);
 	}
-	
-	
+
+    /**
+     * Login to ebre_escool
+     *
+     */
+    private void loginToEbreEscool(View v) {
+        //TODO: Connect to ebre_escool api log login
+
+        String username = ((EditText) findViewById(R.id.username)).getText().toString();
+        String password = ((EditText) findViewById(R.id.password)).getText().toString();
+        String md5password = computeMD5Hash(password);
+
+        //Obtain and save to sharedPreferences remember_login_checkbox
+        Boolean remember_login_checkbox = (
+                (CheckBox)findViewById(R.id.chkRememberLogin)).isChecked();
+
+        SharedPreferences settings = getSharedPreferences(AndroidSkeletonUtils.PREFS_NAME, 0);
+        settings.edit().putBoolean(
+                AndroidSkeletonUtils.REMEMBER_LOGIN_PREFERENCE, remember_login_checkbox).commit();
+        settings.edit().putInt(
+                AndroidSkeletonUtils.LOGIN_TYPE_PREFERENCE, REQUEST_CODE_FORM_LOGIN ).commit();
+
+        //DEBUG
+        Log.d(TAG,"username: " + username);
+        //Log.d(TAG,"password: " + password);
+        //Log.d(TAG,"MD5 password: " + md5password);
+        Log.d(TAG,"Remember_login_checkbox: " + remember_login_checkbox);
+
+        //HTTP POST TO ebreescoollogin
+        OkHttpHelper http_helper = new OkHttpHelper();
+
+        LoginAsyncTask login_task = new LoginAsyncTask(this);
+        login_task.execute(username,md5password);
+
+    }
+
+    public String computeMD5Hash(String password){
+
+        StringBuffer MD5Hash = new StringBuffer();
+
+        try {
+            // Create MD5 Hash
+            MessageDigest digest = java.security.MessageDigest.getInstance("MD5");
+            digest.update(password.getBytes());
+            byte messageDigest[] = digest.digest();
+
+
+            for (int i = 0; i < messageDigest.length; i++)
+            {
+                String h = Integer.toHexString(0xFF & messageDigest[i]);
+                while (h.length() < 2)
+                    h = "0" + h;
+                MD5Hash.append(h);
+            }
+
+
+
+        }
+        catch (NoSuchAlgorithmException e)
+        {
+            e.printStackTrace();
+        }
+
+        return MD5Hash.toString();
+    }
 	
 	/**
 	 * Function to login twitter
@@ -665,6 +775,11 @@ public class LoginActivity extends FragmentActivity implements
 			boolean already_have_tokens = already_have_twitter_tokens();
 			if (already_have_tokens == true) {
 				Log.d(TAG,"Already have twitter tokens -> Log in!");
+
+                SharedPreferences settings =
+                        getSharedPreferences(AndroidSkeletonUtils.PREFS_NAME, 0);
+                settings.edit().putInt( AndroidSkeletonUtils.LOGIN_TYPE_PREFERENCE,
+                        REQUEST_CODE_TWITTER_LOGIN).commit();
 				Intent i = new Intent(LoginActivity.this, MainActivity.class);
 	    		startActivityForResult(i, REQUEST_CODE_TWITTER_LOGIN);
 			} else {
@@ -691,6 +806,10 @@ public class LoginActivity extends FragmentActivity implements
 			// user already logged into twitter
 			Log.d(TAG,"Already Logged into twitter");
 
+            SharedPreferences settings =
+                    getSharedPreferences(AndroidSkeletonUtils.PREFS_NAME, 0);
+            settings.edit().putInt( AndroidSkeletonUtils.LOGIN_TYPE_PREFERENCE,
+                    REQUEST_CODE_TWITTER_LOGIN).commit();
 			Intent i = new Intent(LoginActivity.this, MainActivity.class);
     		startActivityForResult(i, REQUEST_CODE_TWITTER_LOGIN);
 		}
@@ -727,4 +846,172 @@ public class LoginActivity extends FragmentActivity implements
 		e.remove(PREF_KEY_TWITTER_LOGIN);
 		e.commit();
 	}
+
+    private class LoginResultBundle {
+
+        public static final int ERROR_TYPE_CONNECT_EXCEPTION = -1;
+
+        public static final int ERROR_TYPE_IO_EXCEPTION = -2;
+
+        private String login_api_url = OkHttpHelper.LOGIN_API_URL;
+
+        private String realm = OkHttpHelper.DEFAULT_REALM;
+
+        private String username = "";
+
+        private boolean result_ok;
+
+        private int error_type = 0;
+
+        private String error_message;
+
+        public int getError_type() {
+            return error_type;
+        }
+
+        public void setError_type(int error_type) {
+            this.error_type = error_type;
+        }
+
+        public String getLogin_api_url() {
+            return login_api_url;
+        }
+
+        public void setLogin_api_url(String login_api_url) {
+            this.login_api_url = login_api_url;
+        }
+
+        public String getError_message() {
+            return error_message;
+        }
+
+        public void setError_message(String error_message) {
+            this.error_message = error_message;
+        }
+
+        public boolean isResult_ok() {
+            return result_ok;
+        }
+
+        public void setResult_ok(boolean result_ok) {
+            this.result_ok = result_ok;
+        }
+        public String getRealm() {
+            return realm;
+        }
+
+        public void setRealm(String realm) {
+            this.realm = realm;
+        }
+
+        public String getUsername() {
+            return username;
+        }
+
+        public void setUsername(String username) {
+            this.username = username;
+        }
+
+
+    }
+
+    private class LoginAsyncTask extends AsyncTask<String, Void, LoginResultBundle> {
+
+        private ProgressDialog dialog;
+
+        public LoginAsyncTask(LoginActivity activity) {
+            dialog = new ProgressDialog(activity);
+        }
+
+        /** progress dialog to show user that the backup is processing. */
+        /** application context. */
+        @Override
+        protected void onPreExecute() {
+            this.dialog.setMessage("Validating login");
+            this.dialog.show();
+        }
+
+        @Override
+        protected LoginResultBundle doInBackground(final String... args) {
+
+            //HTTP POST TO ebreescoollogin
+            OkHttpHelper http_helper = new OkHttpHelper();
+
+            String login_api_url = OkHttpHelper.LOGIN_API_URL;
+            String realm = OkHttpHelper.DEFAULT_REALM;
+
+            String username = args[0];
+            String password = args[1];
+
+            String response = "";
+            String error_message ="";
+            LoginResultBundle result_bundle = new LoginResultBundle();
+            result_bundle.setResult_ok(true);
+            result_bundle.setLogin_api_url(login_api_url);
+            result_bundle.setUsername(username);
+            result_bundle.setRealm(realm);
+
+            try {
+                response = http_helper.login_ebreescool(login_api_url,username,password,realm);
+            } catch (ConnectException ce) {
+                error_message = ce.getLocalizedMessage();
+                result_bundle.setResult_ok(false);
+                result_bundle.setError_type(LoginResultBundle.ERROR_TYPE_CONNECT_EXCEPTION);
+                ce.printStackTrace();
+            } catch (IOException e) {
+                error_message = e.getLocalizedMessage();
+                result_bundle.setResult_ok(false);
+                result_bundle.setError_type(LoginResultBundle.ERROR_TYPE_IO_EXCEPTION);
+                e.printStackTrace();
+            }
+
+            result_bundle.setError_message(error_message);
+
+
+            if (error_message!=""){
+                Log.d(TAG,"Error message: " + error_message);
+            }
+
+            Log.d(TAG,"Response: " + response);
+
+            result_bundle.setError_message(error_message);
+            return result_bundle;
+
+        }
+
+        @Override
+        protected void onPostExecute(final LoginResultBundle result) {
+            if (dialog.isShowing()) {
+                dialog.dismiss();
+            }
+
+            if (result.isResult_ok()) {
+
+            } else {
+                int error_type = result.getError_type();
+                int duration = Toast.LENGTH_LONG;
+
+                switch (error_type) {
+                    case LoginResultBundle.ERROR_TYPE_CONNECT_EXCEPTION:
+
+                        break;
+                    case LoginResultBundle.ERROR_TYPE_IO_EXCEPTION:
+                        break;
+                    default:
+                        break;
+                }
+
+                Toast.makeText(getApplicationContext(),
+                        result.getError_message(), duration).show();
+
+            }
+
+
+
+        }
+
+    }
 }
+
+
+

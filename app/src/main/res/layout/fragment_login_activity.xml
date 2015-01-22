@@ -35,7 +35,9 @@
             android:textColor="#3B96CE"
             android:textStyle="bold"/>
 
-        <EditText
+
+        <!--<EditText
+            android:id="@+id/username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/username"
@@ -44,15 +46,38 @@
             android:textColor="#FFFFFF">
 
             <requestFocus />
-        </EditText>
+        </EditText>-->
+
+        <AutoCompleteTextView
+            android:id="@+id/username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/username"
+            android:paddingBottom="10dp"
+            android:textColorHint="#FFFFFF"
+            android:textColor="#FFFFFF" />
+
+        <!--
+        <AutoCompleteTextView
+            android:id="@+id/username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/username"
+            android:paddingBottom="10dp"
+            android:textColorHint="#FFFFFF"
+            android:textColor="#FFFFFF"
+        //android:drawableRight="@android:drawable/ic_delete"
+        />-->
 
         <EditText
+            android:id="@+id/password"
             android:layout_width="262dp"
             android:layout_height="match_parent"
             android:hint="@string/password"
             android:inputType="textPassword"
             android:paddingBottom="10dp"
-            android:textColorHint="#FFFFFF" />
+            android:textColorHint="#FFFFFF"
+            android:textColor="#FFFFFF" />
 
         <Button
             android:id="@+id/btnPersonalLogin"
@@ -68,12 +93,13 @@
             android:textColor="#FFFFFF" />
 
         <CheckBox
-            android:id="@+id/chkRemember"
+            android:id="@+id/chkRememberLogin"
             android:layout_width="126dp"
             android:layout_height="wrap_content"
-            android:checked="false"
+            android:checked="true"
             android:text="@string/rememberUser"
-            android:textColor="#FFFFFF" />
+            android:textColor="#FFFFFF"
+            />
     </LinearLayout>
 
     <LinearLayout 

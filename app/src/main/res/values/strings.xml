@@ -4,7 +4,6 @@
     <string name="app_name">Ebre_escool</string>
     <string name="app_id">433645486786215</string>
     <string name="action_settings">Configuració</string>
-
     <string name="controlLogin">Iniciar Sessió</string>
     <string name="btnControlLogin">Entrar</string>
     <string name="rememberUser">Recordar</string>
@@ -55,8 +54,17 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_main_activity_blank_fragment_esborrar">MainActivityBlankFragmentEsborrar</string>
     <string name="hello_world">Hello world!</string>
-    
     <string name="com_facebook_loginview_log_in_button">Entreu amb Facebook</string>
     <string name="com_facebook_loginview_log_out_button">Sortiu de facebook</string>
+    <string name="title_activity_wizard">WizardActivity</string>
+    <string name="title_activity_initial_settings_wizard">InitialSettingsWizardActivity</string>
+    <string name="title_activity_main_activity2">MainActivity2</string>
+    <string name="wizard_next">Següent</string>
+    <string name="wizard_previous">Anterior</string>
+    <string name="wizard_finish">Finalitzar</string>
+    <string name="choose_a_school">Escolliu un centre d\'ensenyament</string>
+
+    <string name="initial_settings_action_bar_title">Ebre-escool</string>
+    <string name="initial_settings_action_bar_subtitle">Assistent configuració inicial</string>
 
 </resources>
