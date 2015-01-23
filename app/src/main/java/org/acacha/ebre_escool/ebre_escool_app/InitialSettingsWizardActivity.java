@@ -17,7 +17,6 @@ public class InitialSettingsWizardActivity extends FragmentActivity {
         ActionBar ab = getActionBar();
         ab.setTitle(getString(R.string.initial_settings_action_bar_title));
         ab.setSubtitle(getString(R.string.initial_settings_action_bar_subtitle));
-
     }
 
 }
