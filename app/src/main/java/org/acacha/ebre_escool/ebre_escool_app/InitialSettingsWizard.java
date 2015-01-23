@@ -34,6 +34,7 @@ public class InitialSettingsWizard extends BasicWizardLayout {
         return new WizardFlow.Builder()
                 .addStep(InitialSettingsStep1Schools.class)           //Add your steps in the order you want them
                 .addStep(InitialSettingsStep2Login.class)           //to appear and eventually call create()
+                .addStep(InitialSettingsStep3Testing.class)         //to appear and eventually call create()
                 .create();                              //to create the wizard flow.
     }
 

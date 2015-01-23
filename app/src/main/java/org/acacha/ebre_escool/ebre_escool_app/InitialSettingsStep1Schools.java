@@ -49,16 +49,8 @@ public class InitialSettingsStep1Schools extends WizardStep {
 
         lstSchools = (ListView) v.findViewById(R.id.schoolslistview);
 
-        // Instantiate the list of samples.
-        mSchools = new School[] {
-                new School("Institut de l'Ebre"),
-                new School("Institut demo")
-        };
-
         //Retrieve schools on JSON format
-        String json_schools = settings.getString("schools", "");
         String json_schools_list = settings.getString("schools_list", "");
-        Log.d(LOG_TAG,"###### json_schools: " + json_schools);
         Log.d(LOG_TAG,"###### json_schools_list: " + json_schools_list);
 
         Gson gson = new Gson();
@@ -68,14 +60,7 @@ public class InitialSettingsStep1Schools extends WizardStep {
                 android.R.layout.simple_list_item_1,
                 android.R.id.text1,
                 mSchools));
-
-        /*
-        setListAdapter(new ArrayAdapter<School>(getActivity(),
-                android.R.layout.simple_list_item_1,
-                android.R.id.text1,
-                mSchools));
-        */
-
+        
         return v;
     }
 
