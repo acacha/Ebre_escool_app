@@ -10,7 +10,6 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 
-import java.util.List;
 import java.util.Map;
 
 import retrofit.Callback;
@@ -35,7 +34,7 @@ public class SplashScreen extends Activity {
     //Look up for shared preferences
     final String CONFIG_WIZARD_FINALIZED_OK = "config_wizard_ok";
 
-    Class next_activity = LoginActivity.class;
+    Class next_activity = InitialSettingsActivity.class;
 
     //settings
     private SharedPreferences settings;
@@ -46,6 +45,34 @@ public class SplashScreen extends Activity {
 		setContentView(R.layout.activity_splash);
 
         settings = getSharedPreferences(AndroidSkeletonUtils.PREFS_NAME, 0);
+
+        //TODO: Check connection: Show message to user if not connection found
+
+        ConnectionDetector cd = new ConnectionDetector(this);
+
+        if (! cd.isConnectingToInternet()) {
+            //Offer user the possibility to change wifi/network settings:
+            //http://acacha.org/mediawiki/index.php/Android_HTTP#Comprovar_la_connexi.C3.B3_de_xarxa
+            //Intent intent = new Intent(Intent.ACTION_MAIN);
+            //intent.setClassName("com.android.settings", "com.android.settings.wifi.WifiSettings");
+            //startActivity(intent);
+
+            //Para abrir la configuración de datos móviles:
+            //Intent intent = new Intent();
+            //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            //intent.setAction(android.provider.Settings.ACTION_DATA_ROAMING_SETTINGS);
+            //startActivity(intent);
+
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.setClassName("com.android.settings", "com.android.settings.wifi.WifiSettings");
+            startActivity(intent);
+
+            //TODO: Show Alert to user and close app!
+
+        } else {
+            Log.d(LOG_TAG,"Connectivity is Ok. Continue execution...");
+        }
+
 
         RestAdapter restAdapter = new RestAdapter.Builder()
                 .setEndpoint("http://acacha.org/acacha_manager/index.php/ebre_escool/api")
@@ -106,13 +133,13 @@ public class SplashScreen extends Activity {
 
             //TODO: Connect to server: Obtain list of schools & save for wizard on next step
 
-            next_activity = InitialSettingsWizardActivity.class;
+            next_activity = InitialSettingsActivity.class;
         } else {
             //NOT FIRST TIME
 
             //TODO: Check if initial wizard is completed ok. if not show wizard on next activity
             if (true) {
-                next_activity = InitialSettingsWizardActivity.class;
+                next_activity = InitialSettingsActivity.class;
             }
 
             timeout = NOT_FIRST_TIME_SPLASH_TIME_OUT;

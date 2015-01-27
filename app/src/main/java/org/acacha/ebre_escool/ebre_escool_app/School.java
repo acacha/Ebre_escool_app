@@ -11,6 +11,12 @@ public class School {
     private String name;
     @Expose
     private String fullname;
+    @SerializedName("logourl")
+    @Expose
+    private String logoURL;
+    @SerializedName("logo_relative_url")
+    @Expose
+    private String relativeLogoURL;
     @Expose
     private String email;
     @SerializedName("secondary_email")
@@ -120,6 +126,42 @@ public class School {
      */
     public void setFullname(String fullname) {
         this.fullname = fullname;
+    }
+
+    /**
+     *
+     * @return
+     *     The logo full URL
+     */
+    public String getLogoURL() {
+        return logoURL;
+    }
+
+    /**
+     *
+     * @param logoURL
+     *     The logo url
+     */
+    public void setLogoURL(String logoURL) {
+        this.logoURL = logoURL;
+    }
+
+    /**
+     *
+     * @return
+     *     The logo realative URL
+     */
+    public String getRelativeLogoURL() {
+        return relativeLogoURL;
+    }
+
+    /**
+     *
+     * @param relativeLogoURL
+     *     The logo relative url
+     */
+    public void setRelativeLogoURL(String relativeLogoURL) {
+        this.relativeLogoURL = relativeLogoURL;
     }
 
     /**
