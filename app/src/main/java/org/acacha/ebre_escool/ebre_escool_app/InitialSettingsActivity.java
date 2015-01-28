@@ -1149,15 +1149,20 @@ public class InitialSettingsActivity extends FragmentActivity implements
                         //LOGIN OK
 
                         ResponseBody body = response.body();
-
+                        String json_response = null;
                         try {
-                            Log.d(TAG,"response body: " + body.string());
+                            json_response = body.string();
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
 
-                        EbreEscoolLoginResponse eeresponse =
-                                gson.fromJson(body.charStream(), EbreEscoolLoginResponse.class);
+                        Log.d(TAG,"response body: " + json_response);
+
+
+                        EbreEscoolLoginResponse eeresponse = null;
+
+                        eeresponse = gson.fromJson(json_response, EbreEscoolLoginResponse.class);
+
 
                         //TODO: Obtain data as result of asynctask. THIS IS ONLY FOR TEST:
                         Bundle data = new Bundle();

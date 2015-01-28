@@ -1,9 +1,9 @@
 package org.acacha.ebre_escool.ebre_escool_app;
 
 /*
+* TODO
 *
-*
- */
+*/
 
 import android.util.Log;
 
@@ -30,7 +30,7 @@ import javax.net.ssl.X509TrustManager;
 public class OkHttpHelper {
 
     public static final String LOGIN_API_URL =
-            "https://192.168.50.250/ebre-escool/index.php/api/ebreescool_login/login";
+            "https://www.iesebre.com/ebre-escool/index.php/api/ebreescool_login/login";
 
     public static final String API_KEY = "f8314111f3d35058584b37361dbde919";
 
