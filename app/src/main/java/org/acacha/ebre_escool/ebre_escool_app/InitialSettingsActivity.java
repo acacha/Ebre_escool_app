@@ -31,6 +31,8 @@ import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
+import com.google.gson.Gson;
+import com.squareup.okhttp.ResponseBody;
 
 import android.accounts.Account;
 import android.accounts.AccountAuthenticatorResponse;
@@ -93,6 +95,8 @@ public class InitialSettingsActivity extends FragmentActivity implements
 	private static final int REQUEST_CODE_TWITTER_LOGIN = 93;
 
 	private boolean OnStartAlreadyConnected = false;
+
+    private final Gson gson = new Gson();
 	
 	//TWITTER
 	// Constants
@@ -152,6 +156,8 @@ public class InitialSettingsActivity extends FragmentActivity implements
 
     private AccountManager mAccountManager;
     private String mAuthTokenType;
+
+    private LoginResultBundle loginresult = new LoginResultBundle();
 
     //////// BEGIN
     // Taken from AccountAuthenticatorActivity. We cannot extends this Activity because we are using Fragments!
@@ -215,10 +221,12 @@ public class InitialSettingsActivity extends FragmentActivity implements
         SharedPreferences settings = getSharedPreferences(AndroidSkeletonUtils.PREFS_NAME, 0);
 
         int login_type = 0;
-        //User already logged and remember checkbox selected -> Bypass login page
-        if (settings.getBoolean(AndroidSkeletonUtils.REMEMBER_LOGIN_PREFERENCE, false)) {
+
+        //IF ALREADY HAVE AND authTOKEN --> Skip InitialSettings/Login
+        //if (settings.getBoolean(AndroidSkeletonUtils.REMEMBER_LOGIN_PREFERENCE, false)) {
+        if (true) {
             next_activity = MainActivity.class;
-            Log.d(TAG, "User selected to remember login. Skipping login page...");
+            Log.d(TAG, "We already have a token --> skip initialSettings/Login");
 
             //Getting which type of login is done
             //REQUEST_CODE_TWITTER_LOGIN | REQUEST_CODE_FACEBOOK_LOGIN | REQUEST_CODE_GOOGLE_LOGIN
@@ -338,13 +346,14 @@ public class InitialSettingsActivity extends FragmentActivity implements
             had changed his password for that, you need to update the AccountManager with the new
             password too.
              */
-            Log.d("udinic", TAG + "> finishLogin > setPassword");
+            Log.d("Ebreescool", TAG + "> finishLogin > setPassword");
             mAccountManager.setPassword(account, accountPassword);
         }
 
         setAccountAuthenticatorResult(intent.getExtras());
         setResult(RESULT_OK, intent);
-        finish();
+
+        //finish();
     }
 	
 	private void onSessionStateChange(Session session, SessionState state, Exception exception) {
@@ -806,44 +815,17 @@ public class InitialSettingsActivity extends FragmentActivity implements
         String password = ((EditText) findViewById(R.id.password)).getText().toString();
         String md5password = computeMD5Hash(password);
 
-        //Obtain and save to sharedPreferences remember_login_checkbox
-        Boolean remember_login_checkbox = (
-                (CheckBox)findViewById(R.id.chkRememberLogin)).isChecked();
-
-        SharedPreferences settings = getSharedPreferences(AndroidSkeletonUtils.PREFS_NAME, 0);
-        settings.edit().putBoolean(
-                AndroidSkeletonUtils.REMEMBER_LOGIN_PREFERENCE, remember_login_checkbox).commit();
-        settings.edit().putInt(
-                AndroidSkeletonUtils.LOGIN_TYPE_PREFERENCE, REQUEST_CODE_FORM_LOGIN ).commit();
-
         //DEBUG
         Log.d(TAG,"username: " + username);
         //Log.d(TAG,"password: " + password);
         //Log.d(TAG,"MD5 password: " + md5password);
-        Log.d(TAG,"Remember_login_checkbox: " + remember_login_checkbox);
 
         //HTTP POST TO ebreescoollogin
         OkHttpHelper http_helper = new OkHttpHelper();
 
+        Log.d(TAG,"########### BEFORE loginresult: " + loginresult);
         LoginAsyncTask login_task = new LoginAsyncTask(this);
         login_task.execute(username,md5password);
-
-        //TODO: Obtain data as result of asynctask. THIS IS ONLY FOR TEST:
-        Bundle data = new Bundle();
-        String userName = "acacha";
-        String accountType = EbreEscoolAccount.AUTHTOKEN_TYPE_FULL_ACCESS;
-        String authtoken = "76fa4cd67623b9bd8b4e3a5161421641";
-        String userPass = "MYPASSWORDHERE_NONO";
-        data.putString(AccountManager.KEY_ACCOUNT_NAME, userName);
-        data.putString(AccountManager.KEY_ACCOUNT_TYPE, accountType);
-        data.putString(AccountManager.KEY_AUTHTOKEN, authtoken);
-        data.putString(PARAM_USER_PASS, userPass);
-
-        final Intent res = new Intent();
-        res.putExtras(data);
-
-        finishLogin(res);
-
     }
 
     public String computeMD5Hash(String password){
@@ -972,11 +954,15 @@ public class InitialSettingsActivity extends FragmentActivity implements
 
         private String username = "";
 
+        private String password = "";
+
         private boolean result_ok;
 
         private int error_type = 0;
 
         private String error_message;
+
+        private com.squareup.okhttp.Response response;
 
         public int getError_type() {
             return error_type;
@@ -1025,7 +1011,31 @@ public class InitialSettingsActivity extends FragmentActivity implements
             this.username = username;
         }
 
+        public String getPassword() {
+            return password;
+        }
 
+        public void setPassword(String password) {
+            this.password = password;
+        }
+
+        @Override
+        public String toString() {
+            String result = "username: " + this.getUsername() + " | " +
+                    "realm: " + this.getRealm() + " | " +
+                    "error_type: " + this.getError_type() + " | " +
+                    "error_message: " + this.getError_message() + " | " +
+                    "response: " + this.getResponse();
+            return result;
+        }
+
+        public com.squareup.okhttp.Response getResponse() {
+            return response;
+        }
+
+        public void setResponse(com.squareup.okhttp.Response response) {
+            this.response = response;
+        }
     }
 
     private class LoginAsyncTask extends AsyncTask<String, Void, LoginResultBundle> {
@@ -1056,13 +1066,15 @@ public class InitialSettingsActivity extends FragmentActivity implements
             String username = args[0];
             String password = args[1];
 
-            String response = "";
+            com.squareup.okhttp.Response response = null;
             String error_message ="";
             LoginResultBundle result_bundle = new LoginResultBundle();
             result_bundle.setResult_ok(true);
             result_bundle.setLogin_api_url(login_api_url);
             result_bundle.setUsername(username);
+            result_bundle.setPassword(password);
             result_bundle.setRealm(realm);
+            result_bundle.setResult_ok(true);
 
             try {
                 response = http_helper.login_ebreescool(login_api_url,username,password,realm);
@@ -1072,57 +1084,108 @@ public class InitialSettingsActivity extends FragmentActivity implements
                 result_bundle.setError_type(LoginResultBundle.ERROR_TYPE_CONNECT_EXCEPTION);
                 ce.printStackTrace();
             } catch (IOException e) {
+                e.printStackTrace();
                 error_message = e.getLocalizedMessage();
                 result_bundle.setResult_ok(false);
                 result_bundle.setError_type(LoginResultBundle.ERROR_TYPE_IO_EXCEPTION);
-                e.printStackTrace();
-            }
-
-            result_bundle.setError_message(error_message);
-
-
-            if (error_message!=""){
-                Log.d(TAG,"Error message: " + error_message);
             }
 
             Log.d(TAG,"Response: " + response);
-
             result_bundle.setError_message(error_message);
+            result_bundle.setResponse(response);
+            if (error_message!=""){
+                Log.d(TAG,"Error message: " + error_message);
+            }
             return result_bundle;
 
         }
 
         @Override
         protected void onPostExecute(final LoginResultBundle result) {
+            Log.d(TAG,"LoginResultBundle: " + result);
             if (dialog.isShowing()) {
                 dialog.dismiss();
             }
 
+            loginresult = result;
+
             if (result.isResult_ok()) {
+                Log.d(TAG,"RESULT IS OK!");
+                com.squareup.okhttp.Response response = result.getResponse();
+                int response_code = 0;
 
-            } else {
-                int error_type = result.getError_type();
-                int duration = Toast.LENGTH_LONG;
-
-                switch (error_type) {
-                    case LoginResultBundle.ERROR_TYPE_CONNECT_EXCEPTION:
-
-                        break;
-                    case LoginResultBundle.ERROR_TYPE_IO_EXCEPTION:
-                        break;
-                    default:
-                        break;
+                if (response!= null) {
+                    response_code = response.code();
+                    Log.d(TAG,"Response: " + response.toString());
                 }
 
+                Log.d(TAG,"response_code: " + response_code);
+
+                if (response_code!=0) {
+                    Log.d(TAG,"response_code not zero");
+                    if (response_code != 200) {
+                        Log.d(TAG,"response_code not 200");
+                        //RESPONSE OBTAINED OK BUT NOT EXPECTED RESULT CODE
+                        String toast_message = result.getError_message();
+                        if (response_code == 404) {
+                            //User not found
+                            Log.d(TAG,"response_code 404. User not found");
+                            toast_message = getString(R.string.user_not_found_label);
+                        }
+                        if (response_code == 400) {
+                            //Password incorrect
+                            Log.d(TAG,"response_code 400. Password incorrect!");
+                            toast_message = getString(R.string.password_incorrect_label);
+                        }
+
+                        int duration = Toast.LENGTH_LONG;
+                        Toast.makeText(getApplicationContext(),
+                                toast_message, duration).show();
+                    } else {
+                        Log.d(TAG,"response_code 200. LOGIN OK!");
+                        int duration = Toast.LENGTH_LONG;
+                        Toast.makeText(getApplicationContext(),
+                                R.string.login_ok_label, duration).show();
+                        //LOGIN OK
+
+                        ResponseBody body = response.body();
+
+                        try {
+                            Log.d(TAG,"response body: " + body.string());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                        EbreEscoolLoginResponse eeresponse =
+                                gson.fromJson(body.charStream(), EbreEscoolLoginResponse.class);
+
+                        //TODO: Obtain data as result of asynctask. THIS IS ONLY FOR TEST:
+                        Bundle data = new Bundle();
+                        String userName = result.getUsername();
+                        String accountType = EbreEscoolAccount.ACCOUNT_TYPE;
+
+                        //TODO: Get auth token form response body (GSON!)
+
+                        String authtoken = eeresponse.getApiUserProfile().getAuthToken();
+
+                        String userPass = result.getPassword();
+                        data.putString(AccountManager.KEY_ACCOUNT_NAME, userName);
+                        data.putString(AccountManager.KEY_ACCOUNT_TYPE, accountType);
+                        data.putString(AccountManager.KEY_AUTHTOKEN, authtoken);
+                        data.putString(PARAM_USER_PASS, userPass);
+
+                        final Intent res = new Intent();
+                        res.putExtras(data);
+
+                        finishLogin(res);
+                    }
+                }
+            } else {
+                int duration = Toast.LENGTH_LONG;
                 Toast.makeText(getApplicationContext(),
                         result.getError_message(), duration).show();
-
             }
-
-
-
         }
-
     }
 }
 

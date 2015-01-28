@@ -1,5 +1,10 @@
 package org.acacha.ebre_escool.ebre_escool_app;
 
+/*
+*
+*
+ */
+
 import android.util.Log;
 
 import com.squareup.okhttp.FormEncodingBuilder;
@@ -25,7 +30,7 @@ import javax.net.ssl.X509TrustManager;
 public class OkHttpHelper {
 
     public static final String LOGIN_API_URL =
-            "https://192.168.50.217/ebre-escool/index.php/api/ebreescool_login/login";
+            "https://192.168.50.250/ebre-escool/index.php/api/ebreescool_login/login";
 
     public static final String API_KEY = "f8314111f3d35058584b37361dbde919";
 
@@ -57,7 +62,7 @@ public class OkHttpHelper {
     KEY: f8314111f3d35058584b37361dbde919 is only valid for accessing LOGIN and no other API functions
     for security reasons. Each user have to obtain his own api-key with specific access roles
     */
-    public String login_ebreescool(String url, String username, String password, String realm) throws IOException {
+    public Response login_ebreescool(String url, String username, String password, String realm) throws IOException {
         RequestBody formBody = new FormEncodingBuilder()
                 .add("username", username)
                 .add("password", password)
@@ -81,14 +86,9 @@ public class OkHttpHelper {
         String response_message = response.message();
 
         Log.d(LOG_TAG,"response_code: " + (new Integer(response_code)).toString() );
-        Log.d(LOG_TAG,"response_code: " + response_message);
+        Log.d(LOG_TAG,"response_message: " + response_message);
 
-        if (!response.isSuccessful()) {
-            Log.d(LOG_TAG,"Response is not successful!");
-            throw new IOException("Unexpected code " + response);
-        }
-
-        return response.body().string();
+        return response;
     }
 
     private static OkHttpClient getUnsafeOkHttpClient() {

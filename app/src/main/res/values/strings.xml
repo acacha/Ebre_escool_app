@@ -69,4 +69,10 @@
 
     <string name="preferences_label">Ebreescool Preferences</string>
 
+    <string name="user_not_found_label">Usuari no trobat!</string>
+    <string name="password_incorrect_label">Password incorrecte!</string>
+    <string name="login_ok_label">Login correcte!</string>
+
+
+
 </resources>

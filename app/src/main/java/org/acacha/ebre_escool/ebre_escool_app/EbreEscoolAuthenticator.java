@@ -32,7 +32,9 @@ public class EbreEscoolAuthenticator extends AbstractAccountAuthenticator {
     }
 
     @Override
-    public Bundle addAccount(AccountAuthenticatorResponse response, String accountType, String authTokenType, String[] requiredFeatures, Bundle options) throws NetworkErrorException {
+    public Bundle addAccount(AccountAuthenticatorResponse response, String accountType,
+                                String authTokenType, String[] requiredFeatures, Bundle options)
+                                    throws NetworkErrorException {
         Log.d("EbreEscool", TAG + "> addAccount");
 
         final Intent intent = new Intent(mContext, InitialSettingsActivity.class);
@@ -49,7 +51,7 @@ public class EbreEscoolAuthenticator extends AbstractAccountAuthenticator {
     @Override
     public Bundle getAuthToken(AccountAuthenticatorResponse response, Account account, String authTokenType, Bundle options) throws NetworkErrorException {
 
-        Log.d("udinic", TAG + "> getAuthToken");
+        Log.d("Ebreescool", TAG + "> getAuthToken");
 
         // If the caller requested an authToken type we don't support, then
         // return an error
@@ -65,14 +67,14 @@ public class EbreEscoolAuthenticator extends AbstractAccountAuthenticator {
 
         String authToken = am.peekAuthToken(account, authTokenType);
 
-        Log.d("udinic", TAG + "> peekAuthToken returned - " + authToken);
+        Log.d("Ebreescool", TAG + "> peekAuthToken returned - " + authToken);
 
         // Lets give another try to authenticate the user
         if (TextUtils.isEmpty(authToken)) {
             final String password = am.getPassword(account);
             if (password != null) {
                 try {
-                    Log.d("udinic", TAG + "> re-authenticating with the existing password");
+                    Log.d("Ebreescool", TAG + "> re-authenticating with the existing password");
                     //authToken = sServerAuthenticate.userSignIn(account.name, password, authTokenType);
                 } catch (Exception e) {
                     e.printStackTrace();

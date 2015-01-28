@@ -11,7 +11,7 @@ public class EbreEscoolAccount {
     /**
      * Account type id
      */
-    public static final String ACCOUNT_TYPE = "org.acacha.ebre_escool.ebre_escool_app";
+    public static final String ACCOUNT_TYPE = "org.acacha.ebre_escool.ebre_escool_app.EbreEscoolAccount";
 
     /**
      * Account name
