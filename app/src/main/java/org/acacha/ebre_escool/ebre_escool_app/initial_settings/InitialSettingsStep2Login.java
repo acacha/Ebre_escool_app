@@ -1,4 +1,4 @@
-package org.acacha.ebre_escool.ebre_escool_app;
+package org.acacha.ebre_escool.ebre_escool_app.initial_settings;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
@@ -7,6 +7,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -17,6 +18,7 @@ import android.widget.Button;
 
 import com.facebook.widget.LoginButton;
 
+import org.acacha.ebre_escool.ebre_escool_app.R;
 import org.codepond.wizardroid.WizardStep;
 
 /**
@@ -89,6 +91,8 @@ public class InitialSettingsStep2Login extends WizardStep {
 		// Inflate the layout for this fragment
 		View view = inflater.inflate(R.layout.fragment_login_activity, container,
 				false);
+
+        Log.d("InitialSettingsStep2Login", "FRAGMENT ID: " + getId());
 		
 		btnGoogleSignIn = (Button) view.findViewById(R.id.btn_google_sign_in);
 		

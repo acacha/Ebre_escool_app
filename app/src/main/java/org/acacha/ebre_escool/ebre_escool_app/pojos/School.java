@@ -1,9 +1,11 @@
-package org.acacha.ebre_escool.ebre_escool_app;
+package org.acacha.ebre_escool.ebre_escool_app.pojos;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class School {
+
+
 
     @Expose
     private String id;

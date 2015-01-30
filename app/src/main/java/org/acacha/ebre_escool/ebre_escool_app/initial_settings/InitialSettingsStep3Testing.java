@@ -1,4 +1,4 @@
-package org.acacha.ebre_escool.ebre_escool_app;
+package org.acacha.ebre_escool.ebre_escool_app.initial_settings;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -14,6 +14,8 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.display.SimpleBitmapDisplayer;
 import com.nostra13.universalimageloader.utils.StorageUtils;
 
+import org.acacha.ebre_escool.ebre_escool_app.R;
+import org.acacha.ebre_escool.ebre_escool_app.UniversalImageLoaderCard;
 import org.codepond.wizardroid.WizardStep;
 
 import java.io.File;
@@ -49,7 +51,9 @@ public class InitialSettingsStep3Testing extends WizardStep {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        CardView cardView = (CardView) getActivity().findViewById(R.id.card);
+        /*
+                CardView cardView = (CardView) getActivity().findViewById(R.id.card);
+
 
         CardHeader cardHeader = new CardHeader(getActivity());
         cardHeader.setTitle("This is header");
@@ -62,7 +66,7 @@ public class InitialSettingsStep3Testing extends WizardStep {
 
         initUniversalImageLoaderLibrary();
         initCard();
-
+    */
 
 
     }
@@ -76,6 +80,7 @@ public class InitialSettingsStep3Testing extends WizardStep {
      *
      *
      */
+    /*
     private void initUniversalImageLoaderLibrary(){
 
         File cacheDir = StorageUtils.getCacheDirectory(getActivity());
@@ -93,11 +98,12 @@ public class InitialSettingsStep3Testing extends WizardStep {
                 .showImageOnFail(android.R.drawable.ic_menu_report_image)
                 .build();
     }
-
+ */
 
     /**
      * This method builds a simple card
      */
+    /*
     private void initCard() {
 
         //Init an array of Cards
@@ -118,6 +124,7 @@ public class InitialSettingsStep3Testing extends WizardStep {
         }
 
     }
+    */
 
 
 }

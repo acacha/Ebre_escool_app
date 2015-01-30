@@ -2,8 +2,17 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory android:title="@string/preferences_label" />
-    <CheckBoxPreference android:title="Use debug server"
-                        android:key="isDebug"
-                        android:summary="Connecting to a debug server instead of prod server"/>
-    <SwitchPreference android:title="Debug Logs" android:key="logsVerbose" android:summary="Show debug logs on LogCat"/>
+
+    <Preference android:title="@string/preferences_sublabel" >
+        <intent android:action="org.acacha.ebre_escool.ebre_escool_app.SettingsActivity"/>
+    </Preference>
+    <PreferenceScreen
+        android:key="ebreescool_account_settings"
+        android:title="@string/preferences_sublabel"
+        android:summary="@string/preferences_sublabel_summary">
+        <intent
+            android:action="org.acacha.ebre_escool.ebre_escool_app.ACCOUNT_SETUP"
+            android:targetPackage="org.acacha.ebre_escool.ebre_escool_app"
+            android:targetClass="org.acacha.ebre_escool.ebre_escool_app.SettingsActivity" />
+    </PreferenceScreen>
 </PreferenceScreen>

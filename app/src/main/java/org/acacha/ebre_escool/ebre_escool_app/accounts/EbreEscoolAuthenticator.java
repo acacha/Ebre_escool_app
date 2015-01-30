@@ -1,4 +1,4 @@
-package org.acacha.ebre_escool.ebre_escool_app;
+package org.acacha.ebre_escool.ebre_escool_app.accounts;
 
 import android.accounts.AbstractAccountAuthenticator;
 import android.accounts.Account;
@@ -11,6 +11,9 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 
+
+import org.acacha.ebre_escool.ebre_escool_app.accounts.EbreEscoolAccount;
+import org.acacha.ebre_escool.ebre_escool_app.initial_settings.InitialSettingsActivity;
 
 import static android.accounts.AccountManager.KEY_BOOLEAN_RESULT;
 

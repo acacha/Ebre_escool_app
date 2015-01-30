@@ -1,4 +1,4 @@
-package org.acacha.ebre_escool.ebre_escool_app;
+package org.acacha.ebre_escool.ebre_escool_app.receivers;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

@@ -1,7 +1,10 @@
-package org.acacha.ebre_escool.ebre_escool_app;
+package org.acacha.ebre_escool.ebre_escool_app.initial_settings;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import org.acacha.ebre_escool.ebre_escool_app.pojos.ApiUserProfile;
+import org.acacha.ebre_escool.ebre_escool_app.pojos.Sessiondata;
 
 public class EbreEscoolLoginResponse {
 

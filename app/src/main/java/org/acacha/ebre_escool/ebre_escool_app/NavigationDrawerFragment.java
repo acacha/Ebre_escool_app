@@ -272,12 +272,6 @@ public class NavigationDrawerFragment extends Fragment {
 			return true;
 		}
 
-		if (item.getItemId() == R.id.action_example) {
-			Toast.makeText(getActivity(), "Acció exemple TODO.", Toast.LENGTH_SHORT)
-					.show();
-			return true;
-		}
-
 		return super.onOptionsItemSelected(item);
 	}
 

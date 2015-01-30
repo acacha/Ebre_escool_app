@@ -1,4 +1,11 @@
-package org.acacha.ebre_escool.ebre_escool_app;
+package org.acacha.ebre_escool.ebre_escool_app.accounts;
+
+import android.accounts.Account;
+import android.accounts.AccountManager;
+import android.accounts.AccountManagerFuture;
+import android.content.Context;
+import android.os.Bundle;
+import android.util.Log;
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,6 +19,11 @@ public class EbreEscoolAccount {
      * Account type id
      */
     public static final String ACCOUNT_TYPE = "org.acacha.ebre_escool.ebre_escool_app.EbreEscoolAccount";
+
+    /**
+     * key of account_name SharedPreferences
+     */
+    public static final String ACCOUNT_NAME_KEY = "account_name";
 
     /**
      * Account name
@@ -28,4 +40,5 @@ public class EbreEscoolAccount {
     public static final String AUTHTOKEN_TYPE_FULL_ACCESS_LABEL = "Full access to an EbreEscool account";
 
     //public static final ServerAuthenticate sServerAuthenticate = new ParseComServerAuthenticate();
+
 }

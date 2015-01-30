@@ -1,25 +1,22 @@
-package org.acacha.ebre_escool.ebre_escool_app;
+package org.acacha.ebre_escool.ebre_escool_app.initial_settings;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import org.acacha.ebre_escool.ebre_escool_app.R;
+import org.acacha.ebre_escool.ebre_escool_app.pojos.School;
 import org.codepond.wizardroid.WizardStep;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Map;
 
 import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.internal.CardArrayAdapter;
@@ -51,6 +48,8 @@ public class InitialSettingsStep1Schools extends WizardStep {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        settings = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
         //Retrieve schools on JSON format
         String json_schools_list = settings.getString("schools_list", "");
         Log.d(LOG_TAG,"###### json_schools_list: " + json_schools_list);
@@ -68,14 +67,27 @@ public class InitialSettingsStep1Schools extends WizardStep {
             // Create a CardHeader and add Header to card_on_list
             CardHeader header = new CardHeader(getActivity());
             header.setTitle(mSchools[i].getFullname());
+
+            //#404040
+
             card_on_list.addCardHeader(header);
 
-
-            card_on_list.setId(mSchools[i].getId());
+            card_on_list.setId(Integer.toString(i));
             card_on_list.setTitle(mSchools[i].getSchoolNotes());
             card_on_list.setClickable(true);
 
-            //card_on_list.setOnClickListener();
+            card_on_list.setOnClickListener( new Card.OnCardClickListener() {
+                 @Override
+                 public void onClick(Card card, View view) {
+                     Log.d(LOG_TAG,"Clickable card id: " + card.getId());
+                     //Toast.makeText(getActivity(), "Clickable card id: " + card.getId(), Toast.LENGTH_LONG).show();
+                     int position = Integer.parseInt(card.getId());
+                     lstSchools.setItemChecked(position,true);
+                     settings.edit().putString("school",card.getId()).apply();
+                     notifyCompleted();
+                 }
+             }
+            );
 
             //Obtain thumbnail from an URL and add to card
             CardThumbnail thumb = new CardThumbnail(getActivity());
@@ -93,9 +105,13 @@ public class InitialSettingsStep1Schools extends WizardStep {
 
         CardArrayAdapter mCardArrayAdapter = new CardArrayAdapter(getActivity(), cards);
 
-        CardListView listView = (CardListView) getActivity().findViewById(R.id.schoolsList);
-        if (listView != null) {
-            listView.setAdapter(mCardArrayAdapter);
+        lstSchools = (CardListView) getActivity().findViewById(R.id.schoolsList);
+        if (lstSchools != null) {
+            lstSchools.setAdapter(mCardArrayAdapter);
+            lstSchools.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+            lstSchools.setItemChecked(0, true);
+            String current_value = settings.getString("school","0");
+            settings.edit().putString("school", current_value).apply();
         }
     }
 
@@ -104,7 +120,7 @@ public class InitialSettingsStep1Schools extends WizardStep {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.initialsettingsstep1schools, container, false);
-        settings = getActivity().getSharedPreferences(AndroidSkeletonUtils.PREFS_NAME, 0);
+        settings = PreferenceManager.getDefaultSharedPreferences(getActivity());
         return v;
     }
 

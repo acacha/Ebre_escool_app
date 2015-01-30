@@ -1,4 +1,4 @@
-package org.acacha.ebre_escool.ebre_escool_app;
+package org.acacha.ebre_escool.ebre_escool_app.initial_settings;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -49,17 +49,25 @@ import android.content.SharedPreferences.Editor;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import org.acacha.ebre_escool.ebre_escool_app.accounts.EbreEscoolAccount;
+import org.acacha.ebre_escool.ebre_escool_app.MainActivity;
+import org.acacha.ebre_escool.ebre_escool_app.R;
+import org.acacha.ebre_escool.ebre_escool_app.helpers.ConnectionDetector;
+import org.acacha.ebre_escool.ebre_escool_app.helpers.AlertDialogManager;
+import org.acacha.ebre_escool.ebre_escool_app.helpers.AndroidSkeletonUtils;
+import org.acacha.ebre_escool.ebre_escool_app.helpers.OkHttpHelper;
+import org.codepond.wizardroid.WizardStep;
 
 
 public class InitialSettingsActivity extends FragmentActivity implements
@@ -195,6 +203,8 @@ public class InitialSettingsActivity extends FragmentActivity implements
 		Log.d(TAG,"onCreate!");
         super.onCreate(savedInstanceState);
 
+        AndroidSkeletonUtils.debugIntent(getIntent(), "Initial Settings onCreate");
+
         // Taken from AccountAuthenticatorActivity. We cannot extends this Activity because we are using Fragments!
         // https://github.com/android/platform_frameworks_base/blob/master/core/java/android/accounts/AccountAuthenticatorActivity.java
         mAccountAuthenticatorResponse =
@@ -207,6 +217,10 @@ public class InitialSettingsActivity extends FragmentActivity implements
 
         mAccountManager = AccountManager.get(getBaseContext());
 
+        mAuthTokenType = getIntent().getStringExtra(ARG_AUTH_TYPE);
+        if (mAuthTokenType == null)
+            mAuthTokenType = EbreEscoolAccount.AUTHTOKEN_TYPE_FULL_ACCESS;
+
         setContentView(R.layout.activity_login);
         if (savedInstanceState == null) {
 			getSupportFragmentManager().beginTransaction()
@@ -218,7 +232,7 @@ public class InitialSettingsActivity extends FragmentActivity implements
         ab.setSubtitle(getString(R.string.initial_settings_action_bar_subtitle));
 
         Class next_activity = null;
-        SharedPreferences settings = getSharedPreferences(AndroidSkeletonUtils.PREFS_NAME, 0);
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
 
         int login_type = 0;
 
@@ -330,6 +344,7 @@ public class InitialSettingsActivity extends FragmentActivity implements
 
         if (getIntent().getBooleanExtra(ARG_IS_ADDING_NEW_ACCOUNT, false)) {
             Log.d("Ebreescool", TAG + "> finishLogin > addAccountExplicitly");
+            AndroidSkeletonUtils.debugIntent(intent,"finishLogin Intent");
             String authtoken = intent.getStringExtra(AccountManager.KEY_AUTHTOKEN);
             String authtokenType = mAuthTokenType;
 
@@ -369,8 +384,7 @@ public class InitialSettingsActivity extends FragmentActivity implements
             // OPENED_TOKEN_UPDATED state, the selection fragment should already be showing.
             if (state.equals(SessionState.OPENED)) {
             	Log.d(TAG,"onSessionStateChange: Logged to facebook");
-                SharedPreferences settings =
-                        getSharedPreferences(AndroidSkeletonUtils.PREFS_NAME, 0);
+                SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
                 settings.edit().putInt( AndroidSkeletonUtils.LOGIN_TYPE_PREFERENCE,
                         REQUEST_CODE_FACEBOOK_LOGIN).commit();
             	Intent i = new Intent(InitialSettingsActivity.this, MainActivity.class);
@@ -416,8 +430,7 @@ public class InitialSettingsActivity extends FragmentActivity implements
         	//Login ok
         	Log.d(TAG,"Login to facebook Ok!");
 
-            SharedPreferences settings =
-                    getSharedPreferences(AndroidSkeletonUtils.PREFS_NAME, 0);
+            SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
             settings.edit().putInt( AndroidSkeletonUtils.LOGIN_TYPE_PREFERENCE,
                     REQUEST_CODE_FACEBOOK_LOGIN).commit();
         	Intent i = new Intent(InitialSettingsActivity.this, MainActivity.class);
@@ -668,8 +681,7 @@ public class InitialSettingsActivity extends FragmentActivity implements
 		// Get user's information
 		getProfileInformation();
 
-        SharedPreferences settings =
-                getSharedPreferences(AndroidSkeletonUtils.PREFS_NAME, 0);
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
         settings.edit().putInt( AndroidSkeletonUtils.LOGIN_TYPE_PREFERENCE,
                 REQUEST_CODE_GOOGLE_LOGIN).commit();
 		Intent i = new Intent(InitialSettingsActivity.this, MainActivity.class);
@@ -824,7 +836,7 @@ public class InitialSettingsActivity extends FragmentActivity implements
         OkHttpHelper http_helper = new OkHttpHelper();
 
         Log.d(TAG,"########### BEFORE loginresult: " + loginresult);
-        LoginAsyncTask login_task = new LoginAsyncTask(this);
+        LoginToEbreEscoolAsyncTask login_task = new LoginToEbreEscoolAsyncTask(this);
         login_task.execute(username,md5password);
     }
 
@@ -871,8 +883,7 @@ public class InitialSettingsActivity extends FragmentActivity implements
 			if (already_have_tokens == true) {
 				Log.d(TAG,"Already have twitter tokens -> Log in!");
 
-                SharedPreferences settings =
-                        getSharedPreferences(AndroidSkeletonUtils.PREFS_NAME, 0);
+                SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
                 settings.edit().putInt( AndroidSkeletonUtils.LOGIN_TYPE_PREFERENCE,
                         REQUEST_CODE_TWITTER_LOGIN).commit();
 				Intent i = new Intent(InitialSettingsActivity.this, MainActivity.class);
@@ -901,8 +912,7 @@ public class InitialSettingsActivity extends FragmentActivity implements
 			// user already logged into twitter
 			Log.d(TAG,"Already Logged into twitter");
 
-            SharedPreferences settings =
-                    getSharedPreferences(AndroidSkeletonUtils.PREFS_NAME, 0);
+            SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
             settings.edit().putInt( AndroidSkeletonUtils.LOGIN_TYPE_PREFERENCE,
                     REQUEST_CODE_TWITTER_LOGIN).commit();
 			Intent i = new Intent(InitialSettingsActivity.this, MainActivity.class);
@@ -1038,11 +1048,11 @@ public class InitialSettingsActivity extends FragmentActivity implements
         }
     }
 
-    private class LoginAsyncTask extends AsyncTask<String, Void, LoginResultBundle> {
+    private class LoginToEbreEscoolAsyncTask extends AsyncTask<String, Void, LoginResultBundle> {
 
         private ProgressDialog dialog;
 
-        public LoginAsyncTask(InitialSettingsActivity activity) {
+        public LoginToEbreEscoolAsyncTask(InitialSettingsActivity activity) {
             dialog = new ProgressDialog(activity);
         }
 
@@ -1142,7 +1152,13 @@ public class InitialSettingsActivity extends FragmentActivity implements
                         Toast.makeText(getApplicationContext(),
                                 toast_message, duration).show();
                     } else {
+
                         Log.d(TAG,"response_code 200. LOGIN OK!");
+
+                        WizardStep fragment = (WizardStep)
+                                getSupportFragmentManager().findFragmentById(R.id.step_container);
+                        fragment.notifyCompleted();
+
                         int duration = Toast.LENGTH_LONG;
                         Toast.makeText(getApplicationContext(),
                                 R.string.login_ok_label, duration).show();
@@ -1160,9 +1176,7 @@ public class InitialSettingsActivity extends FragmentActivity implements
 
 
                         EbreEscoolLoginResponse eeresponse = null;
-
                         eeresponse = gson.fromJson(json_response, EbreEscoolLoginResponse.class);
-
 
                         //TODO: Obtain data as result of asynctask. THIS IS ONLY FOR TEST:
                         Bundle data = new Bundle();
@@ -1172,6 +1186,8 @@ public class InitialSettingsActivity extends FragmentActivity implements
                         //TODO: Get auth token form response body (GSON!)
 
                         String authtoken = eeresponse.getApiUserProfile().getAuthToken();
+
+                        Log.d(TAG,"authtoken: " + authtoken);
 
                         String userPass = result.getPassword();
                         data.putString(AccountManager.KEY_ACCOUNT_NAME, userName);

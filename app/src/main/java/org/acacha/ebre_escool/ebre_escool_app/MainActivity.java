@@ -17,6 +17,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
 
+import org.acacha.ebre_escool.ebre_escool_app.helpers.AndroidSkeletonUtils;
+import org.acacha.ebre_escool.ebre_escool_app.settings.SettingsActivity;
+
 public class MainActivity extends ActionBarActivity implements
 		NavigationDrawerFragment.NavigationDrawerCallbacks,FragmentType0.OnFragmentInteractionListener,FragmentType1.OnFragmentInteractionListener {
 
@@ -152,7 +155,7 @@ public class MainActivity extends ActionBarActivity implements
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == R.id.action_settings) {
-			return true;
+            startActivity(new Intent(this, SettingsActivity.class));
 		}
 		return super.onOptionsItemSelected(item);
 	}
