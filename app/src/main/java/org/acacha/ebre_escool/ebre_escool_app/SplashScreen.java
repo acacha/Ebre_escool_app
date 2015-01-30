@@ -38,8 +38,6 @@ public class SplashScreen extends Activity {
 
     private int timeout = DEFAULT_SPLASH_TIME_OUT;
 
-    private String auth_token = null;
-
     //Look up for shared preferences
     final String LOG_TAG = "SplashScreen";
 
@@ -89,71 +87,50 @@ public class SplashScreen extends Activity {
         }
         //END CHECK CONNECTION
 
-        //Check if splash screen execution is needed
-        //Splash screen executed always on first time or if we have to show initial settings (but smaller timeout)
+        //First of all try to get AuthToken. But first we need to know wif we have accounts and if
+        //one of these accounts are for account_name stored in shared preference.
+        // IF not continue execution
+        final Account availableAccounts[] =
+                mAccountManager.getAccountsByType(EbreEscoolAccount.ACCOUNT_TYPE);
 
-        boolean first_time = settings.getBoolean(FIRST_TIME_PREFERENCE, true);
-        boolean initial_settings_ok = check_initial_settings();
-
-        // initial_settings_ok = 1 | first_time = 0 <- MOST COMMON FIRST TO CHECK
-        if ( initial_settings_ok && (!first_time) ) {
-            Log.d(LOG_TAG, "NOT First time execution of ebre-escool app");
-            Log.d(LOG_TAG, "INITIAL_SETTINGS OK");
-            //SKIP SPLASH SCREEN AND GOT TO MAIN ACTIVITY
-            Intent i = new Intent(SplashScreen.this, MainActivity.class);
-            startActivity(i);
-            finish();
+        if (availableAccounts.length == 0) {
+            Log.d(LOG_TAG,"No accounts found at AccountManager!");
+            continue_execution(null);
+        }
+        Log.d(LOG_TAG,"Found " + availableAccounts.length + " accounts of type " + EbreEscoolAccount.ACCOUNT_TYPE);
+        //Example: String account_name = "sergitur" or sergiturbadenas@gmail.com;
+        String account_name = settings.getString(EbreEscoolAccount.ACCOUNT_NAME_KEY, "");
+        if (account_name == "") {
+            Log.d(LOG_TAG,"No account name found at SharedPreferences with key " + EbreEscoolAccount.ACCOUNT_NAME_KEY);
+            continue_execution(null);
         }
 
-        if ( (!initial_settings_ok) && first_time ) {
-            //FIRST TIME EXECUTION NO PREVIOUS DATA
-            Log.d(LOG_TAG, "First time execution of ebre-escool app");
-            Log.d(LOG_TAG, "INITIAL_SETTINGS NOT OK");
-            // record the fact that the app has been started at least once
-            settings.edit().putBoolean(FIRST_TIME_PREFERENCE, false).apply();
-            timeout = NOT_FIRST_TIME_SPLASH_TIME_OUT;
-            next_activity = InitialSettingsActivity.class;
-            wait_and_show_splash_screen(true);
+        int account_position = -1;
+        for (int i = 0; i < availableAccounts.length; i++) {
+            Log.d(LOG_TAG,"iteration: " + i);
+            Log.d(LOG_TAG,"availableAccounts[i].name: " + availableAccounts[i].name);
+            String name = availableAccounts[i].name;
+            if ( name.equals(account_name)) {
+                Log.d(LOG_TAG,"found coincidence! at position: " + i);
+                account_position = i;
+            }
         }
 
-        if ( (!initial_settings_ok) && (!first_time) ) {
-            Log.d(LOG_TAG, "NOT First time execution of ebre-escool app");
-            Log.d(LOG_TAG, "INITIAL_SETTINGS NOT OK");
-            //NOT FIRST TIME EXECUTION BUT PREVIOUS INITIAL SETTINGS NOT FINISHED OK
-            timeout = NOT_FIRST_TIME_SPLASH_TIME_OUT;
-            next_activity = InitialSettingsActivity.class;
-            wait_and_show_splash_screen(true);
+        if (account_position == -1) {
+            Log.d(LOG_TAG,"Account " + account_name + " not found!");
+            continue_execution(null);
         }
 
-        // initial_settings_ok = 1 | first_time = 1 <- It could be! Configured Account with Android Account manager but first time execution!
-        if ( initial_settings_ok && first_time ) {
-            Log.d(LOG_TAG, "First time execution of ebre-escool app");
-            Log.d(LOG_TAG, "INITIAL_SETTINGS OK");
-            // record the fact that the app has been started at least once
-            settings.edit().putBoolean(FIRST_TIME_PREFERENCE, false).apply();
-            //SHOW SPLASH SCREEN AND GOT TO MAIN ACTIVITY
-            next_activity = MainActivity.class;
-            wait_and_show_splash_screen();
-        }
-        //APP NEVER ARRIVES HERE!
+        //get AuthToken
+        //AsyncTask: We have to wait task to finish to continue execution:
+        //  See postExecute of AsyncTask
+            //future could not be used at UI thread!
+        final AccountManagerFuture<Bundle> future =
+                mAccountManager.getAuthToken(availableAccounts[account_position],
+                        EbreEscoolAccount.AUTHTOKEN_TYPE_FULL_ACCESS, null, this, null, null);
+        new GetAuthTokenAT().execute(future);
+
 	}
-
-    private boolean check_initial_settings() {
-        return check_auth_token();
-    }
-
-    private boolean check_auth_token(){
-        Log.d(LOG_TAG, "Checking if user auth_token exists");
-
-        String auth_token = getExistingAccountAuthToken(EbreEscoolAccount.AUTHTOKEN_TYPE_FULL_ACCESS);
-
-        if (auth_token!=null) {
-            Log.d(LOG_TAG, "Auth_token exists");
-            return true;
-        }
-        Log.d(LOG_TAG, "Auth_token not exists or problem retrieving it");
-        return false;
-    }
 
     private void wait_and_show_splash_screen(boolean download_initial_data) {
         if (download_initial_data) {
@@ -216,69 +193,24 @@ public class SplashScreen extends Activity {
         service.schools(callback);
     }
 
-    /**
-     * Get the auth token for an existing account on the AccountManager
-     * @param authTokenType
-     */
-    private String getExistingAccountAuthToken(String authTokenType) {
-        final Account availableAccounts[] = mAccountManager.getAccountsByType(EbreEscoolAccount.ACCOUNT_TYPE);
-
-        if (availableAccounts.length == 0) {
-            Log.d(LOG_TAG,"No accounts found at AccountManager!");
-            return null;
-        }
-        Log.d(LOG_TAG,"Found " + availableAccounts.length + " accounts of type " + EbreEscoolAccount.ACCOUNT_TYPE);
-        //Example: String account_name = "sergitur" or sergiturbadenas@gmail.com;
-        String account_name = settings.getString(EbreEscoolAccount.ACCOUNT_NAME_KEY, "");
-        if (account_name == "") {
-            Log.d(LOG_TAG,"No account name found at SharedPreferences with key " + EbreEscoolAccount.ACCOUNT_NAME_KEY);
-            return null;
-        }
-
-        int account_position = -1;
-        for (int i = 0; i < availableAccounts.length; i++) {
-            Log.d(LOG_TAG,"iteration: " + i);
-            Log.d(LOG_TAG,"availableAccounts[i].name: " + availableAccounts[i].name);
-            String name = availableAccounts[i].name;
-            if ( name.equals(account_name)) {
-                Log.d(LOG_TAG,"found coincidence! at position: " + i);
-                account_position = i;
-            }
-        }
-
-        if (account_position == -1) {
-            Log.d(LOG_TAG,"Account " + account_name + " not found!");
-            return null;
-        }
-
-
-        final AccountManagerFuture<Bundle> future =
-                mAccountManager.getAuthToken(availableAccounts[account_position],
-                        authTokenType, null, this, null, null);
-
-        (new GetAuthTokenAT(future)).execute();
-        return auth_token;
-    }
-
-    private class GetAuthTokenAT extends AsyncTask<Void, Void, String> {
-
-        private AccountManagerFuture<Bundle> future;
-
-        public GetAuthTokenAT(AccountManagerFuture<Bundle> future_param) {
-            future = future_param;
-        }
+    private class GetAuthTokenAT extends AsyncTask<AccountManagerFuture<Bundle>, Void, String> {
 
         @Override
-        protected String doInBackground(Void... args) {
+        protected String doInBackground(AccountManagerFuture<Bundle>... args) {
 
             String auth_token = null;
             try {
-                Bundle bnd = future.getResult();
+                Bundle bnd = args[0].getResult();
                 Log.d(LOG_TAG, "GetToken Bundle is " + bnd);
-                final String authtoken = bnd.getString(AccountManager.KEY_AUTHTOKEN);
-                if (authtoken != null) {
-                    return authtoken;
+                Log.d(LOG_TAG, "AccountManager.KEY_AUTHTOKEN: " + AccountManager.KEY_AUTHTOKEN);
+
+                auth_token = bnd.getString(AccountManager.KEY_AUTHTOKEN);
+                Log.d(LOG_TAG, "authtoken: " + auth_token);
+                if (auth_token != null) {
+                    Log.d(LOG_TAG, "Token obtained ok!");
+                    return auth_token;
                 } else {
+                    Log.d(LOG_TAG, "AccountManager.KEY_AUTHTOKEN: " + AccountManager.KEY_AUTHTOKEN);
                     return null;
                 }
 
@@ -292,10 +224,71 @@ public class SplashScreen extends Activity {
         }
 
         @Override
-        protected void onPostExecute(final String ret_auth_token) {
-            Log.d(LOG_TAG,"Authtoken: " + ret_auth_token);
-            auth_token = ret_auth_token;
+        protected void onPostExecute(String auth_token) {
+            Log.d(LOG_TAG,"Authtoken on onPostExecute: " + auth_token);
+            continue_execution(auth_token);
         }
+    }
+
+    private void continue_execution(String auth_token){
+        Log.d(LOG_TAG,"Authtoken: " + auth_token);
+        //Save auth_token to SharedPreferences
+
+
+        //Check if splash screen execution is needed
+        // Splash screen executed always on first time or if we have to show
+        // initial settings (but smaller timeout)
+        boolean first_time = settings.getBoolean(FIRST_TIME_PREFERENCE, true);
+
+        //Continue execution
+        boolean initial_settings_ok = false;
+
+        if (auth_token != null) {
+            initial_settings_ok = true;
+        }
+
+
+        // initial_settings_ok = 1 | first_time = 0 <- MOST COMMON FIRST TO CHECK
+        if ( initial_settings_ok && (!first_time) ) {
+            Log.d(LOG_TAG, "NOT First time execution of ebre-escool app");
+            Log.d(LOG_TAG, "INITIAL_SETTINGS OK");
+            //SKIP SPLASH SCREEN AND GOT TO MAIN ACTIVITY
+            Intent i = new Intent(SplashScreen.this, MainActivity.class);
+            startActivity(i);
+            finish();
+        }
+
+        if ( (!initial_settings_ok) && first_time ) {
+            //FIRST TIME EXECUTION NO PREVIOUS DATA
+            Log.d(LOG_TAG, "First time execution of ebre-escool app");
+            Log.d(LOG_TAG, "INITIAL_SETTINGS NOT OK");
+            // record the fact that the app has been started at least once
+            settings.edit().putBoolean(FIRST_TIME_PREFERENCE, false).apply();
+            timeout = NOT_FIRST_TIME_SPLASH_TIME_OUT;
+            next_activity = InitialSettingsActivity.class;
+            wait_and_show_splash_screen(true);
+        }
+
+        if ( (!initial_settings_ok) && (!first_time) ) {
+            Log.d(LOG_TAG, "NOT First time execution of ebre-escool app");
+            Log.d(LOG_TAG, "INITIAL_SETTINGS NOT OK");
+            //NOT FIRST TIME EXECUTION BUT PREVIOUS INITIAL SETTINGS NOT FINISHED OK
+            timeout = NOT_FIRST_TIME_SPLASH_TIME_OUT;
+            next_activity = InitialSettingsActivity.class;
+            wait_and_show_splash_screen(true);
+        }
+
+        // initial_settings_ok = 1 | first_time = 1 <- It could be! Configured Account with Android Account manager but first time execution!
+        if ( initial_settings_ok && first_time ) {
+            Log.d(LOG_TAG, "First time execution of ebre-escool app");
+            Log.d(LOG_TAG, "INITIAL_SETTINGS OK");
+            // record the fact that the app has been started at least once
+            settings.edit().putBoolean(FIRST_TIME_PREFERENCE, false).apply();
+            //SHOW SPLASH SCREEN AND GOT TO MAIN ACTIVITY
+            next_activity = MainActivity.class;
+            wait_and_show_splash_screen();
+        }
+        //APP NEVER ARRIVES HERE!
     }
 
 
