@@ -1,8 +1,10 @@
-package org.acacha.ebre_escool.ebre_escool_app;
+package org.acacha.ebre_escool.ebre_escool_app.helpers;
 
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+
+import org.acacha.ebre_escool.ebre_escool_app.R;
 
 public class AlertDialogManager {
 	/**

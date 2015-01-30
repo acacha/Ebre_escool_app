@@ -4,8 +4,12 @@
         Base application theme, dependent on API level. This theme is replaced
         by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     -->
-    <style name="AppBaseTheme" parent="Theme.AppCompat.Light">
+    <style name="AppBaseTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+
         <!--
+            Theme.AppCompat.Light
+            Theme.AppCompat.Light
+            android:theme="@android:style/Theme.Holo.Light.DarkActionBar"
             Theme customizations available in newer API levels can go in
             res/values-vXX/styles.xml, while customizations related to
             backward-compatibility can go here.
@@ -16,5 +20,28 @@
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
+
+    <!-- Base Style text -->
+
+    <style name="carddemo_extra_base_main_inner_secondarytitle">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <!--<item name="android:fontFamily">sans-serif-condensed</item>-->
+    </style>
+
+    <style name="carddemo_extra_base_main_inner_title">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:background">#404040</item>
+        <!--<item name="android:fontFamily">sans-serif-condensed</item>-->
+    </style>
+
+    <!-- EXAMPLE HOWTO CHANGE MAIN CARD STYLE -->
+    <!--
+    <style name="card.main_layout">
+        <item name="android:background">@drawable/linearlayout_bg</item>
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
+    -->
 
 </resources>

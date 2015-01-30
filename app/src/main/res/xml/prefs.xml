@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="@string/preferences_label" />
+
+    <Preference android:title="@string/preferences_sublabel" >
+        <intent android:action="org.acacha.ebre_escool.ebre_escool_app.SettingsActivity"/>
+    </Preference>
+    <PreferenceScreen
+        android:key="ebreescool_account_settings"
+        android:title="@string/preferences_sublabel"
+        android:summary="@string/preferences_sublabel_summary">
+        <intent
+            android:action="org.acacha.ebre_escool.ebre_escool_app.ACCOUNT_SETUP"
+            android:targetPackage="org.acacha.ebre_escool.ebre_escool_app"
+            android:targetClass="org.acacha.ebre_escool.ebre_escool_app.SettingsActivity" />
+    </PreferenceScreen>
+</PreferenceScreen>

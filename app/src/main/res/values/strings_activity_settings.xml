@@ -1,0 +1,53 @@
+<resources>
+    <string name="title_activity_settings">Configuració</string>
+
+    <!-- Strings related to Settings -->
+
+    <!-- Example General settings -->
+    <string name="pref_header_general">General</string>
+
+    <!--
+    <string name="pref_title_social_recommendations">Enable social recommendations</string>
+    <string name="pref_description_social_recommendations">Recommendations for people to contact
+        based on your message history
+    </string>-->
+
+    <!--
+    <string name="pref_title_display_name">Display name</string>
+    <string name="pref_default_display_name">John Smith</string>-->
+
+    <string name="pref_schools">Institut/Escola/Institució</string>
+
+    <!-- Example settings for Data & Sync -->
+    <string name="pref_header_data_sync">Dades i sincronització</string>
+
+    <string name="pref_title_sync_frequency">Freqüència de sincronització</string>
+    <string-array name="pref_sync_frequency_titles">
+        <item>15 minuts</item>
+        <item>30 minuts</item>
+        <item>1 hora</item>
+        <item>3 hores</item>
+        <item>6 hores</item>
+        <item>Mai</item>
+    </string-array>
+    <string-array name="pref_sync_frequency_values">
+        <item>15</item>
+        <item>30</item>
+        <item>60</item>
+        <item>180</item>
+        <item>360</item>
+        <item>-1</item>
+    </string-array>
+
+    <string name="pref_title_system_sync_settings">Configuració de sincronització del sistema</string>
+
+    <!-- Example settings for Notifications -->
+    <string name="pref_header_notifications">Notificacions</string>
+
+    <string name="pref_title_new_message_notifications">Activar</string>
+
+    <string name="pref_title_ringtone">Ringtone</string>
+    <string name="pref_ringtone_silent">Silent</string>
+
+    <string name="pref_title_vibrate">Vibració</string>
+</resources>

@@ -1,26 +1,35 @@
-package org.acacha.ebre_escool.ebre_escool_app;
+package org.acacha.ebre_escool.ebre_escool_app.initial_settings;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.app.Activity;
+import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 
 import com.facebook.widget.LoginButton;
 
+import org.acacha.ebre_escool.ebre_escool_app.R;
+import org.codepond.wizardroid.WizardStep;
+
 /**
  * A simple {@link Fragment} subclass. Activities that contain this fragment
  * must implement the
- * {@link LoginActivityFragment.OnFragmentInteractionListener} interface to
- * handle interaction events. Use the {@link LoginActivityFragment#newInstance}
+ * {@link InitialSettingsStep2Login.OnFragmentInteractionListener} interface to
+ * handle interaction events. Use the {@link InitialSettingsStep2Login#newInstance}
  * factory method to create an instance of this fragment.
  * 
  */
-public class LoginActivityFragment extends Fragment {
+public class InitialSettingsStep2Login extends WizardStep {
 	
 	private LoginButton loginButton;
 	
@@ -39,6 +48,10 @@ public class LoginActivityFragment extends Fragment {
 
 	private Button btnLoginTwitter;
 
+    private Button btnLoginForm;
+
+    private String[] addresses;
+
 	/**
 	 * Use this factory method to create a new instance of this fragment using
 	 * the provided parameters.
@@ -50,8 +63,8 @@ public class LoginActivityFragment extends Fragment {
 	 * @return A new instance of fragment LoginActivityFragment.
 	 */
 	// TODO: Rename and change types and number of parameters
-	public static LoginActivityFragment newInstance(String param1, String param2) {
-		LoginActivityFragment fragment = new LoginActivityFragment();
+	public static InitialSettingsStep2Login newInstance(String param1, String param2) {
+		InitialSettingsStep2Login fragment = new InitialSettingsStep2Login();
 		Bundle args = new Bundle();
 		args.putString(ARG_PARAM1, param1);
 		args.putString(ARG_PARAM2, param2);
@@ -59,7 +72,7 @@ public class LoginActivityFragment extends Fragment {
 		return fragment;
 	}
 
-	public LoginActivityFragment() {
+	public InitialSettingsStep2Login() {
 		// Required empty public constructor
 	}
 
@@ -78,6 +91,8 @@ public class LoginActivityFragment extends Fragment {
 		// Inflate the layout for this fragment
 		View view = inflater.inflate(R.layout.fragment_login_activity, container,
 				false);
+
+        Log.d("InitialSettingsStep2Login", "FRAGMENT ID: " + getId());
 		
 		btnGoogleSignIn = (Button) view.findViewById(R.id.btn_google_sign_in);
 		
@@ -89,9 +104,44 @@ public class LoginActivityFragment extends Fragment {
         
         btnLoginTwitter = (Button) view.findViewById(R.id.btn_twitter_sign_in);
 		btnLoginTwitter.setOnClickListener((OnClickListener) getActivity());
+
+        btnLoginForm = (Button) view.findViewById(R.id.btnPersonalLogin);
+        btnLoginForm.setOnClickListener((OnClickListener) getActivity());
+
+        //Autocomplete username
+        ArrayAdapter<String> adapter = this.getEmailAddressAdapter(getActivity());
+
+        AutoCompleteTextView textView = (AutoCompleteTextView) view.findViewById(R.id.username);
+
+        // Numero de caracteres necesarios para que se empiece
+        // a mostrar la lista
+        textView.setThreshold(1);
+
+        // Se establece el Adapter
+        textView.setAdapter(adapter);
+
+        String proposedValue = null;
+        for (String s: addresses)    {
+            if (s.endsWith("@iesebre.com")){
+                proposedValue = s;
+            }
+        }
+
+        if (proposedValue != null) {
+            textView.setText(proposedValue);
+        }
 		
 		return view;
 	}
+
+    private ArrayAdapter<String> getEmailAddressAdapter(Context context) {
+        Account[] accounts = AccountManager.get(context).getAccountsByType("com.google");
+        addresses = new String[accounts.length];
+        for (int i = 0; i < accounts.length; i++) {
+            addresses[i] = accounts[i].name;
+        }
+        return new ArrayAdapter<String>(context, android.R.layout.simple_dropdown_item_1line, addresses);
+    }
 
 	// TODO: Rename method, update argument and hook method into UI event
 	public void onButtonPressed(Uri uri) {

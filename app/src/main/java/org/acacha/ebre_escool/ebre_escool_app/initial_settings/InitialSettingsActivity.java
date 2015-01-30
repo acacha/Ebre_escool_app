@@ -1,6 +1,10 @@
-package org.acacha.ebre_escool.ebre_escool_app;
+package org.acacha.ebre_escool.ebre_escool_app.initial_settings;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.ConnectException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
@@ -27,7 +31,13 @@ import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
+import com.google.gson.Gson;
+import com.squareup.okhttp.ResponseBody;
 
+import android.accounts.Account;
+import android.accounts.AccountAuthenticatorResponse;
+import android.accounts.AccountManager;
+import android.app.ActionBar;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -39,19 +49,40 @@ import android.content.SharedPreferences.Editor;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-public class LoginActivity extends FragmentActivity implements 
-	OnClickListener,ConnectionCallbacks,OnConnectionFailedListener, LoginActivityFragment.OnFragmentInteractionListener {
+import org.acacha.ebre_escool.ebre_escool_app.accounts.EbreEscoolAccount;
+import org.acacha.ebre_escool.ebre_escool_app.MainActivity;
+import org.acacha.ebre_escool.ebre_escool_app.R;
+import org.acacha.ebre_escool.ebre_escool_app.helpers.ConnectionDetector;
+import org.acacha.ebre_escool.ebre_escool_app.helpers.AlertDialogManager;
+import org.acacha.ebre_escool.ebre_escool_app.helpers.AndroidSkeletonUtils;
+import org.acacha.ebre_escool.ebre_escool_app.helpers.OkHttpHelper;
+import org.codepond.wizardroid.WizardStep;
+
+
+public class InitialSettingsActivity extends FragmentActivity implements
+	OnClickListener,ConnectionCallbacks,OnConnectionFailedListener, InitialSettingsStep2Login.OnFragmentInteractionListener {
+
+    //Data for Authenticator
+    public final static String ARG_ACCOUNT_TYPE = "ACCOUNT_TYPE";
+    public final static String ARG_AUTH_TYPE = "AUTH_TYPE";
+    public final static String ARG_ACCOUNT_NAME = "ACCOUNT_NAME";
+    public final static String ARG_IS_ADDING_NEW_ACCOUNT = "IS_ADDING_ACCOUNT";
+
+    // Taken from AccountAuthenticatorActivity. We cannot extends this Activity because we are using Fragments!
+    // https://github.com/android/platform_frameworks_base/blob/master/core/java/android/accounts/AccountAuthenticatorActivity.java
+    private AccountAuthenticatorResponse mAccountAuthenticatorResponse = null;
+    private Bundle mResultBundle = null;
 	
 	// Google client to interact with Google API
 	private GoogleApiClient mGoogleApiClient;
@@ -65,16 +96,15 @@ public class LoginActivity extends FragmentActivity implements
 	// Profile pic image size in pixels
 	private static final int PROFILE_PIC_SIZE = 400;
 
-	
+
+    private static final int REQUEST_CODE_FORM_LOGIN = 90;
 	private static final int REQUEST_CODE_GOOGLE_LOGIN = 91;
 	private static final int REQUEST_CODE_FACEBOOK_LOGIN = 92;
 	private static final int REQUEST_CODE_TWITTER_LOGIN = 93;
-	/*
-	private static final int SOCIAL_LOGIN_GOOGLE = 101;
-	private static final int SOCIAL_LOGIN_FACEBOOk = 102;
-	private static final int SOCIAL_LOGIN_TWITTER = 103;
-	*/
+
 	private boolean OnStartAlreadyConnected = false;
+
+    private final Gson gson = new Gson();
 	
 	//TWITTER
 	// Constants
@@ -130,16 +160,98 @@ public class LoginActivity extends FragmentActivity implements
 
 	private SharedPreferences mSharedPreferences;
 
+    public final static String PARAM_USER_PASS = "USER_PASS";
+
+    private AccountManager mAccountManager;
+    private String mAuthTokenType;
+
+    private LoginResultBundle loginresult = new LoginResultBundle();
+
+    //////// BEGIN
+    // Taken from AccountAuthenticatorActivity. We cannot extends this Activity because we are using Fragments!
+    // https://github.com/android/platform_frameworks_base/blob/master/core/java/android/accounts/AccountAuthenticatorActivity.java
+
+    /**
+     * Set the result that is to be sent as the result of the request that caused this
+     * Activity to be launched. If result is null or this method is never called then
+     * the request will be canceled.
+     * @param result this is returned as the result of the AbstractAccountAuthenticator request
+     */
+    public final void setAccountAuthenticatorResult(Bundle result) {
+        mResultBundle = result;
+    }
+    /**
+     * Sends the result or a Constants.ERROR_CODE_CANCELED error if a result isn't present.
+     */
+    public void finish() {
+        if (mAccountAuthenticatorResponse != null) {
+            // send the result bundle back if set, otherwise send an error.
+            if (mResultBundle != null) {
+                mAccountAuthenticatorResponse.onResult(mResultBundle);
+            } else {
+                mAccountAuthenticatorResponse.onError(AccountManager.ERROR_CODE_CANCELED,
+                        "canceled");
+            }
+            mAccountAuthenticatorResponse = null;
+        }
+        super.finish();
+    }
+    //////// END
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		Log.d(TAG,"onCreate!");
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_login);
-		if (savedInstanceState == null) {
+        super.onCreate(savedInstanceState);
+
+        AndroidSkeletonUtils.debugIntent(getIntent(), "Initial Settings onCreate");
+
+        // Taken from AccountAuthenticatorActivity. We cannot extends this Activity because we are using Fragments!
+        // https://github.com/android/platform_frameworks_base/blob/master/core/java/android/accounts/AccountAuthenticatorActivity.java
+        mAccountAuthenticatorResponse =
+                getIntent().getParcelableExtra(AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE);
+
+        if (mAccountAuthenticatorResponse != null) {
+            mAccountAuthenticatorResponse.onRequestContinued();
+        }
+        ////// End Taken from AccountAuthenticatorActivity
+
+        mAccountManager = AccountManager.get(getBaseContext());
+
+        mAuthTokenType = getIntent().getStringExtra(ARG_AUTH_TYPE);
+        if (mAuthTokenType == null)
+            mAuthTokenType = EbreEscoolAccount.AUTHTOKEN_TYPE_FULL_ACCESS;
+
+        setContentView(R.layout.activity_login);
+        if (savedInstanceState == null) {
 			getSupportFragmentManager().beginTransaction()
-					.add(R.id.login_activitycontainer, new LoginActivityFragment()).commit();
+					.add(R.id.login_activitycontainer, new InitialSettingsWizard()).commit();
 		}
-		
+
+        ActionBar ab = getActionBar();
+        ab.setTitle(getString(R.string.initial_settings_action_bar_title));
+        ab.setSubtitle(getString(R.string.initial_settings_action_bar_subtitle));
+
+        Class next_activity = null;
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+
+        int login_type = 0;
+
+        //IF ALREADY HAVE AND authTOKEN --> Skip InitialSettings/Login
+        //if (settings.getBoolean(AndroidSkeletonUtils.REMEMBER_LOGIN_PREFERENCE, false)) {
+        if (true) {
+            next_activity = MainActivity.class;
+            Log.d(TAG, "We already have a token --> skip initialSettings/Login");
+
+            //Getting which type of login is done
+            //REQUEST_CODE_TWITTER_LOGIN | REQUEST_CODE_FACEBOOK_LOGIN | REQUEST_CODE_GOOGLE_LOGIN
+            login_type = settings.getInt(AndroidSkeletonUtils.LOGIN_TYPE_PREFERENCE, 0);
+        }
+
+        if (next_activity!=null) {
+            Intent i = new Intent(InitialSettingsActivity.this, MainActivity.class);
+            startActivityForResult(i, login_type);
+        }
+
 		//GOOGLE
 		mGoogleApiClient = new GoogleApiClient.Builder(this)
 		.addConnectionCallbacks(this)
@@ -154,7 +266,7 @@ public class LoginActivity extends FragmentActivity implements
         //Check if twitter keys are set
  		if(TWITTER_CONSUMER_KEY.trim().length() == 0 || TWITTER_CONSUMER_SECRET.trim().length() == 0){
  			// Internet Connection is not present
- 			alert.showAlertDialog(LoginActivity.this, "Twitter oAuth tokens", "Please set your twitter oauth tokens first!", false);
+ 			alert.showAlertDialog(InitialSettingsActivity.this, "Twitter oAuth tokens", "Please set your twitter oauth tokens first!", false);
  			// stop executing code by return
  			return;
  		}
@@ -170,7 +282,7 @@ public class LoginActivity extends FragmentActivity implements
  		cd = new ConnectionDetector(getApplicationContext());
 		if (!cd.isConnectingToInternet()) {
 			// Internet Connection is not present
-			alert.showAlertDialog(LoginActivity.this, "Internet Connection Error",
+			alert.showAlertDialog(InitialSettingsActivity.this, "Internet Connection Error",
 					"Please connect to working Internet connection", false);
 			// stop executing code by return
 			return;
@@ -210,7 +322,10 @@ public class LoginActivity extends FragmentActivity implements
 
 					Log.d("Twitter OAuth Token", "> " + accessToken.getToken());
 
-					Intent i = new Intent(LoginActivity.this, MainActivity.class);
+                    settings.edit().putInt( AndroidSkeletonUtils.LOGIN_TYPE_PREFERENCE,
+                            REQUEST_CODE_TWITTER_LOGIN).commit();
+
+					Intent i = new Intent(InitialSettingsActivity.this, MainActivity.class);
 		    		startActivityForResult(i, REQUEST_CODE_TWITTER_LOGIN);
 				} catch (Exception e) {
 					// Check log for login errors
@@ -219,6 +334,42 @@ public class LoginActivity extends FragmentActivity implements
 			}
 		}
 	}
+
+    private void finishLogin(Intent intent) {
+        Log.d("Ebreescool", TAG + "> finishLogin");
+
+        String accountName = intent.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
+        String accountPassword = intent.getStringExtra(PARAM_USER_PASS);
+        final Account account = new Account(accountName, intent.getStringExtra(AccountManager.KEY_ACCOUNT_TYPE));
+
+        if (getIntent().getBooleanExtra(ARG_IS_ADDING_NEW_ACCOUNT, false)) {
+            Log.d("Ebreescool", TAG + "> finishLogin > addAccountExplicitly");
+            AndroidSkeletonUtils.debugIntent(intent,"finishLogin Intent");
+            String authtoken = intent.getStringExtra(AccountManager.KEY_AUTHTOKEN);
+            String authtokenType = mAuthTokenType;
+
+            // Creating the account on the device and setting the auth token we got
+            // (Not setting the auth token will cause another call to the server to authenticate the user)
+            //TODO Change null with a Bundle with extra data if necessary or use setUserData()
+            mAccountManager.addAccountExplicitly(account, accountPassword, null);
+            mAccountManager.setAuthToken(account, authtokenType, authtoken);
+        } else {
+            /*
+            Existing account with an invalidated auth-token – in this case,
+            we already have a record on the AccountManager.
+            The new auth-token will replace the old one without any action by you, but if the user
+            had changed his password for that, you need to update the AccountManager with the new
+            password too.
+             */
+            Log.d("Ebreescool", TAG + "> finishLogin > setPassword");
+            mAccountManager.setPassword(account, accountPassword);
+        }
+
+        setAccountAuthenticatorResult(intent.getExtras());
+        setResult(RESULT_OK, intent);
+
+        //finish();
+    }
 	
 	private void onSessionStateChange(Session session, SessionState state, Exception exception) {
 		Log.d(TAG,"onSessionStateChange!");
@@ -233,7 +384,10 @@ public class LoginActivity extends FragmentActivity implements
             // OPENED_TOKEN_UPDATED state, the selection fragment should already be showing.
             if (state.equals(SessionState.OPENED)) {
             	Log.d(TAG,"onSessionStateChange: Logged to facebook");
-            	Intent i = new Intent(LoginActivity.this, MainActivity.class);
+                SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+                settings.edit().putInt( AndroidSkeletonUtils.LOGIN_TYPE_PREFERENCE,
+                        REQUEST_CODE_FACEBOOK_LOGIN).commit();
+            	Intent i = new Intent(InitialSettingsActivity.this, MainActivity.class);
         		startActivityForResult(i, REQUEST_CODE_FACEBOOK_LOGIN);
             } else if (state.isClosed()) {
                 //NO logged to facebook
@@ -275,7 +429,11 @@ public class LoginActivity extends FragmentActivity implements
             
         	//Login ok
         	Log.d(TAG,"Login to facebook Ok!");
-        	Intent i = new Intent(LoginActivity.this, MainActivity.class);
+
+            SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+            settings.edit().putInt( AndroidSkeletonUtils.LOGIN_TYPE_PREFERENCE,
+                    REQUEST_CODE_FACEBOOK_LOGIN).commit();
+        	Intent i = new Intent(InitialSettingsActivity.this, MainActivity.class);
     		startActivityForResult(i, REQUEST_CODE_FACEBOOK_LOGIN);
         	
             //userSkippedLogin = false;
@@ -363,7 +521,7 @@ public class LoginActivity extends FragmentActivity implements
 					Log.d(TAG, "LOGOUT and also revoke!...");
 					Log.d(TAG, "First revoke...");
 					progressDialog = ProgressDialog.show(
-				            LoginActivity.this, "", "Revocant permisos...", true);
+				            InitialSettingsActivity.this, "", "Revocant permisos...", true);
 					new Request(
 							   session,
 							    "/me/permissions",
@@ -491,6 +649,10 @@ public class LoginActivity extends FragmentActivity implements
 			// Signin with Twitter button clicked
 			loginToTwitter();
 			break;
+        case R.id.btnPersonalLogin:
+                // Signin with Login Form
+                loginToEbreEscool(v);
+                break;
 		}
 	}
 	
@@ -519,7 +681,10 @@ public class LoginActivity extends FragmentActivity implements
 		// Get user's information
 		getProfileInformation();
 
-		Intent i = new Intent(LoginActivity.this, MainActivity.class);
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+        settings.edit().putInt( AndroidSkeletonUtils.LOGIN_TYPE_PREFERENCE,
+                REQUEST_CODE_GOOGLE_LOGIN).commit();
+		Intent i = new Intent(InitialSettingsActivity.this, MainActivity.class);
 		startActivityForResult(i, REQUEST_CODE_GOOGLE_LOGIN);
 		
 		// Update the UI after signin
@@ -650,8 +815,60 @@ public class LoginActivity extends FragmentActivity implements
 		// return twitter login status from Shared Preferences
 		return mSharedPreferences.getBoolean(PREF_KEY_TWITTER_LOGIN, false);
 	}
-	
-	
+
+    /**
+     * Login to ebre_escool
+     *
+     */
+    private void loginToEbreEscool(View v) {
+        //TODO: Connect to ebre_escool api log login
+
+        String username = ((EditText) findViewById(R.id.username)).getText().toString();
+        String password = ((EditText) findViewById(R.id.password)).getText().toString();
+        String md5password = computeMD5Hash(password);
+
+        //DEBUG
+        Log.d(TAG,"username: " + username);
+        //Log.d(TAG,"password: " + password);
+        //Log.d(TAG,"MD5 password: " + md5password);
+
+        //HTTP POST TO ebreescoollogin
+        OkHttpHelper http_helper = new OkHttpHelper();
+
+        Log.d(TAG,"########### BEFORE loginresult: " + loginresult);
+        LoginToEbreEscoolAsyncTask login_task = new LoginToEbreEscoolAsyncTask(this);
+        login_task.execute(username,md5password);
+    }
+
+    public String computeMD5Hash(String password){
+
+        StringBuffer MD5Hash = new StringBuffer();
+
+        try {
+            // Create MD5 Hash
+            MessageDigest digest = java.security.MessageDigest.getInstance("MD5");
+            digest.update(password.getBytes());
+            byte messageDigest[] = digest.digest();
+
+
+            for (int i = 0; i < messageDigest.length; i++)
+            {
+                String h = Integer.toHexString(0xFF & messageDigest[i]);
+                while (h.length() < 2)
+                    h = "0" + h;
+                MD5Hash.append(h);
+            }
+
+
+
+        }
+        catch (NoSuchAlgorithmException e)
+        {
+            e.printStackTrace();
+        }
+
+        return MD5Hash.toString();
+    }
 	
 	/**
 	 * Function to login twitter
@@ -665,7 +882,11 @@ public class LoginActivity extends FragmentActivity implements
 			boolean already_have_tokens = already_have_twitter_tokens();
 			if (already_have_tokens == true) {
 				Log.d(TAG,"Already have twitter tokens -> Log in!");
-				Intent i = new Intent(LoginActivity.this, MainActivity.class);
+
+                SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+                settings.edit().putInt( AndroidSkeletonUtils.LOGIN_TYPE_PREFERENCE,
+                        REQUEST_CODE_TWITTER_LOGIN).commit();
+				Intent i = new Intent(InitialSettingsActivity.this, MainActivity.class);
 	    		startActivityForResult(i, REQUEST_CODE_TWITTER_LOGIN);
 			} else {
 				Log.d(TAG,"Starting twitter external auth!");
@@ -691,7 +912,10 @@ public class LoginActivity extends FragmentActivity implements
 			// user already logged into twitter
 			Log.d(TAG,"Already Logged into twitter");
 
-			Intent i = new Intent(LoginActivity.this, MainActivity.class);
+            SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+            settings.edit().putInt( AndroidSkeletonUtils.LOGIN_TYPE_PREFERENCE,
+                    REQUEST_CODE_TWITTER_LOGIN).commit();
+			Intent i = new Intent(InitialSettingsActivity.this, MainActivity.class);
     		startActivityForResult(i, REQUEST_CODE_TWITTER_LOGIN);
 		}
 	}
@@ -727,4 +951,264 @@ public class LoginActivity extends FragmentActivity implements
 		e.remove(PREF_KEY_TWITTER_LOGIN);
 		e.commit();
 	}
+
+    private class LoginResultBundle {
+
+        public static final int ERROR_TYPE_CONNECT_EXCEPTION = -1;
+
+        public static final int ERROR_TYPE_IO_EXCEPTION = -2;
+
+        private String login_api_url = OkHttpHelper.LOGIN_API_URL;
+
+        private String realm = OkHttpHelper.DEFAULT_REALM;
+
+        private String username = "";
+
+        private String password = "";
+
+        private boolean result_ok;
+
+        private int error_type = 0;
+
+        private String error_message;
+
+        private com.squareup.okhttp.Response response;
+
+        public int getError_type() {
+            return error_type;
+        }
+
+        public void setError_type(int error_type) {
+            this.error_type = error_type;
+        }
+
+        public String getLogin_api_url() {
+            return login_api_url;
+        }
+
+        public void setLogin_api_url(String login_api_url) {
+            this.login_api_url = login_api_url;
+        }
+
+        public String getError_message() {
+            return error_message;
+        }
+
+        public void setError_message(String error_message) {
+            this.error_message = error_message;
+        }
+
+        public boolean isResult_ok() {
+            return result_ok;
+        }
+
+        public void setResult_ok(boolean result_ok) {
+            this.result_ok = result_ok;
+        }
+        public String getRealm() {
+            return realm;
+        }
+
+        public void setRealm(String realm) {
+            this.realm = realm;
+        }
+
+        public String getUsername() {
+            return username;
+        }
+
+        public void setUsername(String username) {
+            this.username = username;
+        }
+
+        public String getPassword() {
+            return password;
+        }
+
+        public void setPassword(String password) {
+            this.password = password;
+        }
+
+        @Override
+        public String toString() {
+            String result = "username: " + this.getUsername() + " | " +
+                    "realm: " + this.getRealm() + " | " +
+                    "error_type: " + this.getError_type() + " | " +
+                    "error_message: " + this.getError_message() + " | " +
+                    "response: " + this.getResponse();
+            return result;
+        }
+
+        public com.squareup.okhttp.Response getResponse() {
+            return response;
+        }
+
+        public void setResponse(com.squareup.okhttp.Response response) {
+            this.response = response;
+        }
+    }
+
+    private class LoginToEbreEscoolAsyncTask extends AsyncTask<String, Void, LoginResultBundle> {
+
+        private ProgressDialog dialog;
+
+        public LoginToEbreEscoolAsyncTask(InitialSettingsActivity activity) {
+            dialog = new ProgressDialog(activity);
+        }
+
+        /** progress dialog to show user that the backup is processing. */
+        /** application context. */
+        @Override
+        protected void onPreExecute() {
+            this.dialog.setMessage("Validating login");
+            this.dialog.show();
+        }
+
+        @Override
+        protected LoginResultBundle doInBackground(final String... args) {
+
+            //HTTP POST TO ebreescoollogin
+            OkHttpHelper http_helper = new OkHttpHelper();
+
+            String login_api_url = OkHttpHelper.LOGIN_API_URL;
+            String realm = OkHttpHelper.DEFAULT_REALM;
+
+            String username = args[0];
+            String password = args[1];
+
+            com.squareup.okhttp.Response response = null;
+            String error_message ="";
+            LoginResultBundle result_bundle = new LoginResultBundle();
+            result_bundle.setResult_ok(true);
+            result_bundle.setLogin_api_url(login_api_url);
+            result_bundle.setUsername(username);
+            result_bundle.setPassword(password);
+            result_bundle.setRealm(realm);
+            result_bundle.setResult_ok(true);
+
+            try {
+                response = http_helper.login_ebreescool(login_api_url,username,password,realm);
+            } catch (ConnectException ce) {
+                error_message = ce.getLocalizedMessage();
+                result_bundle.setResult_ok(false);
+                result_bundle.setError_type(LoginResultBundle.ERROR_TYPE_CONNECT_EXCEPTION);
+                ce.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+                error_message = e.getLocalizedMessage();
+                result_bundle.setResult_ok(false);
+                result_bundle.setError_type(LoginResultBundle.ERROR_TYPE_IO_EXCEPTION);
+            }
+
+            Log.d(TAG,"Response: " + response);
+            result_bundle.setError_message(error_message);
+            result_bundle.setResponse(response);
+            if (error_message!=""){
+                Log.d(TAG,"Error message: " + error_message);
+            }
+            return result_bundle;
+
+        }
+
+        @Override
+        protected void onPostExecute(final LoginResultBundle result) {
+            Log.d(TAG,"LoginResultBundle: " + result);
+            if (dialog.isShowing()) {
+                dialog.dismiss();
+            }
+
+            loginresult = result;
+
+            if (result.isResult_ok()) {
+                Log.d(TAG,"RESULT IS OK!");
+                com.squareup.okhttp.Response response = result.getResponse();
+                int response_code = 0;
+
+                if (response!= null) {
+                    response_code = response.code();
+                    Log.d(TAG,"Response: " + response.toString());
+                }
+
+                Log.d(TAG,"response_code: " + response_code);
+
+                if (response_code!=0) {
+                    Log.d(TAG,"response_code not zero");
+                    if (response_code != 200) {
+                        Log.d(TAG,"response_code not 200");
+                        //RESPONSE OBTAINED OK BUT NOT EXPECTED RESULT CODE
+                        String toast_message = result.getError_message();
+                        if (response_code == 404) {
+                            //User not found
+                            Log.d(TAG,"response_code 404. User not found");
+                            toast_message = getString(R.string.user_not_found_label);
+                        }
+                        if (response_code == 400) {
+                            //Password incorrect
+                            Log.d(TAG,"response_code 400. Password incorrect!");
+                            toast_message = getString(R.string.password_incorrect_label);
+                        }
+
+                        int duration = Toast.LENGTH_LONG;
+                        Toast.makeText(getApplicationContext(),
+                                toast_message, duration).show();
+                    } else {
+
+                        Log.d(TAG,"response_code 200. LOGIN OK!");
+
+                        WizardStep fragment = (WizardStep)
+                                getSupportFragmentManager().findFragmentById(R.id.step_container);
+                        fragment.notifyCompleted();
+
+                        int duration = Toast.LENGTH_LONG;
+                        Toast.makeText(getApplicationContext(),
+                                R.string.login_ok_label, duration).show();
+                        //LOGIN OK
+
+                        ResponseBody body = response.body();
+                        String json_response = null;
+                        try {
+                            json_response = body.string();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                        Log.d(TAG,"response body: " + json_response);
+
+
+                        EbreEscoolLoginResponse eeresponse = null;
+                        eeresponse = gson.fromJson(json_response, EbreEscoolLoginResponse.class);
+
+                        //TODO: Obtain data as result of asynctask. THIS IS ONLY FOR TEST:
+                        Bundle data = new Bundle();
+                        String userName = result.getUsername();
+                        String accountType = EbreEscoolAccount.ACCOUNT_TYPE;
+
+                        //TODO: Get auth token form response body (GSON!)
+
+                        String authtoken = eeresponse.getApiUserProfile().getAuthToken();
+
+                        Log.d(TAG,"authtoken: " + authtoken);
+
+                        String userPass = result.getPassword();
+                        data.putString(AccountManager.KEY_ACCOUNT_NAME, userName);
+                        data.putString(AccountManager.KEY_ACCOUNT_TYPE, accountType);
+                        data.putString(AccountManager.KEY_AUTHTOKEN, authtoken);
+                        data.putString(PARAM_USER_PASS, userPass);
+
+                        final Intent res = new Intent();
+                        res.putExtras(data);
+
+                        finishLogin(res);
+                    }
+                }
+            } else {
+                int duration = Toast.LENGTH_LONG;
+                Toast.makeText(getApplicationContext(),
+                        result.getError_message(), duration).show();
+            }
+        }
+    }
 }
+
+
+
