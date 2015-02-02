@@ -92,7 +92,11 @@
         <activity
             android:name=".settings.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:theme="@android:style/Theme.Holo.Light.DarkActionBar">
+            android:theme="@android:style/Theme.Holo.Light.DarkActionBar" >
+        </activity>
+        <activity
+            android:name=".managment.ManagmentActivity"
+            android:label="@string/title_activity_managment" >
         </activity>
     </application>
 
