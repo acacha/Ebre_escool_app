@@ -11,17 +11,19 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.google.gson.Gson;
+import com.squareup.okhttp.ResponseBody;
 
-import org.acacha.ebre_escool.ebre_escool_app.accounts.EbreEscoolAccount;
+import org.acacha.ebre_escool.ebre_escool_app.initial_settings.EbreEscoolLoginResponse;
 import org.acacha.ebre_escool.ebre_escool_app.initial_settings.InitialSettingsActivity;
 
+import java.io.IOException;
+
 import static android.accounts.AccountManager.KEY_BOOLEAN_RESULT;
+import static org.acacha.ebre_escool.ebre_escool_app.accounts.EbreEscoolAccount.*;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Udini
- * Date: 19/03/13
- * Time: 18:58
+ * Sergi Tur Badenas
  */
 public class EbreEscoolAuthenticator extends AbstractAccountAuthenticator {
 
@@ -78,7 +80,26 @@ public class EbreEscoolAuthenticator extends AbstractAccountAuthenticator {
             if (password != null) {
                 try {
                     Log.d("Ebreescool", TAG + "> re-authenticating with the existing password");
-                    //authToken = sServerAuthenticate.userSignIn(account.name, password, authTokenType);
+                    Log.d("Ebreescool", TAG + "> Account name: " + account.name);
+                    Log.d("Ebreescool", TAG + "> Password: " + password);
+
+                    com.squareup.okhttp.Response ebre_escool_response =
+                            sServerAuthenticate.userSignIn(account.name, password, authTokenType);
+
+                    ResponseBody body = ebre_escool_response.body();
+                    String json_response = null;
+                    try {
+                        json_response = body.string();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Log.d(TAG,"response body: " + json_response);
+                    EbreEscoolLoginResponse eeresponse = null;
+                    Gson gson = new Gson();
+                    eeresponse = gson.fromJson(json_response, EbreEscoolLoginResponse.class);
+
+                    authToken = eeresponse.getApiUserProfile().getAuthToken();;
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

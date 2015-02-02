@@ -1,11 +1,7 @@
 package org.acacha.ebre_escool.ebre_escool_app.accounts;
 
-import android.accounts.Account;
-import android.accounts.AccountManager;
-import android.accounts.AccountManagerFuture;
-import android.content.Context;
-import android.os.Bundle;
-import android.util.Log;
+import org.acacha.ebre_escool.ebre_escool_app.apis.EbreEscoolServerAuthenticate;
+import org.acacha.ebre_escool.ebre_escool_app.apis.ServerAuthenticate;
 
 /**
  * Created with IntelliJ IDEA.
@@ -34,6 +30,6 @@ public class EbreEscoolAccount {
     public static final String AUTHTOKEN_TYPE_FULL_ACCESS = "Full access";
     public static final String AUTHTOKEN_TYPE_FULL_ACCESS_LABEL = "Full access to an EbreEscool account";
 
-    //public static final ServerAuthenticate sServerAuthenticate = new ParseComServerAuthenticate();
+    public static final ServerAuthenticate sServerAuthenticate = new EbreEscoolServerAuthenticate();
 
 }

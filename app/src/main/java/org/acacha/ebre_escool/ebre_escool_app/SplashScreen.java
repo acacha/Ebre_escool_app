@@ -199,6 +199,7 @@ public class SplashScreen extends Activity {
                 String schools_list_json = gson.toJson(schools.values().toArray());
                 settings.edit().putString("schools_map", schools_json).apply();
                 settings.edit().putString("schools_list", schools_list_json).apply();
+
             }
             @Override
             public void failure(RetrofitError retrofitError) {

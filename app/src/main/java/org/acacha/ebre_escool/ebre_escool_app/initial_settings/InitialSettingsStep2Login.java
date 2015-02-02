@@ -60,6 +60,8 @@ public class InitialSettingsStep2Login extends WizardStep {
 
     private String[] addresses;
 
+    private School[] mSchools;
+
     //settings
     private SharedPreferences settings;
 
@@ -83,7 +85,15 @@ public class InitialSettingsStep2Login extends WizardStep {
 		return fragment;
 	}
 
-	public InitialSettingsStep2Login() {
+    public School[] getSchools() {
+        return mSchools;
+    }
+
+    public void setmSchools(School[] mSchools) {
+        this.mSchools = mSchools;
+    }
+
+    public InitialSettingsStep2Login() {
 		// Required empty public constructor
 	}
 
@@ -143,7 +153,7 @@ public class InitialSettingsStep2Login extends WizardStep {
         Log.d(LOG_TAG,"###### json_schools_list: " + json_schools_list);
 
         Gson gson = new Gson();
-        School[] mSchools = gson.fromJson(json_schools_list, School[].class);
+        setmSchools(gson.fromJson(json_schools_list, School[].class));
 
         String current_selected_school =
                 settings.getString(SettingsActivity.SCHOOLS_LIST_KEY,"0");
@@ -154,7 +164,7 @@ public class InitialSettingsStep2Login extends WizardStep {
 
         try {
             school_dns_domain_name =
-                    mSchools[Integer.parseInt(current_selected_school)].getSchool_dns_domain();
+                    getSchools()[Integer.parseInt(current_selected_school)].getSchool_dns_domain();
         } catch (Exception e) {
             e.printStackTrace();
         }
