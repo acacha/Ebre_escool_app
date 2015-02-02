@@ -49,6 +49,10 @@ public class SettingsActivity extends PreferenceActivity {
      */
     private static final boolean ALWAYS_SIMPLE_PREFS = false;
 
+    public static final String SCHOOLS_LIST_KEY = "school";
+
+    public static final String ACCOUNT_NAME_KEY = "account_name";
+
     //settings
     private SharedPreferences settings;
 
@@ -95,7 +99,7 @@ public class SettingsActivity extends PreferenceActivity {
         // Bind the summaries of EditText/List/Dialog/Ringtone preferences to
         // their values. When their values change, their summaries are updated
         // to reflect the new value, per the Android Design guidelines.
-        bindPreferenceSummaryToValue(findPreference("account_name"));
+        bindPreferenceSummaryToValue(findPreference(SettingsActivity.ACCOUNT_NAME_KEY));
         bindPreferenceSummaryToValue(findPreference("notifications_new_message_ringtone"));
         bindPreferenceSummaryToValue(findPreference("sync_frequency"));
 
@@ -106,15 +110,16 @@ public class SettingsActivity extends PreferenceActivity {
         Gson gson = new Gson();
         School[] mSchools = gson.fromJson(json_schools_list, School[].class);
 
-        ListPreference listPreferenceSchools = (ListPreference) findPreference("school");
+        ListPreference listPreferenceSchools = (ListPreference) findPreference(
+                SettingsActivity.SCHOOLS_LIST_KEY);
         if (listPreferenceSchools != null) {
             ArrayList<School> schoolList = new ArrayList<School>(Arrays.asList(mSchools));
 
             CharSequence entries[] = new String[schoolList.size()];
             CharSequence entryValues[] = new String[schoolList.size()];
             int i = 0;
-            for (School category : schoolList) {
-                entries[i] = category.getFullname();
+            for (School school : schoolList) {
+                entries[i] = school.getFullname();
                 entryValues[i] = Integer.toString(i);
                 i++;
             }
@@ -122,7 +127,7 @@ public class SettingsActivity extends PreferenceActivity {
             listPreferenceSchools.setEntryValues(entryValues);
         }
 
-        bindPreferenceSummaryToValue(findPreference("school"));
+        bindPreferenceSummaryToValue(findPreference(SettingsActivity.SCHOOLS_LIST_KEY));
 
     }
 
@@ -255,8 +260,8 @@ public class SettingsActivity extends PreferenceActivity {
             // to their values. When their values change, their summaries are
             // updated to reflect the new value, per the Android Design
             // guidelines.
-            bindPreferenceSummaryToValue(findPreference("account_name"));
-            bindPreferenceSummaryToValue(findPreference("school"));
+            bindPreferenceSummaryToValue(findPreference(SettingsActivity.ACCOUNT_NAME_KEY));
+            bindPreferenceSummaryToValue(findPreference(SettingsActivity.SCHOOLS_LIST_KEY));
         }
     }
 
