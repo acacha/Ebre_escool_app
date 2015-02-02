@@ -188,6 +188,7 @@ public class SplashScreen extends Activity {
                 .setEndpoint(EbreEscoolAPI.EBRE_ESCOOL_PUBLIC_API_URL)
                 .build();
 
+
         EbreEscoolApiService service = restAdapter.create(EbreEscoolApiService.class);
 
         Callback callback = new Callback<Map<String, School>>() {
@@ -228,7 +229,7 @@ public class SplashScreen extends Activity {
             return null;
         }
         Log.d(LOG_TAG,"Found " + availableAccounts.length + " accounts of type " + EbreEscoolAccount.ACCOUNT_TYPE);
-        //Example: String account_name = "sergitur" or sergiturbadenas@gmail.com;
+       
         String account_name = settings.getString(EbreEscoolAccount.ACCOUNT_NAME_KEY, "");
         if (account_name == "") {
             Log.d(LOG_TAG,"No account name found at SharedPreferences with key " + EbreEscoolAccount.ACCOUNT_NAME_KEY);
