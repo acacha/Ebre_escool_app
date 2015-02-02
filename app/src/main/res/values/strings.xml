@@ -75,6 +75,9 @@
     <string name="password_incorrect_label">Password incorrecte!</string>
     <string name="login_ok_label">Login correcte!</string>
 
+    <string name="internet_connection_error_title">Error de connexió a Internet!</string>
+    <string name="internet_connection_error_label">Si us plau activeu la connexió a Internet abans de continuar</string>
 
+    <string name="action_initial_settings_wizard">Configuració inicial</string>
 
 </resources>

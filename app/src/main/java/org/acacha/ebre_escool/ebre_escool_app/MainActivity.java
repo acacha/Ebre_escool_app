@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
 
 import org.acacha.ebre_escool.ebre_escool_app.helpers.AndroidSkeletonUtils;
+import org.acacha.ebre_escool.ebre_escool_app.initial_settings.InitialSettingsActivity;
 import org.acacha.ebre_escool.ebre_escool_app.settings.SettingsActivity;
 
 public class MainActivity extends ActionBarActivity implements
@@ -157,6 +158,9 @@ public class MainActivity extends ActionBarActivity implements
 		if (id == R.id.action_settings) {
             startActivity(new Intent(this, SettingsActivity.class));
 		}
+        if (id == R.id.initial_settings_wizard) {
+            startActivity(new Intent(this, InitialSettingsActivity.class));
+        }
 		return super.onOptionsItemSelected(item);
 	}
 

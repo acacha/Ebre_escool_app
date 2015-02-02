@@ -63,11 +63,16 @@ import android.widget.Toast;
 import org.acacha.ebre_escool.ebre_escool_app.accounts.EbreEscoolAccount;
 import org.acacha.ebre_escool.ebre_escool_app.MainActivity;
 import org.acacha.ebre_escool.ebre_escool_app.R;
+import org.acacha.ebre_escool.ebre_escool_app.apis.EbreEscoolServerAuthenticate;
 import org.acacha.ebre_escool.ebre_escool_app.helpers.ConnectionDetector;
 import org.acacha.ebre_escool.ebre_escool_app.helpers.AlertDialogManager;
 import org.acacha.ebre_escool.ebre_escool_app.helpers.AndroidSkeletonUtils;
 import org.acacha.ebre_escool.ebre_escool_app.helpers.OkHttpHelper;
+import org.acacha.ebre_escool.ebre_escool_app.pojos.School;
+import org.acacha.ebre_escool.ebre_escool_app.settings.SettingsActivity;
 import org.codepond.wizardroid.WizardStep;
+
+import static org.acacha.ebre_escool.ebre_escool_app.accounts.EbreEscoolAccount.sServerAuthenticate;
 
 
 public class InitialSettingsActivity extends FragmentActivity implements
@@ -160,6 +165,8 @@ public class InitialSettingsActivity extends FragmentActivity implements
 
 	private SharedPreferences mSharedPreferences;
 
+    private SharedPreferences mSettings;
+
     public final static String PARAM_USER_PASS = "USER_PASS";
 
     private AccountManager mAccountManager;
@@ -203,6 +210,17 @@ public class InitialSettingsActivity extends FragmentActivity implements
 		Log.d(TAG,"onCreate!");
         super.onCreate(savedInstanceState);
 
+        // ReCheck if Internet present
+        cd = new ConnectionDetector(getApplicationContext());
+        if (!cd.isConnectingToInternet()) {
+            // Internet Connection is not present
+            alert.showAlertDialog(InitialSettingsActivity.this, getString(R.string.internet_connection_error_title),
+                    getString(R.string.internet_connection_error_label), false);
+            // stop executing code by return
+            return;
+        }
+
+        //Uncomment for debug:
         AndroidSkeletonUtils.debugIntent(getIntent(), "Initial Settings onCreate");
 
         // Taken from AccountAuthenticatorActivity. We cannot extends this Activity because we are using Fragments!
@@ -232,27 +250,9 @@ public class InitialSettingsActivity extends FragmentActivity implements
         ab.setSubtitle(getString(R.string.initial_settings_action_bar_subtitle));
 
         Class next_activity = null;
-        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+        mSettings = PreferenceManager.getDefaultSharedPreferences(this);
 
-        int login_type = 0;
-
-        //IF ALREADY HAVE AND authTOKEN --> Skip InitialSettings/Login
-        //if (settings.getBoolean(AndroidSkeletonUtils.REMEMBER_LOGIN_PREFERENCE, false)) {
-        if (true) {
-            next_activity = MainActivity.class;
-            Log.d(TAG, "We already have a token --> skip initialSettings/Login");
-
-            //Getting which type of login is done
-            //REQUEST_CODE_TWITTER_LOGIN | REQUEST_CODE_FACEBOOK_LOGIN | REQUEST_CODE_GOOGLE_LOGIN
-            login_type = settings.getInt(AndroidSkeletonUtils.LOGIN_TYPE_PREFERENCE, 0);
-        }
-
-        if (next_activity!=null) {
-            Intent i = new Intent(InitialSettingsActivity.this, MainActivity.class);
-            startActivityForResult(i, login_type);
-        }
-
-		//GOOGLE
+       	//GOOGLE
 		mGoogleApiClient = new GoogleApiClient.Builder(this)
 		.addConnectionCallbacks(this)
 		.addOnConnectionFailedListener(this).addApi(Plus.API)
@@ -271,22 +271,14 @@ public class InitialSettingsActivity extends FragmentActivity implements
  			return;
  		}
  		
- 		//TODO: please us threads correctly!
+ 		//TODO: please use threads correctly for twitter!!
  		if (android.os.Build.VERSION.SDK_INT > 9) {
 			StrictMode.ThreadPolicy policy =
 			new StrictMode.ThreadPolicy.Builder().permitAll().build();
 			StrictMode.setThreadPolicy(policy);
 		}
  		
- 		// Check if Internet present
- 		cd = new ConnectionDetector(getApplicationContext());
-		if (!cd.isConnectingToInternet()) {
-			// Internet Connection is not present
-			alert.showAlertDialog(InitialSettingsActivity.this, "Internet Connection Error",
-					"Please connect to working Internet connection", false);
-			// stop executing code by return
-			return;
-		}
+
 		
 		// Shared Preferences
 		mSharedPreferences = getApplicationContext().getSharedPreferences(
@@ -322,8 +314,8 @@ public class InitialSettingsActivity extends FragmentActivity implements
 
 					Log.d("Twitter OAuth Token", "> " + accessToken.getToken());
 
-                    settings.edit().putInt( AndroidSkeletonUtils.LOGIN_TYPE_PREFERENCE,
-                            REQUEST_CODE_TWITTER_LOGIN).commit();
+                    mSettings.edit().putInt( AndroidSkeletonUtils.LOGIN_TYPE_PREFERENCE,
+                            REQUEST_CODE_TWITTER_LOGIN).apply();
 
 					Intent i = new Intent(InitialSettingsActivity.this, MainActivity.class);
 		    		startActivityForResult(i, REQUEST_CODE_TWITTER_LOGIN);
@@ -958,10 +950,6 @@ public class InitialSettingsActivity extends FragmentActivity implements
 
         public static final int ERROR_TYPE_IO_EXCEPTION = -2;
 
-        private String login_api_url = OkHttpHelper.LOGIN_API_URL;
-
-        private String realm = OkHttpHelper.DEFAULT_REALM;
-
         private String username = "";
 
         private String password = "";
@@ -974,20 +962,15 @@ public class InitialSettingsActivity extends FragmentActivity implements
 
         private com.squareup.okhttp.Response response;
 
+        //settings
+        private SharedPreferences settings;
+
         public int getError_type() {
             return error_type;
         }
 
         public void setError_type(int error_type) {
             this.error_type = error_type;
-        }
-
-        public String getLogin_api_url() {
-            return login_api_url;
-        }
-
-        public void setLogin_api_url(String login_api_url) {
-            this.login_api_url = login_api_url;
         }
 
         public String getError_message() {
@@ -1004,13 +987,6 @@ public class InitialSettingsActivity extends FragmentActivity implements
 
         public void setResult_ok(boolean result_ok) {
             this.result_ok = result_ok;
-        }
-        public String getRealm() {
-            return realm;
-        }
-
-        public void setRealm(String realm) {
-            this.realm = realm;
         }
 
         public String getUsername() {
@@ -1032,7 +1008,6 @@ public class InitialSettingsActivity extends FragmentActivity implements
         @Override
         public String toString() {
             String result = "username: " + this.getUsername() + " | " +
-                    "realm: " + this.getRealm() + " | " +
                     "error_type: " + this.getError_type() + " | " +
                     "error_message: " + this.getError_message() + " | " +
                     "response: " + this.getResponse();
@@ -1067,12 +1042,6 @@ public class InitialSettingsActivity extends FragmentActivity implements
         @Override
         protected LoginResultBundle doInBackground(final String... args) {
 
-            //HTTP POST TO ebreescoollogin
-            OkHttpHelper http_helper = new OkHttpHelper();
-
-            String login_api_url = OkHttpHelper.LOGIN_API_URL;
-            String realm = OkHttpHelper.DEFAULT_REALM;
-
             String username = args[0];
             String password = args[1];
 
@@ -1080,20 +1049,54 @@ public class InitialSettingsActivity extends FragmentActivity implements
             String error_message ="";
             LoginResultBundle result_bundle = new LoginResultBundle();
             result_bundle.setResult_ok(true);
-            result_bundle.setLogin_api_url(login_api_url);
             result_bundle.setUsername(username);
             result_bundle.setPassword(password);
-            result_bundle.setRealm(realm);
             result_bundle.setResult_ok(true);
 
+            //HTTP POST TO ebreescoollogin
+            EbreEscoolServerAuthenticate eeSA = new EbreEscoolServerAuthenticate();
+
+            //GET LOGIN URL FROM SCHOOLS LIST --> SELECTED SCHOOL -> login_api_url
+            //Get account name from shared preferences settings
+            mSettings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
+            //Retrieve schools on JSON format To obtain selected schools
+            String json_schools_list = mSettings.getString("schools_list", "");
+            Log.d(TAG,"###### json_schools_list: " + json_schools_list);
+
+            Gson gson = new Gson();
+
+            School[] schools = gson.fromJson(json_schools_list, School[].class);
+            schools = gson.fromJson(json_schools_list, School[].class);
+
+            String current_selected_school =
+                    mSettings.getString(SettingsActivity.SCHOOLS_LIST_KEY,"0");
+
+            Log.d(TAG,"Getted current selected school: " + current_selected_school);
+            String login_url = EbreEscoolServerAuthenticate.DEFAULT_LOGIN_API_URL;
             try {
-                response = http_helper.login_ebreescool(login_api_url,username,password,realm);
+                login_url =
+                        schools[Integer.parseInt(current_selected_school)].getLogin_api_url();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            Log.d(TAG,"login_url: " + login_url);
+
+            try {
+                response = eeSA.userSignIn(username,password,
+                                            EbreEscoolAccount.AUTHTOKEN_TYPE_FULL_ACCESS,login_url);
             } catch (ConnectException ce) {
                 error_message = ce.getLocalizedMessage();
                 result_bundle.setResult_ok(false);
                 result_bundle.setError_type(LoginResultBundle.ERROR_TYPE_CONNECT_EXCEPTION);
                 ce.printStackTrace();
             } catch (IOException e) {
+                e.printStackTrace();
+                error_message = e.getLocalizedMessage();
+                result_bundle.setResult_ok(false);
+                result_bundle.setError_type(LoginResultBundle.ERROR_TYPE_IO_EXCEPTION);
+            } catch (Exception e) {
                 e.printStackTrace();
                 error_message = e.getLocalizedMessage();
                 result_bundle.setResult_ok(false);
@@ -1155,6 +1158,10 @@ public class InitialSettingsActivity extends FragmentActivity implements
 
                         Log.d(TAG,"response_code 200. LOGIN OK!");
 
+                        //Save username to settings: account_name
+                        mSettings.edit().putString(SettingsActivity.ACCOUNT_NAME_KEY, result.getUsername()).apply();
+
+                        //TODO
                         WizardStep fragment = (WizardStep)
                                 getSupportFragmentManager().findFragmentById(R.id.step_container);
                         fragment.notifyCompleted();
