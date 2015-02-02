@@ -41,7 +41,7 @@
     <string name="sign_in_with_google">Entreu amb Google+</string>
     <string name="sign_in_with_facebook">Entreu amb Facebook</string>
     <string name="sign_in_with_twitter">Entreu amb Twitter</string>
-    <string name="title_activity_main">AndroidSocialLoginTemplate</string>
+    <string name="title_activity_main">Ebre-escool</string>
     <string name="title_section1">Secció 1</string>
     <string name="title_section2">Secció 2</string>
     <string name="title_section3">Revocar accés</string>
@@ -62,17 +62,22 @@
     <string name="wizard_next">Següent</string>
     <string name="wizard_previous">Anterior</string>
     <string name="wizard_finish">Finalitzar</string>
-    <string name="choose_a_school">Escolliu un centre d\'ensenyament</string>
+    <string name="choose_a_school">Escolliu el vostre centre</string>
 
     <string name="initial_settings_action_bar_title">Ebre-escool</string>
     <string name="initial_settings_action_bar_subtitle">Assistent configuració inicial</string>
 
-    <string name="preferences_label">Ebreescool Preferences</string>
+    <string name="preferences_label">Ebreescool. Preferències</string>
+    <string name="preferences_sublabel">Modifica les preferències</string>
+    <string name="preferences_sublabel_summary">Preferències de l\'aplicació ebre_escool</string>
 
     <string name="user_not_found_label">Usuari no trobat!</string>
     <string name="password_incorrect_label">Password incorrecte!</string>
     <string name="login_ok_label">Login correcte!</string>
 
+    <string name="internet_connection_error_title">Error de connexió a Internet!</string>
+    <string name="internet_connection_error_label">Si us plau activeu la connexió a Internet abans de continuar</string>
 
+    <string name="action_initial_settings_wizard">Configuració inicial</string>
 
 </resources>

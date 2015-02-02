@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:paddingBottom="10dp"
             android:paddingLeft="80dp"
-            android:text="@string/controlLogin"
+            android:text="TODO ALTA USUARI"
             android:textColor="#FFFFFF"
             android:textStyle="bold"/>
 
@@ -54,7 +54,20 @@
             android:hint="@string/username"
             android:paddingBottom="10dp"
             android:textColorHint="#FFFFFF"
-            android:textColor="#FFFFFF" />
+            android:textColor="#FFFFFF"
+            />
+
+        <EditText
+            android:id="@+id/full_username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="NOM COMPLET"
+            android:paddingBottom="10dp"
+            android:textColorHint="#FFFFFF"
+            android:textColor="#FFFFFF">
+
+             />
+        </EditText>
 
         <!--
         <AutoCompleteTextView
@@ -93,7 +106,7 @@
 
     </LinearLayout>
 
-    <LinearLayout 
+    <LinearLayout
         android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
