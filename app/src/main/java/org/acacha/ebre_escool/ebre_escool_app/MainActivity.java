@@ -19,10 +19,13 @@ import android.support.v4.widget.DrawerLayout;
 
 import org.acacha.ebre_escool.ebre_escool_app.helpers.AndroidSkeletonUtils;
 import org.acacha.ebre_escool.ebre_escool_app.initial_settings.InitialSettingsActivity;
+import org.acacha.ebre_escool.ebre_escool_app.managment.ManagmentActivity;
 import org.acacha.ebre_escool.ebre_escool_app.settings.SettingsActivity;
 
 public class MainActivity extends ActionBarActivity implements
-		NavigationDrawerFragment.NavigationDrawerCallbacks,FragmentType0.OnFragmentInteractionListener,FragmentType1.OnFragmentInteractionListener {
+		NavigationDrawerFragment.NavigationDrawerCallbacks,
+        FragmentType0.OnFragmentInteractionListener,
+        FragmentType1.OnFragmentInteractionListener {
 
 	private static final String TAG = "AndroidSocialLoginTemplate MainActivity";
 
@@ -52,6 +55,30 @@ public class MainActivity extends ActionBarActivity implements
 				(DrawerLayout) findViewById(R.id.drawer_layout));
 	}
 
+    public void onSectionAttached(int number) {
+        switch (number) {
+            case 1:
+                mTitle = getString(R.string.title_section1);
+                break;
+            case 2:
+                mTitle = getString(R.string.title_section2);
+                break;
+            case 3:
+                //LOGOUT AND REVOKE: Not really necessary!
+                mTitle = getString(R.string.title_section_managment);
+                break;
+            case 4:
+                //LOGOUT: Not really necessary!
+                mTitle = getString(R.string.title_section3);
+                break;
+            case 5:
+                //LOGOUT: Not really necessary!
+                mTitle = getString(R.string.title_section4);
+                break;
+        }
+    }
+
+
 	@Override
 	public void onNavigationDrawerItemSelected(int position) {
 		// update the main content by replacing fragments
@@ -70,11 +97,16 @@ public class MainActivity extends ActionBarActivity implements
 		    case 1:
 		       fragment = (Fragment) new FragmentType1();
 		       break;
-		    case 2:
+            case 2:
+              Log.d(TAG, "Click on managment section");
+                //Start Activity drawer type for managment
+                startActivity(new Intent(this, ManagmentActivity.class));
+              break;
+		    case 3:
 		       //LOGOUT & REVOKE!
 		       logout(true);
 		       break;
-		    case 3:
+		    case 4:
 		       //ONLY LOGOUT
 			   logout();
 			   break;   
@@ -108,25 +140,6 @@ public class MainActivity extends ActionBarActivity implements
 	public void logout(){
 		Log.d(TAG, "Logout");
 		logout(false);
-	}
-
-	public void onSectionAttached(int number) {
-		switch (number) {
-		case 1:
-			mTitle = getString(R.string.title_section1);
-			break;
-		case 2:
-			mTitle = getString(R.string.title_section2);
-			break;
-		case 3:
-			//LOGOUT AND REVOKE: Not really necessary!
-			mTitle = getString(R.string.title_section3);
-			break;
-		case 4:
-			//LOGOUT: Not really necessary!
-			mTitle = getString(R.string.title_section3);
-			break;	
-		}
 	}
 
 	public void restoreActionBar() {
