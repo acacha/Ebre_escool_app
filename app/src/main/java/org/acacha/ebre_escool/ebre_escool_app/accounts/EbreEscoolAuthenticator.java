@@ -81,7 +81,7 @@ public class EbreEscoolAuthenticator extends AbstractAccountAuthenticator {
                 try {
                     Log.d("Ebreescool", TAG + "> re-authenticating with the existing password");
                     Log.d("Ebreescool", TAG + "> Account name: " + account.name);
-                    Log.d("Ebreescool", TAG + "> Password: " + password);
+                    //Log.d("Ebreescool", TAG + "> Password: " + password);
 
                     com.squareup.okhttp.Response ebre_escool_response =
                             sServerAuthenticate.userSignIn(account.name, password, authTokenType);
@@ -98,7 +98,8 @@ public class EbreEscoolAuthenticator extends AbstractAccountAuthenticator {
                     Gson gson = new Gson();
                     eeresponse = gson.fromJson(json_response, EbreEscoolLoginResponse.class);
 
-                    authToken = eeresponse.getApiUserProfile().getAuthToken();;
+                    //Log.d(TAG,"authToken: " + authToken);
+                    authToken = eeresponse.getApiUserProfile().getAuthToken();
 
                 } catch (Exception e) {
                     e.printStackTrace();
