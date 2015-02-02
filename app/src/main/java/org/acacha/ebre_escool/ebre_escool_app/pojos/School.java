@@ -5,8 +5,6 @@ import com.google.gson.annotations.SerializedName;
 
 public class School {
 
-
-
     @Expose
     private String id;
     @Expose
@@ -19,6 +17,15 @@ public class School {
     @SerializedName("logo_relative_url")
     @Expose
     private String relativeLogoURL;
+    @SerializedName("api_url")
+    @Expose
+    private String api_url;
+    @SerializedName("login_api_url")
+    @Expose
+    private String login_api_url;
+    @SerializedName("dns_domain")
+    @Expose
+    private String school_dns_domain;
     @Expose
     private String email;
     @SerializedName("secondary_email")
@@ -164,6 +171,60 @@ public class School {
      */
     public void setRelativeLogoURL(String relativeLogoURL) {
         this.relativeLogoURL = relativeLogoURL;
+    }
+
+    /**
+     *
+     * @return
+     *   The API URL of School
+     */
+    public String getApi_url() {
+        return api_url;
+    }
+
+    /**
+     *
+     * @param api_url
+     *     The API url
+     */
+    public void setApi_url(String api_url) {
+        this.api_url = api_url;
+    }
+
+    /**
+     *
+     * @return
+     *     The Login API URL of School
+     */
+    public String getLogin_api_url() {
+        return login_api_url;
+    }
+
+    /**
+     *
+     * @param login_api_url
+     *     The Login API url
+     */
+    public void setLogin_api_url(String login_api_url) {
+        this.login_api_url = login_api_url;
+    }
+
+    /**
+     *
+     * @return
+     *     The school DNS domain name
+     */
+    public String getSchool_dns_domain() {
+        return school_dns_domain;
+    }
+
+    /**
+     *
+     * @param school_dns_domain
+     *     The school dns domain name
+     */
+    public void setSchool_dns_domain(String school_dns_domain) {
+        this.school_dns_domain = school_dns_domain;
     }
 
     /**

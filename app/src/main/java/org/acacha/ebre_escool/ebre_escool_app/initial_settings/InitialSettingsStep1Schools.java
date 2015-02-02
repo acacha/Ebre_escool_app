@@ -14,6 +14,7 @@ import com.google.gson.Gson;
 
 import org.acacha.ebre_escool.ebre_escool_app.R;
 import org.acacha.ebre_escool.ebre_escool_app.pojos.School;
+import org.acacha.ebre_escool.ebre_escool_app.settings.SettingsActivity;
 import org.codepond.wizardroid.WizardStep;
 
 import java.util.ArrayList;
@@ -38,6 +39,8 @@ public class InitialSettingsStep1Schools extends WizardStep {
 
     //settings
     private SharedPreferences settings;
+
+    CardArrayAdapter mCardArrayAdapter;
 
     //Wire the layout to the step
     public InitialSettingsStep1Schools() {
@@ -72,7 +75,7 @@ public class InitialSettingsStep1Schools extends WizardStep {
 
             card_on_list.addCardHeader(header);
 
-            card_on_list.setId(Integer.toString(i));
+            card_on_list.setId(mSchools[i].getId());
             card_on_list.setTitle(mSchools[i].getSchoolNotes());
             card_on_list.setClickable(true);
 
@@ -81,9 +84,9 @@ public class InitialSettingsStep1Schools extends WizardStep {
                  public void onClick(Card card, View view) {
                      Log.d(LOG_TAG,"Clickable card id: " + card.getId());
                      //Toast.makeText(getActivity(), "Clickable card id: " + card.getId(), Toast.LENGTH_LONG).show();
-                     int position = Integer.parseInt(card.getId());
+                     int position = mCardArrayAdapter.getPosition(card);
                      lstSchools.setItemChecked(position,true);
-                     settings.edit().putString("school",card.getId()).apply();
+                     settings.edit().putString(SettingsActivity.SCHOOLS_LIST_KEY, Integer.toString(position)).apply();
                      notifyCompleted();
                  }
              }
@@ -103,15 +106,24 @@ public class InitialSettingsStep1Schools extends WizardStep {
             cards.add(card_on_list);
         }
 
-        CardArrayAdapter mCardArrayAdapter = new CardArrayAdapter(getActivity(), cards);
+        mCardArrayAdapter = new CardArrayAdapter(getActivity(), cards );
 
         lstSchools = (CardListView) getActivity().findViewById(R.id.schoolsList);
         if (lstSchools != null) {
             lstSchools.setAdapter(mCardArrayAdapter);
             lstSchools.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-            lstSchools.setItemChecked(0, true);
-            String current_value = settings.getString("school","0");
-            settings.edit().putString("school", current_value).apply();
+            //GET FROM SETTINGS WHICH SCHOOL IS USED IN SETTINGS
+
+            String current_selected_school =
+                    settings.getString(SettingsActivity.SCHOOLS_LIST_KEY,"0");
+
+            Log.d(LOG_TAG,"Getted current selected school: " + current_selected_school);
+
+            lstSchools.setItemChecked(Integer.parseInt(current_selected_school), true);
+            notifyCompleted();
+
+            String current_value = settings.getString(SettingsActivity.SCHOOLS_LIST_KEY,"0");
+            settings.edit().putString(SettingsActivity.SCHOOLS_LIST_KEY, current_value).apply();
         }
     }
 

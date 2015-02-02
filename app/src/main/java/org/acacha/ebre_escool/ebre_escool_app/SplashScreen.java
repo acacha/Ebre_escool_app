@@ -18,9 +18,12 @@ import com.google.gson.Gson;
 import org.acacha.ebre_escool.ebre_escool_app.accounts.EbreEscoolAccount;
 import org.acacha.ebre_escool.ebre_escool_app.apis.EbreEscoolAPI;
 import org.acacha.ebre_escool.ebre_escool_app.apis.EbreEscoolApiService;
+import org.acacha.ebre_escool.ebre_escool_app.helpers.AlertDialogManager;
 import org.acacha.ebre_escool.ebre_escool_app.initial_settings.InitialSettingsActivity;
 import org.acacha.ebre_escool.ebre_escool_app.helpers.ConnectionDetector;
 import org.acacha.ebre_escool.ebre_escool_app.pojos.School;
+import org.acacha.ebre_escool.ebre_escool_app.settings.SettingsActivity;
+
 import java.util.Map;
 
 import retrofit.Callback;
@@ -54,6 +57,8 @@ public class SplashScreen extends Activity {
 
     private AccountManager mAccountManager;
 
+    private AlertDialogManager alert = new AlertDialogManager();
+
     @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -66,7 +71,12 @@ public class SplashScreen extends Activity {
         //CHECK CONNECTION
         ConnectionDetector cd = new ConnectionDetector(this);
         if (! cd.isConnectingToInternet()) {
-            //TODO: Show Alert to user and close app!
+            //TODO: Show Alert
+
+            // Internet Connection is not present
+            alert.showAlertDialog(SplashScreen.this, getString(R.string.internet_connection_error_title),
+                    getString(R.string.internet_connection_error_label), false);
+
             //Offer user the possibility to change wifi/network settings:
             //http://acacha.org/mediawiki/index.php/Android_HTTP#Comprovar_la_connexi.C3.B3_de_xarxa
             //Intent intent = new Intent(Intent.ACTION_MAIN);
@@ -99,9 +109,9 @@ public class SplashScreen extends Activity {
         }
         Log.d(LOG_TAG,"Found " + availableAccounts.length + " accounts of type " + EbreEscoolAccount.ACCOUNT_TYPE);
         //Example: String account_name = "sergitur" or sergiturbadenas@gmail.com;
-        String account_name = settings.getString(EbreEscoolAccount.ACCOUNT_NAME_KEY, "");
+        String account_name = settings.getString(SettingsActivity.ACCOUNT_NAME_KEY, "");
         if (account_name == "") {
-            Log.d(LOG_TAG,"No account name found at SharedPreferences with key " + EbreEscoolAccount.ACCOUNT_NAME_KEY);
+            Log.d(LOG_TAG,"No account name found at SharedPreferences with key " + SettingsActivity.ACCOUNT_NAME_KEY);
             continue_execution(null);
         }
 
@@ -125,12 +135,23 @@ public class SplashScreen extends Activity {
         //AsyncTask: We have to wait task to finish to continue execution:
         //  See postExecute of AsyncTask
             //future could not be used at UI thread!
-        final AccountManagerFuture<Bundle> future =
-                mAccountManager.getAuthToken(availableAccounts[account_position],
-                        EbreEscoolAccount.AUTHTOKEN_TYPE_FULL_ACCESS, null, this, null, null);
-        new GetAuthTokenAT().execute(future);
+        try {
+            final AccountManagerFuture<Bundle> future =
+                    mAccountManager.getAuthToken(availableAccounts[account_position],
+                            EbreEscoolAccount.AUTHTOKEN_TYPE_FULL_ACCESS, null, this, null, null);
+            new GetAuthTokenAT().execute(future);
+        } catch (ArrayIndexOutOfBoundsException aiobe) {
+            aiobe.printStackTrace();
+            Log.d(LOG_TAG,"Error getting account manager info. Continue Execution");
+            continue_execution(null);
+        } catch (Exception e ){
+            e.printStackTrace();
+            Log.d(LOG_TAG,"Error getting account manager info. Continue Execution");
+            continue_execution(null);
+        }
 
-	}
+
+    }
 
     private void wait_and_show_splash_screen(boolean download_initial_data) {
         if (download_initial_data) {

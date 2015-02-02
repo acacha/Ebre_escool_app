@@ -4,8 +4,10 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,8 +19,11 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 
 import com.facebook.widget.LoginButton;
+import com.google.gson.Gson;
 
 import org.acacha.ebre_escool.ebre_escool_app.R;
+import org.acacha.ebre_escool.ebre_escool_app.pojos.School;
+import org.acacha.ebre_escool.ebre_escool_app.settings.SettingsActivity;
 import org.codepond.wizardroid.WizardStep;
 
 /**
@@ -30,6 +35,9 @@ import org.codepond.wizardroid.WizardStep;
  * 
  */
 public class InitialSettingsStep2Login extends WizardStep {
+
+    //Look up for shared preferences
+    final String LOG_TAG = "InitialSettingsStep2Login";
 	
 	private LoginButton loginButton;
 	
@@ -51,6 +59,9 @@ public class InitialSettingsStep2Login extends WizardStep {
     private Button btnLoginForm;
 
     private String[] addresses;
+
+    //settings
+    private SharedPreferences settings;
 
 	/**
 	 * Use this factory method to create a new instance of this fragment using
@@ -120,10 +131,45 @@ public class InitialSettingsStep2Login extends WizardStep {
         // Se establece el Adapter
         textView.setAdapter(adapter);
 
+        //Get account name from shared preferences settings
+        settings = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
+        //RECOVER ACCOUNT NAME FROM PREVIOUS LOGINS
+        String account_name =
+                settings.getString(SettingsActivity.ACCOUNT_NAME_KEY,"");
+
+        //Retrieve schools on JSON format To obtain selected schools
+        String json_schools_list = settings.getString("schools_list", "");
+        Log.d(LOG_TAG,"###### json_schools_list: " + json_schools_list);
+
+        Gson gson = new Gson();
+        School[] mSchools = gson.fromJson(json_schools_list, School[].class);
+
+        String current_selected_school =
+                settings.getString(SettingsActivity.SCHOOLS_LIST_KEY,"0");
+
+        Log.d(LOG_TAG,"Getted current selected school: " + current_selected_school);
+
+        String school_dns_domain_name = "iesebre.com";
+
+        try {
+            school_dns_domain_name =
+                    mSchools[Integer.parseInt(current_selected_school)].getSchool_dns_domain();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Log.d(LOG_TAG,"school_dns_domain_name: " + school_dns_domain_name);
+
         String proposedValue = null;
-        for (String s: addresses)    {
-            if (s.endsWith("@iesebre.com")){
-                proposedValue = s;
+
+        if (account_name != "") {
+            textView.setText(account_name);
+        } else {
+            for (String s: addresses)    {
+                if (s.endsWith("@" + school_dns_domain_name)){
+                    proposedValue = s;
+                }
             }
         }
 

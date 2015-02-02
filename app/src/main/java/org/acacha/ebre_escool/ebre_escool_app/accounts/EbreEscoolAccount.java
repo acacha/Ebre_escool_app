@@ -21,11 +21,6 @@ public class EbreEscoolAccount {
     public static final String ACCOUNT_TYPE = "org.acacha.ebre_escool.ebre_escool_app.EbreEscoolAccount";
 
     /**
-     * key of account_name SharedPreferences
-     */
-    public static final String ACCOUNT_NAME_KEY = "account_name";
-
-    /**
      * Account name
      */
     public static final String ACCOUNT_NAME = "EbreEscool";

@@ -203,6 +203,17 @@ public class InitialSettingsActivity extends FragmentActivity implements
 		Log.d(TAG,"onCreate!");
         super.onCreate(savedInstanceState);
 
+        // ReCheck if Internet present
+        cd = new ConnectionDetector(getApplicationContext());
+        if (!cd.isConnectingToInternet()) {
+            // Internet Connection is not present
+            alert.showAlertDialog(InitialSettingsActivity.this, getString(R.string.internet_connection_error_title),
+                    getString(R.string.internet_connection_error_label), false);
+            // stop executing code by return
+            return;
+        }
+
+        //Uncomment for debug:
         AndroidSkeletonUtils.debugIntent(getIntent(), "Initial Settings onCreate");
 
         // Taken from AccountAuthenticatorActivity. We cannot extends this Activity because we are using Fragments!
@@ -234,25 +245,7 @@ public class InitialSettingsActivity extends FragmentActivity implements
         Class next_activity = null;
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
 
-        int login_type = 0;
-
-        //IF ALREADY HAVE AND authTOKEN --> Skip InitialSettings/Login
-        //if (settings.getBoolean(AndroidSkeletonUtils.REMEMBER_LOGIN_PREFERENCE, false)) {
-        if (true) {
-            next_activity = MainActivity.class;
-            Log.d(TAG, "We already have a token --> skip initialSettings/Login");
-
-            //Getting which type of login is done
-            //REQUEST_CODE_TWITTER_LOGIN | REQUEST_CODE_FACEBOOK_LOGIN | REQUEST_CODE_GOOGLE_LOGIN
-            login_type = settings.getInt(AndroidSkeletonUtils.LOGIN_TYPE_PREFERENCE, 0);
-        }
-
-        if (next_activity!=null) {
-            Intent i = new Intent(InitialSettingsActivity.this, MainActivity.class);
-            startActivityForResult(i, login_type);
-        }
-
-		//GOOGLE
+       	//GOOGLE
 		mGoogleApiClient = new GoogleApiClient.Builder(this)
 		.addConnectionCallbacks(this)
 		.addOnConnectionFailedListener(this).addApi(Plus.API)
@@ -271,22 +264,14 @@ public class InitialSettingsActivity extends FragmentActivity implements
  			return;
  		}
  		
- 		//TODO: please us threads correctly!
+ 		//TODO: please use threads correctly for twitter!!
  		if (android.os.Build.VERSION.SDK_INT > 9) {
 			StrictMode.ThreadPolicy policy =
 			new StrictMode.ThreadPolicy.Builder().permitAll().build();
 			StrictMode.setThreadPolicy(policy);
 		}
  		
- 		// Check if Internet present
- 		cd = new ConnectionDetector(getApplicationContext());
-		if (!cd.isConnectingToInternet()) {
-			// Internet Connection is not present
-			alert.showAlertDialog(InitialSettingsActivity.this, "Internet Connection Error",
-					"Please connect to working Internet connection", false);
-			// stop executing code by return
-			return;
-		}
+
 		
 		// Shared Preferences
 		mSharedPreferences = getApplicationContext().getSharedPreferences(
