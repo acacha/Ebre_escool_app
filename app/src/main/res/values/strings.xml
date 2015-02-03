@@ -92,5 +92,8 @@
     <string name="managment_title_section11_comeback">Tornar</string>
 
     <string name="hello_blank_fragment_example_profe">Fragment exemple profe</string>
+    <string name="incorrect_school_data_title">Dades del centre incorrectes o incompletes</string>
+    <string name="incorrect_school_data_label">Si us plau informeu al administrador</string>
+    <string name="notvalid_login_url">La URL de login no és vàlida o és incorrecte</string>
 
 </resources>

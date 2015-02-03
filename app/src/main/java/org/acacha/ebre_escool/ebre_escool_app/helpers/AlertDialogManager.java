@@ -7,6 +7,9 @@ import android.content.DialogInterface;
 import org.acacha.ebre_escool.ebre_escool_app.R;
 
 public class AlertDialogManager {
+
+    AlertDialog alertDialog = null;
+
 	/**
 	 * Function to display simple Alert Dialog
 	 * @param context - application context
@@ -17,7 +20,7 @@ public class AlertDialogManager {
 	 * */
 	public void showAlertDialog(Context context, String title, String message,
 			Boolean status) {
-		AlertDialog alertDialog;
+
 		alertDialog = new AlertDialog.Builder(context).create();
 
 		// Setting Dialog Title
@@ -30,13 +33,23 @@ public class AlertDialogManager {
 			// Setting alert dialog icon
 			alertDialog.setIcon((status) ? R.drawable.success : R.drawable.fail);
 
-		// Setting OK Button
-		alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int which) {
-			}
-		});
+            // Setting OK Button
+            alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Ok", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    //TODO
+                }
+            });
 
 		// Showing Alert Message
 		alertDialog.show();
 	}
+
+    public void dismiss() {
+        if (alertDialog!=null) {
+            alertDialog.dismiss();
+            alertDialog = null;
+        }
+
+    }
+
 }

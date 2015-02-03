@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,8 @@ import android.widget.ListView;
 import com.google.gson.Gson;
 
 import org.acacha.ebre_escool.ebre_escool_app.R;
+import org.acacha.ebre_escool.ebre_escool_app.apis.EbreEscoolAPI;
+import org.acacha.ebre_escool.ebre_escool_app.helpers.AlertDialogManager;
 import org.acacha.ebre_escool.ebre_escool_app.pojos.School;
 import org.acacha.ebre_escool.ebre_escool_app.settings.SettingsActivity;
 import org.codepond.wizardroid.WizardStep;
@@ -42,6 +45,10 @@ public class InitialSettingsStep1Schools extends WizardStep {
 
     CardArrayAdapter mCardArrayAdapter;
 
+    private AlertDialogManager alert = new AlertDialogManager();
+
+    private String error_message_validating_school = "";
+
     //Wire the layout to the step
     public InitialSettingsStep1Schools() {
 
@@ -58,7 +65,7 @@ public class InitialSettingsStep1Schools extends WizardStep {
         Log.d(LOG_TAG,"###### json_schools_list: " + json_schools_list);
 
         Gson gson = new Gson();
-        School[] mSchools = gson.fromJson(json_schools_list, School[].class);
+        mSchools = gson.fromJson(json_schools_list, School[].class);
 
         ArrayList<Card> cards = new ArrayList<Card>();
 
@@ -70,8 +77,6 @@ public class InitialSettingsStep1Schools extends WizardStep {
             // Create a CardHeader and add Header to card_on_list
             CardHeader header = new CardHeader(getActivity());
             header.setTitle(mSchools[i].getFullname());
-
-            //#404040
 
             card_on_list.addCardHeader(header);
 
@@ -87,7 +92,17 @@ public class InitialSettingsStep1Schools extends WizardStep {
                      int position = mCardArrayAdapter.getPosition(card);
                      lstSchools.setItemChecked(position,true);
                      settings.edit().putString(SettingsActivity.SCHOOLS_LIST_KEY, Integer.toString(position)).apply();
-                     notifyCompleted();
+
+                     //Check All data is completed before continue
+                     boolean data_is_ok = check_all_data_is_ok(position);
+                     if(data_is_ok) {
+                         notifyCompleted();
+                     } else {
+                         // Show alert
+                         alert.showAlertDialog(getActivity(), getString(R.string.incorrect_school_data_title),
+                                 getString(R.string.incorrect_school_data_label), false);
+                     }
+
                  }
              }
             );
@@ -98,7 +113,8 @@ public class InitialSettingsStep1Schools extends WizardStep {
             if (mSchools[i].getLogoURL()!=""){
                 thumb.setUrlResource(mSchools[i].getLogoURL());
             } else {
-                thumb.setUrlResource("http://acacha.org/acacha_manager/uploads/school_logos/no_picture.gif");
+                thumb.setUrlResource(EbreEscoolAPI.EBRE_ESCOOL_PUBLIC_IMAGE_NOT_AVAILABLE);
+
             }
             card_on_list.addCardThumbnail(thumb);
 
@@ -125,6 +141,27 @@ public class InitialSettingsStep1Schools extends WizardStep {
             String current_value = settings.getString(SettingsActivity.SCHOOLS_LIST_KEY,"0");
             settings.edit().putString(SettingsActivity.SCHOOLS_LIST_KEY, current_value).apply();
         }
+    }
+
+    private boolean check_all_data_is_ok(int position) {
+        School selected_school = mSchools[position];
+
+        boolean valid_login_url = Patterns.WEB_URL.matcher(selected_school.getLogin_api_url()).matches();
+
+        if (!valid_login_url) {
+            error_message_validating_school = getString(R.string.notvalid_login_url);
+            return false;
+        }
+
+        boolean valid_api_url = Patterns.WEB_URL.matcher(selected_school.getLogin_api_url()).matches();
+
+        if (!valid_api_url) {
+            error_message_validating_school = getString(R.string.notvalid_login_url);
+            return false;
+        }
+
+
+        return true;
     }
 
     //Set your layout here
