@@ -6,6 +6,8 @@
     <string name="action_settings">Configuració</string>
     <string name="controlLogin">Iniciar Sessió</string>
     <string name="btnControlLogin">Entrar</string>
+    <string name="registerlink"> registra\'t aquí!</string>
+    <string name="registerlink_label">Ets nou? </string>
     <string name="rememberUser">Recordar</string>
     <string name="username">Nom Usuari</string>
     <string name="password">Contrasenya</string>
@@ -51,7 +53,6 @@
     <string name="navigation_drawer_close">Tancar el calaix de navegació</string>
     <string name="action_example">Acció TODO</string>
     <string name="hello_blank_fragment1">Fragment Secció 1</string>
-
     <string name="hello_blank_fragment2">Fragment Secció 2</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_main_activity_blank_fragment_esborrar">MainActivityBlankFragmentEsborrar</string>
@@ -90,10 +91,22 @@
     <string name="managment_title_section9_lessons">Lliçons (Marc)</string>
     <string name="managment_title_section10_employees">Empleats (Paolo)</string>
     <string name="managment_title_section11_comeback">Tornar</string>
-
     <string name="hello_blank_fragment_example_profe">Fragment exemple profe</string>
     <string name="incorrect_school_data_title">Dades del centre incorrectes o incompletes</string>
     <string name="incorrect_school_data_label">Si us plau informeu al administrador</string>
-    <string name="notvalid_login_url">La URL de login no és vàlida o és incorrecte</string>
+    <string name="notvalid_login_url">La URL de login ("%1$s") no és vàlida o és incorrecte</string>
+    <string name="notvalid_api_url">La API URL ("%1$s") no existeix o no és correcte</string>
+    <string name="username_required">El camp usuari és obligatori</string>
+    <string name="password_required">El camp password és obligatori</string>
+    <string name="title_activity_sign_up">SignUpActivity</string>
+    <string name="signUpTitle">Creeu un compte</string>
+    <string name="first_name">Nom</string>
+    <string name="last_name">Cognoms</string>
+    <string name="email">Email</string>
+    <string name="btnSignUp">Crear compte</string>
+    <string name="sign_up_with_google">Crear amb Google</string>
+    <string name="sign_up_with_facebook">Crear amb Facebook</string>
+    <string name="sign_up_with_twitter">Crear amb Twitter</string>
+    <string name="response_code_200">Response code 200. Login OK!</string>
 
 </resources>

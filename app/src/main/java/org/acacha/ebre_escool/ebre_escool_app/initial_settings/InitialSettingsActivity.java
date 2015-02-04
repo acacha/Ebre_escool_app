@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.net.ConnectException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
@@ -38,6 +39,7 @@ import android.accounts.Account;
 import android.accounts.AccountAuthenticatorResponse;
 import android.accounts.AccountManager;
 import android.app.ActionBar;
+import android.app.Fragment;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -72,8 +74,7 @@ import org.acacha.ebre_escool.ebre_escool_app.pojos.School;
 import org.acacha.ebre_escool.ebre_escool_app.settings.SettingsActivity;
 import org.codepond.wizardroid.WizardStep;
 
-import static org.acacha.ebre_escool.ebre_escool_app.accounts.EbreEscoolAccount.sServerAuthenticate;
-
+import android.support.v4.view.ViewPager;
 
 public class InitialSettingsActivity extends FragmentActivity implements
 	OnClickListener,ConnectionCallbacks,OnConnectionFailedListener, InitialSettingsStep2Login.OnFragmentInteractionListener {
@@ -106,6 +107,8 @@ public class InitialSettingsActivity extends FragmentActivity implements
 	private static final int REQUEST_CODE_GOOGLE_LOGIN = 91;
 	private static final int REQUEST_CODE_FACEBOOK_LOGIN = 92;
 	private static final int REQUEST_CODE_TWITTER_LOGIN = 93;
+    private static final int REQUEST_CODE_SIGN_UP = 94;
+
 
 	private boolean OnStartAlreadyConnected = false;
 
@@ -172,7 +175,17 @@ public class InitialSettingsActivity extends FragmentActivity implements
     private AccountManager mAccountManager;
     private String mAuthTokenType;
 
+    private WizardStep login_fragment = null;
+
     private LoginResultBundle loginresult = new LoginResultBundle();
+
+    public WizardStep getLogin_fragment() {
+        return login_fragment;
+    }
+
+    public void setLogin_fragment(WizardStep login_fragment) {
+        this.login_fragment = login_fragment;
+    }
 
     //////// BEGIN
     // Taken from AccountAuthenticatorActivity. We cannot extends this Activity because we are using Fragments!
@@ -328,15 +341,25 @@ public class InitialSettingsActivity extends FragmentActivity implements
 	}
 
     private void finishLogin(Intent intent) {
-        Log.d("Ebreescool", TAG + "> finishLogin");
+        Log.d("Ebreescool", TAG + "> finishLogin method started");
+        AndroidSkeletonUtils.debugIntent(intent,"finishLogin Intent");
 
         String accountName = intent.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
         String accountPassword = intent.getStringExtra(PARAM_USER_PASS);
-        final Account account = new Account(accountName, intent.getStringExtra(AccountManager.KEY_ACCOUNT_TYPE));
+        boolean adding_new_account2 = intent.getBooleanExtra(ARG_IS_ADDING_NEW_ACCOUNT,false);
 
-        if (getIntent().getBooleanExtra(ARG_IS_ADDING_NEW_ACCOUNT, false)) {
+        Log.d("Ebreescool", TAG + "> accountName :" + accountName);
+        //Log.d("Ebreescool", TAG + "> accountPassword :" +  accountPassword);
+
+        String key_account_time = intent.getStringExtra(AccountManager.KEY_ACCOUNT_TYPE);
+        Log.d("Ebreescool", TAG + "> key_account_time :" +  key_account_time);
+        final Account account = new Account(accountName, key_account_time);
+        boolean adding_new_account = getIntent().getBooleanExtra(ARG_IS_ADDING_NEW_ACCOUNT, false);
+        Log.d("Ebreescool", TAG + "> adding_new_account :" +  adding_new_account);
+        Log.d("Ebreescool", TAG + "> adding_new_account2 :" +  adding_new_account2);
+        if (adding_new_account || adding_new_account2) {
             Log.d("Ebreescool", TAG + "> finishLogin > addAccountExplicitly");
-            AndroidSkeletonUtils.debugIntent(intent,"finishLogin Intent");
+
             String authtoken = intent.getStringExtra(AccountManager.KEY_AUTHTOKEN);
             String authtokenType = mAuthTokenType;
 
@@ -645,6 +668,13 @@ public class InitialSettingsActivity extends FragmentActivity implements
                 // Signin with Login Form
                 loginToEbreEscool(v);
                 break;
+        case R.id.link_to_register:
+                // Signin with Login Form
+                Log.d(TAG,"################LINK TO REGISTER!!!!!!!!!!!!!!!!!!!!");
+                Intent i = new Intent(InitialSettingsActivity.this, SignUpActivity.class);
+                startActivityForResult(i, REQUEST_CODE_SIGN_UP);
+                break;
+
 		}
 	}
 	
@@ -813,15 +843,30 @@ public class InitialSettingsActivity extends FragmentActivity implements
      *
      */
     private void loginToEbreEscool(View v) {
-        //TODO: Connect to ebre_escool api log login
 
         String username = ((EditText) findViewById(R.id.username)).getText().toString();
         String password = ((EditText) findViewById(R.id.password)).getText().toString();
-        String md5password = computeMD5Hash(password);
 
         //DEBUG
         Log.d(TAG,"username: " + username);
         //Log.d(TAG,"password: " + password);
+
+
+        if (username.equals("")) {
+            int duration = Toast.LENGTH_LONG;
+            Toast.makeText(getApplicationContext(),
+                    getString(R.string.username_required), duration).show();
+            return;
+        }
+
+        if (password.equals("")) {
+            int duration = Toast.LENGTH_LONG;
+            Toast.makeText(getApplicationContext(),
+                    getString(R.string.password_required), duration).show();
+            return;
+        }
+
+        String md5password = computeMD5Hash(password);
         //Log.d(TAG,"MD5 password: " + md5password);
 
         //HTTP POST TO ebreescoollogin
@@ -1156,15 +1201,14 @@ public class InitialSettingsActivity extends FragmentActivity implements
                                 toast_message, duration).show();
                     } else {
 
-                        Log.d(TAG,"response_code 200. LOGIN OK!");
+                        Log.d(TAG,getString(R.string.response_code_200));
 
                         //Save username to settings: account_name
                         mSettings.edit().putString(SettingsActivity.ACCOUNT_NAME_KEY, result.getUsername()).apply();
 
-                        //TODO
-                        WizardStep fragment = (WizardStep)
-                                getSupportFragmentManager().findFragmentById(R.id.step_container);
-                        fragment.notifyCompleted();
+                        //Get second page fragment of Wizard
+
+                        getLogin_fragment().notifyCompleted();
 
                         int duration = Toast.LENGTH_LONG;
                         Toast.makeText(getApplicationContext(),
@@ -1200,6 +1244,7 @@ public class InitialSettingsActivity extends FragmentActivity implements
                         data.putString(AccountManager.KEY_ACCOUNT_NAME, userName);
                         data.putString(AccountManager.KEY_ACCOUNT_TYPE, accountType);
                         data.putString(AccountManager.KEY_AUTHTOKEN, authtoken);
+                        data.putBoolean(ARG_IS_ADDING_NEW_ACCOUNT, true);
                         data.putString(PARAM_USER_PASS, userPass);
 
                         final Intent res = new Intent();

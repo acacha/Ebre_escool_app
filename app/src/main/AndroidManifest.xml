@@ -98,6 +98,10 @@
             android:name=".managment.ManagmentActivity"
             android:label="@string/title_activity_managment" >
         </activity>
+        <activity
+            android:name=".initial_settings.SignUpActivity"
+            android:label="@string/title_activity_sign_up" >
+        </activity>
     </application>
 
 </manifest>

@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.facebook.widget.LoginButton;
 import com.google.gson.Gson;
@@ -51,12 +52,16 @@ public class InitialSettingsStep2Login extends WizardStep {
 	private String mParam2;
 
 	private OnFragmentInteractionListener mListener;
+
+    private InitialSettingsActivity mActivity;
 	
 	private Button btnGoogleSignIn;
 
 	private Button btnLoginTwitter;
 
     private Button btnLoginForm;
+
+    private TextView tvLinkToRegister;
 
     private String[] addresses;
 
@@ -129,6 +134,9 @@ public class InitialSettingsStep2Login extends WizardStep {
         btnLoginForm = (Button) view.findViewById(R.id.btnPersonalLogin);
         btnLoginForm.setOnClickListener((OnClickListener) getActivity());
 
+        tvLinkToRegister = (TextView) view.findViewById(R.id.link_to_register);
+        tvLinkToRegister.setOnClickListener((OnClickListener) getActivity());
+
         //Autocomplete username
         ArrayAdapter<String> adapter = this.getEmailAddressAdapter(getActivity());
 
@@ -186,7 +194,7 @@ public class InitialSettingsStep2Login extends WizardStep {
         if (proposedValue != null) {
             textView.setText(proposedValue);
         }
-		
+
 		return view;
 	}
 
@@ -215,13 +223,30 @@ public class InitialSettingsStep2Login extends WizardStep {
 			throw new ClassCastException(activity.toString()
 					+ " must implement OnFragmentInteractionListener");
 		}
+
+        try{
+            mActivity = (InitialSettingsActivity) activity;
+        }catch(ClassCastException e){
+            e.printStackTrace();
+            //throw new ClassCastException(activity.toString() +" must be a InitialSettingsActivity");
+        }
+
+        mActivity.setLogin_fragment(this);
+
 	}
 
 	@Override
 	public void onDetach() {
 		super.onDetach();
 		mListener = null;
+        mActivity = null;
 	}
+
+    @Override
+    public void onStop() {
+        mActivity = null;
+        super.onStop();
+    }
 
 	/**
 	 * This interface must be implemented by activities that contain this

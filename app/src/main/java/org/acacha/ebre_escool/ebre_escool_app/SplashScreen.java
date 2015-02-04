@@ -96,7 +96,7 @@ public class SplashScreen extends Activity {
             }
         });
 
-        // Setting OK Button
+        // Setting Config
         alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "Configuració", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
 

@@ -1,5 +1,9 @@
 package org.acacha.ebre_escool.ebre_escool_app.initial_settings;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -15,11 +19,12 @@ import com.google.gson.Gson;
 
 import org.acacha.ebre_escool.ebre_escool_app.R;
 import org.acacha.ebre_escool.ebre_escool_app.apis.EbreEscoolAPI;
-import org.acacha.ebre_escool.ebre_escool_app.helpers.AlertDialogManager;
+import org.acacha.ebre_escool.ebre_escool_app.helpers.ConnectionDetector;
 import org.acacha.ebre_escool.ebre_escool_app.pojos.School;
 import org.acacha.ebre_escool.ebre_escool_app.settings.SettingsActivity;
 import org.codepond.wizardroid.WizardStep;
 
+import java.net.URL;
 import java.util.ArrayList;
 
 import it.gmariotti.cardslib.library.internal.Card;
@@ -45,7 +50,7 @@ public class InitialSettingsStep1Schools extends WizardStep {
 
     CardArrayAdapter mCardArrayAdapter;
 
-    private AlertDialogManager alert = new AlertDialogManager();
+    private AlertDialog alert = null;
 
     private String error_message_validating_school = "";
 
@@ -98,9 +103,9 @@ public class InitialSettingsStep1Schools extends WizardStep {
                      if(data_is_ok) {
                          notifyCompleted();
                      } else {
-                         // Show alert
-                         alert.showAlertDialog(getActivity(), getString(R.string.incorrect_school_data_title),
-                                 getString(R.string.incorrect_school_data_label), false);
+                         notifyIncomplete();
+                         showAlertDialog(getActivity(), getString(R.string.incorrect_school_data_title),
+                                 error_message_validating_school + ". " + getString(R.string.incorrect_school_data_label), false);
                      }
 
                  }
@@ -136,30 +141,99 @@ public class InitialSettingsStep1Schools extends WizardStep {
             Log.d(LOG_TAG,"Getted current selected school: " + current_selected_school);
 
             lstSchools.setItemChecked(Integer.parseInt(current_selected_school), true);
-            notifyCompleted();
+
+            //Check All data is completed before continue
+            boolean data_is_ok = check_all_data_is_ok(0);
+            if(data_is_ok) {
+                notifyCompleted();
+            } else {
+                notifyIncomplete();
+                // Show alert
+                showAlertDialog(getActivity(), getString(R.string.incorrect_school_data_title),
+                        error_message_validating_school + ". " + getString(R.string.incorrect_school_data_label), false);
+            }
 
             String current_value = settings.getString(SettingsActivity.SCHOOLS_LIST_KEY,"0");
             settings.edit().putString(SettingsActivity.SCHOOLS_LIST_KEY, current_value).apply();
         }
     }
 
+    /**
+     * Function to display simple Alert Dialog
+     * @param context - application context
+     * @param title - alert dialog title
+     * @param message - alert message
+     * @param status - success/failure (used to set icon)
+     * 				 - pass null if you don't want icon
+     * */
+    public void showAlertDialog(Context context, String title, String message,
+                                Boolean status) {
+
+        alert = new AlertDialog.Builder(context).create();
+        alert.setTitle(title);
+        alert.setMessage(message);
+        alert.setCancelable(false);
+        // Setting alert dialog icon
+        if(status != null)
+            alert.setIcon((status) ? R.drawable.success : R.drawable.fail);
+
+        // Setting OK Button
+        alert.setButton(AlertDialog.BUTTON_POSITIVE, "Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                //DO NOTHING
+            }
+        });
+        // Showing Alert Message
+        alert.show();
+    }
+
     private boolean check_all_data_is_ok(int position) {
         School selected_school = mSchools[position];
+        Log.d(LOG_TAG, "Checking school at position " + position + " ( " + selected_school.getFullname() + " )" );
 
-        boolean valid_login_url = Patterns.WEB_URL.matcher(selected_school.getLogin_api_url()).matches();
+        String login_api_url = selected_school.getLogin_api_url();
+        Log.d(LOG_TAG, "getLogin_api_url (login_api_url): " + login_api_url);
+        String api_url = selected_school.getApi_url();
+        Log.d(LOG_TAG, "getApi_url (api_url): " + api_url);
 
-        if (!valid_login_url) {
-            error_message_validating_school = getString(R.string.notvalid_login_url);
+        URL ob_login_api_url = null;
+        String login_api_url1 = "";
+        URL ob_api_url = null;
+        String api_url1 = "";
+        try {
+            ob_login_api_url = new URL(login_api_url);
+            login_api_url1 = ob_login_api_url.getProtocol() + "://" + ob_login_api_url.getHost();
+            Log.d(LOG_TAG, "login_api_url1: " + login_api_url1);
+        } catch (Exception e) {
+            e.printStackTrace();
+            error_message_validating_school = getString(R.string.notvalid_login_url,login_api_url1);
             return false;
         }
 
-        boolean valid_api_url = Patterns.WEB_URL.matcher(selected_school.getLogin_api_url()).matches();
+        boolean valid_login_url = Patterns.WEB_URL.matcher(login_api_url1).matches();
+        if (!valid_login_url) {
+            Log.d(LOG_TAG, "Not valid login api url!");
+            error_message_validating_school = getString(R.string.notvalid_login_url,login_api_url1);
+            return false;
+        }
+
+        try {
+            ob_api_url = new URL(api_url);
+            api_url1 = ob_api_url.getProtocol() + "://" + ob_api_url.getHost();
+            Log.d(LOG_TAG, "api_url1: " + api_url1);
+        } catch (Exception e) {
+            e.printStackTrace();
+            error_message_validating_school = getString(R.string.notvalid_api_url,api_url1);
+            return false;
+        }
+
+        boolean valid_api_url = Patterns.WEB_URL.matcher(api_url1).matches();
 
         if (!valid_api_url) {
-            error_message_validating_school = getString(R.string.notvalid_login_url);
+            Log.d(LOG_TAG, "Not valid api url!");
+            error_message_validating_school = getString(R.string.notvalid_api_url,api_url1);
             return false;
         }
-
 
         return true;
     }
