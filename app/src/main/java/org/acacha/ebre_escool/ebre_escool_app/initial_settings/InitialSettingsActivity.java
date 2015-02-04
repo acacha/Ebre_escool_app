@@ -694,25 +694,63 @@ public class InitialSettingsActivity extends FragmentActivity implements
 	@Override
 	public void onConnected(Bundle connectionHint) {
 		Log.d(TAG, "onConnected!");
-		
 		mSignInClicked = false;
-		
 		//Toast.makeText(this, "User is connected!", Toast.LENGTH_LONG).show();
-		Log.d(TAG, "User is connected!");
-		
-		// Get user's information
-		getProfileInformation();
+		Log.d(TAG, "User is connected to Google Plus now!");
 
+        getProfileInformation();
+
+        String email = null;
+        try {
+            if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
+                email = Plus.AccountApi.getAccountName(mGoogleApiClient);
+            }
+        } catch  (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (email!=null) {
+            //check domain is the same as selected center
+            boolean same_domain = true;
+            if (same_domain) {
+                //User have a Google Apps account of same center --> Allowed to login
+                //LOGIN TO API TO OBTAIN auth_token
+
+                login_using_google();
+            } else {
+                //Another domain or personal Gmail Account
+                //API QUERY --> search any user in database with database personal email = "email"
+               boolean found_user = true;
+               if (found_user) {
+                   //EMAIL IS VALIDATED?
+                   boolean validated_email = true;
+                   if (validated_email) {
+                       //LOGIN TO API TO OBTAIN auth_token
+
+                       login_using_google();
+                   } else {
+                       //Ask user to login with user/password form IF ok then Validate email?
+                   }
+               }
+
+            }
+        } else {
+            //ERROR
+            Toast.makeText(getApplicationContext(),
+                    getString(R.string.invalid_google_email), Toast.LENGTH_LONG).show();
+        }
+	}
+
+    private void login_using_google(){
+        // Get user's information //TODO: Save info!!!!
+        //saveProfileInformation();
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
         settings.edit().putInt( AndroidSkeletonUtils.LOGIN_TYPE_PREFERENCE,
                 REQUEST_CODE_GOOGLE_LOGIN).commit();
-		Intent i = new Intent(InitialSettingsActivity.this, MainActivity.class);
-		startActivityForResult(i, REQUEST_CODE_GOOGLE_LOGIN);
-		
-		// Update the UI after signin
-		//updateUI(true);
-		
-	}
+        Intent i = new Intent(InitialSettingsActivity.this, MainActivity.class);
+        startActivityForResult(i, REQUEST_CODE_GOOGLE_LOGIN);
+
+    }
 	
 	/**
 	 * Fetching user's information name, email, profile pic
@@ -722,12 +760,15 @@ public class InitialSettingsActivity extends FragmentActivity implements
 			if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
 				Person currentPerson = Plus.PeopleApi
 						.getCurrentPerson(mGoogleApiClient);
+
+                Person.Name objpersonName = currentPerson.getName();
+                String personId = currentPerson.getId();
 				String personName = currentPerson.getDisplayName();
 				String personPhotoUrl = currentPerson.getImage().getUrl();
 				String personGooglePlusProfile = currentPerson.getUrl();
 				String email = Plus.AccountApi.getAccountName(mGoogleApiClient);
 
-				Log.d(TAG, "Name: " + personName + ", plusProfile: "
+				Log.d(TAG, "Id: " + personId + "Name: " + personName + ", plusProfile: "
 						+ personGooglePlusProfile + ", email: " + email
 						+ ", Image: " + personPhotoUrl);
 

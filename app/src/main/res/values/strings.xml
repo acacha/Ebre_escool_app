@@ -108,5 +108,6 @@
     <string name="sign_up_with_facebook">Crear amb Facebook</string>
     <string name="sign_up_with_twitter">Crear amb Twitter</string>
     <string name="response_code_200">Response code 200. Login OK!</string>
+    <string name="invalid_google_email">Error: No s\'ha obtingut cap email de Google. Proveu d\'entrar utilitzant un altre mètode</string>
 
 </resources>
