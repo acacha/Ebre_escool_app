@@ -4,6 +4,9 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.accounts.AccountManagerFuture;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -18,7 +21,6 @@ import com.google.gson.Gson;
 import org.acacha.ebre_escool.ebre_escool_app.accounts.EbreEscoolAccount;
 import org.acacha.ebre_escool.ebre_escool_app.apis.EbreEscoolAPI;
 import org.acacha.ebre_escool.ebre_escool_app.apis.EbreEscoolApiService;
-import org.acacha.ebre_escool.ebre_escool_app.helpers.AlertDialogManager;
 import org.acacha.ebre_escool.ebre_escool_app.initial_settings.InitialSettingsActivity;
 import org.acacha.ebre_escool.ebre_escool_app.helpers.ConnectionDetector;
 import org.acacha.ebre_escool.ebre_escool_app.pojos.School;
@@ -57,7 +59,73 @@ public class SplashScreen extends Activity {
 
     private AccountManager mAccountManager;
 
-    private AlertDialogManager alert = new AlertDialogManager();
+    AlertDialog alertDialog = null;
+
+    /**
+     * Function to display simple Alert Dialog
+     * @param context - application context
+     * @param title - alert dialog title
+     * @param message - alert message
+     * @param status - success/failure (used to set icon)
+     * 				 - pass null if you don't want icon
+     * */
+    public void showAlertDialog(Context context, String title, String message,
+                                Boolean status) {
+
+        alertDialog = new AlertDialog.Builder(context).create();
+        alertDialog.setTitle(title);
+        alertDialog.setMessage(message);
+        alertDialog.setCancelable(false);
+        // Setting alert dialog icon
+        if(status != null)
+            alertDialog.setIcon((status) ? R.drawable.success : R.drawable.fail);
+
+        // Setting OK Button
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                //CHECK CONNECTION
+                ConnectionDetector cd = new ConnectionDetector(getApplicationContext());
+                if (! cd.isConnectingToInternet()) {
+                    Log.d(LOG_TAG,"Connectivity is not Ok. Show Alert...");
+                    showAlertDialog(SplashScreen.this, getString(R.string.internet_connection_error_title),
+                            getString(R.string.internet_connection_error_label), false);
+                } else {
+                    on_create_after_checking_connection();
+                }
+
+            }
+        });
+
+        // Setting Config
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "Configuració", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+
+                //Offer user the possibility to change wifi/network settings:
+                //http://acacha.org/mediawiki/index.php/Android_HTTP#Comprovar_la_connexi.C3.B3_de_xarxa
+                //Intent intent = new Intent(Intent.ACTION_MAIN);
+                //intent.setClassName("com.android.settings", "com.android.settings.wifi.WifiSettings");
+                //startActivity(intent);
+
+                //Para abrir la configuración de datos móviles:
+                //Intent intent = new Intent();
+                //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                //intent.setAction(android.provider.Settings.ACTION_DATA_ROAMING_SETTINGS);
+                //startActivity(intent);
+
+                //Intent intent = new Intent(Intent.ACTION_MAIN);
+                //intent.setClassName("com.android.settings", "com.android.settings.wifi.WifiSettings");
+                //startActivity(intent);
+
+                Intent intent = new Intent();
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.setAction(android.provider.Settings.ACTION_DATA_ROAMING_SETTINGS);
+                startActivity(intent);
+            }
+        });
+
+        // Showing Alert Message
+        alertDialog.show();
+    }
 
     @Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -71,32 +139,18 @@ public class SplashScreen extends Activity {
         //CHECK CONNECTION
         ConnectionDetector cd = new ConnectionDetector(this);
         if (! cd.isConnectingToInternet()) {
-            //TODO: Show Alert
-
             // Internet Connection is not present
-            alert.showAlertDialog(SplashScreen.this, getString(R.string.internet_connection_error_title),
-                    getString(R.string.internet_connection_error_label), false);
-
-            //Offer user the possibility to change wifi/network settings:
-            //http://acacha.org/mediawiki/index.php/Android_HTTP#Comprovar_la_connexi.C3.B3_de_xarxa
-            //Intent intent = new Intent(Intent.ACTION_MAIN);
-            //intent.setClassName("com.android.settings", "com.android.settings.wifi.WifiSettings");
-            //startActivity(intent);
-
-            //Para abrir la configuración de datos móviles:
-            //Intent intent = new Intent();
-            //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            //intent.setAction(android.provider.Settings.ACTION_DATA_ROAMING_SETTINGS);
-            //startActivity(intent);
-
-            Intent intent = new Intent(Intent.ACTION_MAIN);
-            intent.setClassName("com.android.settings", "com.android.settings.wifi.WifiSettings");
-            startActivity(intent);
+            Log.d(LOG_TAG,"Connectivity is not Ok. Show Alert...");
+            showAlertDialog(SplashScreen.this, getString(R.string.internet_connection_error_title),
+            getString(R.string.internet_connection_error_label), false);
         } else {
             Log.d(LOG_TAG,"Connectivity is Ok. Continue execution...");
+            on_create_after_checking_connection();
         }
         //END CHECK CONNECTION
+    }
 
+    private void on_create_after_checking_connection() {
         //First of all try to get AuthToken. But first we need to know wif we have accounts and if
         //one of these accounts are for account_name stored in shared preference.
         // IF not continue execution
@@ -134,7 +188,7 @@ public class SplashScreen extends Activity {
         //get AuthToken
         //AsyncTask: We have to wait task to finish to continue execution:
         //  See postExecute of AsyncTask
-            //future could not be used at UI thread!
+        //future could not be used at UI thread!
         try {
             final AccountManagerFuture<Bundle> future =
                     mAccountManager.getAuthToken(availableAccounts[account_position],
@@ -149,8 +203,73 @@ public class SplashScreen extends Activity {
             Log.d(LOG_TAG,"Error getting account manager info. Continue Execution");
             continue_execution(null);
         }
+    }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d(LOG_TAG,"onStop executed!");
+        if (alertDialog !=null) {
+            alertDialog.dismiss();
+        }
+    }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d(LOG_TAG,"onDestroy executed!");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d(LOG_TAG,"OnPause executed!");
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d(LOG_TAG,"onActivityResult executed!");
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.d(LOG_TAG,"onRestart executed!");
+
+        //CHECK CONNECTION AGAIN
+        ConnectionDetector cd = new ConnectionDetector(getApplicationContext());
+        if (! cd.isConnectingToInternet()) {
+            Log.d(LOG_TAG,"Connectivity is not Ok. Show Alert...");
+            showAlertDialog(SplashScreen.this, getString(R.string.internet_connection_error_title),
+                    getString(R.string.internet_connection_error_label), false);
+        } else {
+            on_create_after_checking_connection();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(LOG_TAG,"onResume executed!");
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d(LOG_TAG,"onStart executed!");
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        Log.d(LOG_TAG,"onPostResume executed!");
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        Log.d(LOG_TAG,"onPostCreate executed!");
     }
 
     private void wait_and_show_splash_screen(boolean download_initial_data) {

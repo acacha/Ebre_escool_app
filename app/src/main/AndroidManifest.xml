@@ -98,6 +98,21 @@
             android:name=".managment.ManagmentActivity"
             android:label="@string/title_activity_managment" >
         </activity>
+        <activity
+            android:name=".initial_settings.SignUpActivity"
+            android:label="@string/title_activity_sign_up"
+            android:theme="@android:style/Theme.Holo.Light.DarkActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="org.acacha.ebre_escool.ebre_escool_app.signup"
+                    android:scheme="oauth" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
