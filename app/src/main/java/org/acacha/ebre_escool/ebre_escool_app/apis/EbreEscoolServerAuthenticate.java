@@ -49,7 +49,9 @@ public class EbreEscoolServerAuthenticate implements ServerAuthenticate{
     public static final String API_KEY = "f8314111f3d35058584b37361dbde919";
 
     @Override
-    public String userSignUp(String name, String email, String pass, String authType) throws Exception {
+    public com.squareup.okhttp.Response
+        userSignUp( String givenName, String last_name,
+                    String username,  String email, String pass, String authType) throws Exception {
         //TODO
         /*
         String url = "https://api.parse.com/1/users";
@@ -87,8 +89,8 @@ public class EbreEscoolServerAuthenticate implements ServerAuthenticate{
         */
 
         //TODO
-        String authtoken = "";
-        return authtoken;
+        com.squareup.okhttp.Response response = null;
+        return response;
     }
 
     @Override

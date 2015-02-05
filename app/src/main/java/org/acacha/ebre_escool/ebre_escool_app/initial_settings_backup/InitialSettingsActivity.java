@@ -1,4 +1,4 @@
-package org.acacha.ebre_escool.ebre_escool_app.initial_settings;
+package org.acacha.ebre_escool.ebre_escool_app.initial_settings_backup;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -258,6 +258,7 @@ public class InitialSettingsActivity extends FragmentActivity implements
         ab.setTitle(getString(R.string.initial_settings_action_bar_title));
         ab.setSubtitle(getString(R.string.initial_settings_action_bar_subtitle));
 
+        Class next_activity = null;
         mSettings = PreferenceManager.getDefaultSharedPreferences(this);
 
        	//GOOGLE
@@ -378,7 +379,6 @@ public class InitialSettingsActivity extends FragmentActivity implements
         setAccountAuthenticatorResult(intent.getExtras());
         setResult(RESULT_OK, intent);
 
-        //finish();
     }
 	
 	private void onSessionStateChange(Session session, SessionState state, Exception exception) {

@@ -6,6 +6,8 @@
     <string name="action_settings">Configuració</string>
     <string name="controlLogin">Iniciar Sessió</string>
     <string name="btnControlLogin">Entrar</string>
+    <string name="registerlink"> registra\'t aquí!</string>
+    <string name="registerlink_label">Ets nou? </string>
     <string name="rememberUser">Recordar</string>
     <string name="username">Nom Usuari</string>
     <string name="password">Contrasenya</string>
@@ -45,6 +47,7 @@
     <string name="title_activity_main">Ebre-escool</string>
     <string name="title_section1">Secció 1</string>
     <string name="title_section2">Secció 2</string>
+    <string name="title_section_managment">Manteniments</string>
     <string name="title_section3">Revocar accés</string>
     <string name="title_section4">Sortir</string>
     <string name="navigation_drawer_open">Obrir el calaix de navegació</string>
@@ -64,21 +67,51 @@
     <string name="wizard_previous">Anterior</string>
     <string name="wizard_finish">Finalitzar</string>
     <string name="choose_a_school">Escolliu el vostre centre</string>
-
     <string name="initial_settings_action_bar_title">Ebre-escool</string>
     <string name="initial_settings_action_bar_subtitle">Assistent configuració inicial</string>
-
     <string name="preferences_label">Ebreescool. Preferències</string>
     <string name="preferences_sublabel">Modifica les preferències</string>
     <string name="preferences_sublabel_summary">Preferències de l\'aplicació ebre_escool</string>
-
     <string name="user_not_found_label">Usuari no trobat!</string>
     <string name="password_incorrect_label">Password incorrecte!</string>
     <string name="login_ok_label">Login correcte!</string>
-
     <string name="internet_connection_error_title">Error de connexió a Internet!</string>
     <string name="internet_connection_error_label">Si us plau activeu la connexió a Internet abans de continuar</string>
-
     <string name="action_initial_settings_wizard">Configuració inicial</string>
+    <string name="title_activity_managment">ManagmentActivity</string>
+
+    <!-- MANAGMENT ACTIVITY -->
+    <string name="managment_title_section1_profe">Exemple buit (Profe)</string>
+    <string name="managment_title_section2_enrollments">Matrícules (Albert)</string>
+    <string name="managment_title_section3_persons">Persones (Nico)</string>
+    <string name="managment_title_section4_classroom_groups">Grups de classe (Rafael)</string>
+    <string name="managment_title_section5_teachers">Professors (Iván)</string>
+    <string name="managment_title_section6_users">Usuaris (Dorian)</string>
+    <string name="managment_title_section7_incidents">Incidències (Liviu)</string>
+    <string name="managment_title_section8_study_submodules">UFs (Alex)</string>
+    <string name="managment_title_section9_lessons">Lliçons (Marc)</string>
+    <string name="managment_title_section10_employees">Empleats (Paolo)</string>
+    <string name="managment_title_section11_comeback">Tornar</string>
+    <string name="hello_blank_fragment_example_profe">Fragment exemple profe</string>
+    <string name="incorrect_school_data_title">Dades del centre incorrectes o incompletes</string>
+    <string name="incorrect_school_data_label">Si us plau informeu al administrador</string>
+    <string name="notvalid_login_url">La URL de login ("%1$s") no és vàlida o és incorrecte</string>
+    <string name="notvalid_api_url">La API URL ("%1$s") no existeix o no és correcte</string>
+    <string name="username_required">El camp usuari és obligatori</string>
+    <string name="password_required">El camp password és obligatori</string>
+    <string name="title_activity_sign_up">SignUpActivity</string>
+    <string name="signUpTitle">Creeu un compte</string>
+    <string name="first_name">Nom</string>
+    <string name="last_name">Cognoms</string>
+    <string name="email">Email</string>
+    <string name="btnSignUp">Crear compte</string>
+    <string name="sign_up_with_google">Crear amb Google</string>
+    <string name="sign_up_with_facebook">Crear amb Facebook</string>
+    <string name="sign_up_with_twitter">Crear amb Twitter</string>
+    <string name="response_code_200">Response code 200. Login OK!</string>
+    <string name="invalid_google_email">Error: No s\'ha obtingut cap email de Google. Proveu d\'entrar utilitzant un altre mètode</string>
+    <string name="twitter_oauth_error_title">Twitter oAuth tokens</string>
+    <string name="twitter_oauth_error_label">Please set your twitter oauth tokens first!</string>
+    <string name="loginlink">Ja tens un usuari?</string>
 
 </resources>
