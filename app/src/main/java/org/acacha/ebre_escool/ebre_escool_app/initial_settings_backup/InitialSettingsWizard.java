@@ -1,4 +1,4 @@
-package org.acacha.ebre_escool.ebre_escool_app.initial_settings;
+package org.acacha.ebre_escool.ebre_escool_app.initial_settings_backup;
 
 
 import android.content.Intent;
