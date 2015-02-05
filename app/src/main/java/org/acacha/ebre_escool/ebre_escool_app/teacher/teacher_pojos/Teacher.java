@@ -9,7 +9,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 
-public class GetTeacher {
+public class Teacher {
 
     @Expose
     private String id;
