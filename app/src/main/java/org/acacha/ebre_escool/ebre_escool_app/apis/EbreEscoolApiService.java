@@ -19,5 +19,4 @@ public interface EbreEscoolApiService {
     @GET("/school/{id}")
     void school(Callback<School> cb, @Path("id") String id);
 
-
 }

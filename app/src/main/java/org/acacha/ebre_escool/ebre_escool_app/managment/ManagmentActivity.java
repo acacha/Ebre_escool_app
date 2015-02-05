@@ -77,7 +77,7 @@ public class ManagmentActivity extends ActionBarActivity
                 break;
             case 3:
                 //managment_title_section4_classroom_groups
-                fragment = (Fragment) new FragmentBase();
+                fragment = (Fragment) new Managment_title_section4_classroom_groups();
                 break;
             case 4:
                 //managment_title_section5_teachers
