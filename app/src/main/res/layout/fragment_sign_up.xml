@@ -62,7 +62,7 @@
 
 
             <EditText
-                android:id="@+id/password"
+                android:id="@+id/sign_up_password"
                 android:layout_width="262dp"
                 android:layout_height="match_parent"
                 android:hint="@string/password"
@@ -73,7 +73,7 @@
                  />
 
             <Button
-                android:id="@+id/btnPersonalLogin"
+                android:id="@+id/btnPersonalSignUp"
                 android:layout_width="wrap_content"
                 android:layout_height="24dp"
                 android:layout_gravity="center_horizontal"
@@ -85,6 +85,19 @@
                 android:layout_marginBottom="3dp"
                 android:textColor="#FFFFFF" />
 
+            <TextView android:id="@+id/link_to_login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/loginlink"
+                android:layout_marginLeft="3dp"
+                android:textSize="15dip"
+                android:textColor="#3B96CE"
+                android:textIsSelectable="true"
+                android:textStyle="bold"
+                android:layout_gravity="center_horizontal"
+                android:clickable="true"
+                android:focusable="false"/>
+
 
         </LinearLayout>
 
@@ -95,10 +108,11 @@
             android:background="@drawable/linearlayout_bg"
             android:padding="10dp"
             android:layout_centerInParent="true"
-            android:layout_centerHorizontal="true">
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal">
 
             <Button
-                android:id="@+id/btn_google_sign_in"
+                android:id="@+id/btn_google_sign_up"
                 style="@style/ButtonText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -111,7 +125,8 @@
                 android:text="@string/sign_up_with_google" />
 
             <com.facebook.widget.LoginButton
-                android:id="@+id/facebook_login_button"
+                xmlns:fb="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/btn_facebook_sign_up"
                 style="@style/ButtonText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -121,11 +136,13 @@
                 android:paddingLeft="30dp"
                 android:paddingRight="10dp"
                 android:paddingTop="10dp"
-                android:text="@string/sign_up_with_facebook"
+                fb:login_text="@string/sign_up_with_facebook"
+                fb:logout_text="@string/sign_up_with_facebook"
                 />
 
+            <!-- Twitter not provides user email then not very useful!
             <Button
-                android:id="@+id/btn_twitter_sign_in"
+                android:id="@+id/btn_twitter_sign_up"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="10dp"
@@ -136,7 +153,7 @@
                 android:background="@drawable/layers_twitter_button_bg"
                 android:text="@string/sign_up_with_twitter"
                 style="@style/ButtonText"
-                />
+                /> -->
         </LinearLayout>
     </LinearLayout>
 

@@ -93,7 +93,9 @@
                 android:textSize="15dip"
                 android:textColor="#3B96CE"
                 android:textIsSelectable="true"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:clickable="true"
+                android:focusable="false"/>
 
         </LinearLayout>
 
