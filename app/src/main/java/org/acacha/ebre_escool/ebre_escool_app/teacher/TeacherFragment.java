@@ -4,11 +4,25 @@ import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.Toast;
+
+import com.google.gson.Gson;
 
 import org.acacha.ebre_escool.ebre_escool_app.R;
+import org.acacha.ebre_escool.ebre_escool_app.teacher.teacher_pojos.Teacher;
+
+import java.util.List;
+
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,6 +43,14 @@ public class TeacherFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    ////Teacher fields//////////////////////
+    private ListView list;
+    private RestAdapter adapter;
+    public static final String ENDPOINT = "http://185.13.76.85:8769/ebre-escool/index.php/criminal/api/hell";
+    //To get teachers/teacher
+    private List<Teacher> teachersList;
+    private String TAG = "tag";
 
     /**
      * Use this factory method to create a new instance of
@@ -65,7 +87,11 @@ public class TeacherFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_teacher, container, false);
+       View view = inflater.inflate(R.layout.fragment_teacher, container, false);
+        //Get the listview
+        ListView teacherList = (ListView) view.findViewById(R.id.list);
+
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -84,6 +110,11 @@ public class TeacherFragment extends Fragment {
             throw new ClassCastException(activity.toString()
                     + " must implement OnFragmentInteractionListener");
         }
+        //set rest adapter
+        adapter = new RestAdapter.Builder()
+                .setEndpoint(ENDPOINT).build();
+        getAllTeachers();
+
     }
 
     @Override
@@ -91,6 +122,54 @@ public class TeacherFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
+    //Execute retrofit getTeachers method
+    private void getAllTeachers(){
+
+        Log.d(TAG, "En el método requestData()");
+
+        //now get the interface declared methods using this adapter
+        RetrofitApiService api = adapter.create(RetrofitApiService.class);
+        api.getTeachers(new Callback<List<Teacher>>() {
+            @Override
+            public void success(List<Teacher> teachers, Response response) {
+                Log.d(TAG,"En el success");
+                teachersList=teachers;
+                updateDisplay();
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Toast.makeText(getActivity(),error.toString(),Toast.LENGTH_LONG).show();
+
+            }
+        });
+
+    }
+    //Fill listview
+    protected void updateDisplay() {
+        if (teachersList != null) {
+            Gson gson = new Gson();
+            String string = gson.toJson(teachersList);
+            Teacher[] arrayTeacher = gson.fromJson(string, Teacher[].class);
+            list.setAdapter(new ArrayAdapter<Teacher>(getActivity(), android.R.layout.simple_list_item_1,
+                    android.R.id.text1, arrayTeacher));
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     /**
      * This interface must be implemented by activities that contain this
