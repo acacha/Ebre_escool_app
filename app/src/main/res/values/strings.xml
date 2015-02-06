@@ -81,7 +81,7 @@
 
     <!-- MANAGMENT ACTIVITY -->
     <string name="managment_title_section1_profe">Exemple buit (Profe)</string>
-    <string name="managment_title_section1_alumne">Exemple Nicolae (alumne)</string>
+    <string name="managment_title_section1_alumne">Exemple persones (Nicolae)</string>
     <string name="managment_title_section2_enrollments">Matrícules (Albert)</string>
     <string name="managment_title_section3_persons">Persones (Nico)</string>
     <string name="managment_title_section4_classroom_groups">Grups de classe (Rafael)</string>
