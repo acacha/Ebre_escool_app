@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.facebook.widget.LoginButton;
@@ -25,23 +26,22 @@ import com.google.gson.Gson;
 import org.acacha.ebre_escool.ebre_escool_app.R;
 import org.acacha.ebre_escool.ebre_escool_app.pojos.School;
 import org.acacha.ebre_escool.ebre_escool_app.settings.SettingsActivity;
-import org.codepond.wizardroid.WizardStep;
 
 /**
- * A simple {@link Fragment} subclass. Activities that contain this fragment
+ * A simple {@link android.support.v4.app.Fragment} subclass. Activities that contain this fragment
  * must implement the
- * {@link InitialSettingsStep2Login.OnFragmentInteractionListener} interface to
- * handle interaction events. Use the {@link InitialSettingsStep2Login#newInstance}
+ * {@link SignUpActivityFragment.OnFragmentInteractionListener} interface to
+ * handle interaction events. Use the {@link SignUpActivityFragment#newInstance}
  * factory method to create an instance of this fragment.
- * 
+ *
  */
-public class InitialSettingsStep2Login extends WizardStep {
+public class SignUpActivityFragment extends Fragment {
 
     //Look up for shared preferences
-    final String LOG_TAG = "InitialSettingsStep2Login";
-	
-	private LoginButton loginButton;
-	
+    final String LOG_TAG = "SignUpActivityFragment";
+
+	private LoginButton btnFacebookSignUp;
+
 	// TODO: Rename parameter arguments, choose names that match
 	// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 	private static final String ARG_PARAM1 = "param1";
@@ -53,13 +53,13 @@ public class InitialSettingsStep2Login extends WizardStep {
 
 	private OnFragmentInteractionListener mListener;
 
-    private InitialSettingsActivity mActivity;
-	
-	private Button btnGoogleSignIn;
+    private SignUpActivity mActivity;
 
-	private Button btnLoginTwitter;
+	private Button btnGoogleSignUp;
 
-    private Button btnLoginForm;
+	private Button btnTwitterSignup;
+
+    private Button btnSignupForm;
 
     private TextView tvLinkToRegister;
 
@@ -67,13 +67,21 @@ public class InitialSettingsStep2Login extends WizardStep {
 
     private School[] mSchools;
 
+    private AutoCompleteTextView givenname;
+
+    private AutoCompleteTextView lastname;
+
+    private AutoCompleteTextView email;
+
+    private EditText password;
+
     //settings
     private SharedPreferences settings;
 
 	/**
 	 * Use this factory method to create a new instance of this fragment using
 	 * the provided parameters.
-	 * 
+	 *
 	 * @param param1
 	 *            Parameter 1.
 	 * @param param2
@@ -81,14 +89,46 @@ public class InitialSettingsStep2Login extends WizardStep {
 	 * @return A new instance of fragment LoginActivityFragment.
 	 */
 	// TODO: Rename and change types and number of parameters
-	public static InitialSettingsStep2Login newInstance(String param1, String param2) {
-		InitialSettingsStep2Login fragment = new InitialSettingsStep2Login();
+	public static SignUpActivityFragment newInstance(String param1, String param2) {
+		SignUpActivityFragment fragment = new SignUpActivityFragment();
 		Bundle args = new Bundle();
 		args.putString(ARG_PARAM1, param1);
 		args.putString(ARG_PARAM2, param2);
 		fragment.setArguments(args);
 		return fragment;
 	}
+
+    public AutoCompleteTextView getEmail() {
+        return email;
+    }
+
+    public void setEmail(AutoCompleteTextView email) {
+        this.email = email;
+    }
+
+    public AutoCompleteTextView getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(AutoCompleteTextView lastname) {
+        this.lastname = lastname;
+    }
+
+    public AutoCompleteTextView getGivenname() {
+        return givenname;
+    }
+
+    public void setGivenname(AutoCompleteTextView givenname) {
+        this.givenname = givenname;
+    }
+
+    public EditText getPassword() {
+        return password;
+    }
+
+    public void setPassword(EditText password) {
+        this.password = password;
+    }
 
     public School[] getSchools() {
         return mSchools;
@@ -98,7 +138,7 @@ public class InitialSettingsStep2Login extends WizardStep {
         this.mSchools = mSchools;
     }
 
-    public InitialSettingsStep2Login() {
+    public SignUpActivityFragment() {
 		// Required empty public constructor
 	}
 
@@ -115,29 +155,37 @@ public class InitialSettingsStep2Login extends WizardStep {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
-		View view = inflater.inflate(R.layout.fragment_login_activity, container,
+		View view = inflater.inflate(R.layout.fragment_sign_up, container,
 				false);
 
-        Log.d("InitialSettingsStep2Login", "FRAGMENT ID: " + getId());
+        Log.d("SignUpActivityFragment", "FRAGMENT ID: " + getId());
 		
-		btnGoogleSignIn = (Button) view.findViewById(R.id.btn_google_sign_in);
+		btnGoogleSignUp = (Button) view.findViewById(R.id.btn_google_sign_up);
 		
 		// Button click listeners
-		btnGoogleSignIn.setOnClickListener((OnClickListener) getActivity());
+		btnGoogleSignUp.setOnClickListener((OnClickListener) getActivity());
 		
-		loginButton = (LoginButton) view.findViewById(R.id.facebook_login_button);
-        loginButton.setReadPermissions("user_friends");
-        
-        btnLoginTwitter = (Button) view.findViewById(R.id.btn_twitter_sign_in);
-		btnLoginTwitter.setOnClickListener((OnClickListener) getActivity());
+		btnFacebookSignUp = (LoginButton) view.findViewById(R.id.btn_facebook_sign_up);
+        btnFacebookSignUp.setReadPermissions("user_friends");
+        btnFacebookSignUp.setReadPermissions("email");
 
-        btnLoginForm = (Button) view.findViewById(R.id.btnPersonalLogin);
-        btnLoginForm.setOnClickListener((OnClickListener) getActivity());
+        // Twitter doesn not provides user email throught api! Left here may be in future?
+        //btnTwitterSignup = (Button) view.findViewById(R.id.btn_twitter_sign_up);
+		//btnTwitterSignup.setOnClickListener((OnClickListener) getActivity());
 
-        tvLinkToRegister = (TextView) view.findViewById(R.id.link_to_register);
+        btnSignupForm = (Button) view.findViewById(R.id.btnPersonalSignUp);
+        btnSignupForm.setOnClickListener((OnClickListener) getActivity());
+
+        tvLinkToRegister = (TextView) view.findViewById(R.id.link_to_login);
         tvLinkToRegister.setOnClickListener((OnClickListener) getActivity());
 
+        setEmail((AutoCompleteTextView) view.findViewById(R.id.email));
+        setGivenname((AutoCompleteTextView) view.findViewById(R.id.first_name));
+        setLastname((AutoCompleteTextView) view.findViewById(R.id.last_name));
+        setPassword((EditText) view.findViewById(R.id.sign_up_password));
+
         //Autocomplete username
+        /* TODO
         ArrayAdapter<String> adapter = this.getEmailAddressAdapter(getActivity());
 
         AutoCompleteTextView textView = (AutoCompleteTextView) view.findViewById(R.id.username);
@@ -148,6 +196,7 @@ public class InitialSettingsStep2Login extends WizardStep {
 
         // Se establece el Adapter
         textView.setAdapter(adapter);
+
 
         //Get account name from shared preferences settings
         settings = PreferenceManager.getDefaultSharedPreferences(getActivity());
@@ -194,6 +243,7 @@ public class InitialSettingsStep2Login extends WizardStep {
         if (proposedValue != null) {
             textView.setText(proposedValue);
         }
+        */
 
 		return view;
 	}
@@ -225,13 +275,11 @@ public class InitialSettingsStep2Login extends WizardStep {
 		}
 
         try{
-            mActivity = (InitialSettingsActivity) activity;
+            mActivity = (SignUpActivity) activity;
         }catch(ClassCastException e){
             e.printStackTrace();
-            //throw new ClassCastException(activity.toString() +" must be a InitialSettingsActivity");
+            //throw new ClassCastException(activity.toString() +" must be a SignUpActivity");
         }
-
-        mActivity.setLogin_fragment(this);
 
 	}
 
@@ -253,7 +301,7 @@ public class InitialSettingsStep2Login extends WizardStep {
 	 * fragment to allow an interaction in this fragment to be communicated to
 	 * the activity and potentially other fragments contained in that activity.
 	 * <p>
-	 * See the Android Training fragment_lesson <a href=
+	 * See the Android Training lesson <a href=
 	 * "http://developer.android.com/training/basics/fragments/communicating.html"
 	 * >Communicating with Other Fragments</a> for more information.
 	 */
