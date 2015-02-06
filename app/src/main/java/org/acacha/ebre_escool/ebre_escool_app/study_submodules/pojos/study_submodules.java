@@ -1,4 +1,4 @@
-package org.acacha.ebre_escool.ebre_escool_app.study_submodules.studysubmodules_pojos;
+package org.acacha.ebre_escool.ebre_escool_app.study_submodules.pojos;
 
 /**
  * Created by alex on 05/02/15.
