@@ -1,6 +1,8 @@
 package org.acacha.ebre_escool.ebre_escool_app.teacher;
 
 import android.app.Activity;
+import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,19 +12,29 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 
 import org.acacha.ebre_escool.ebre_escool_app.R;
+import org.acacha.ebre_escool.ebre_escool_app.settings.SettingsActivity;
 import org.acacha.ebre_escool.ebre_escool_app.teacher.teacher_pojos.Teacher;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import it.gmariotti.cardslib.library.internal.Card;
+import it.gmariotti.cardslib.library.internal.CardArrayAdapter;
+import it.gmariotti.cardslib.library.internal.CardExpand;
+import it.gmariotti.cardslib.library.internal.CardHeader;
+import it.gmariotti.cardslib.library.view.CardListView;
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+
+import static org.acacha.ebre_escool.ebre_escool_app.R.color.wallet_holo_blue_light;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -45,12 +57,13 @@ public class TeacherFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     ////Teacher fields//////////////////////
-    private ListView list;
+    private CardListView list;
     private RestAdapter adapter;
     public static final String ENDPOINT = "http://185.13.76.85:8769/ebre-escool/index.php/criminal/api/hell";
     //To get teachers/teacher
     private List<Teacher> teachersList;
     private String TAG = "tag";
+    CardArrayAdapter mCardArrayAdapter;
 
     /**
      * Use this factory method to create a new instance of
@@ -88,8 +101,8 @@ public class TeacherFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
        View view = inflater.inflate(R.layout.fragment_teacher, container, false);
-        //Get the listview
-        ListView teacherList = (ListView) view.findViewById(R.id.list);
+
+
 
         return view;
     }
@@ -151,25 +164,61 @@ public class TeacherFragment extends Fragment {
             Gson gson = new Gson();
             String string = gson.toJson(teachersList);
             Teacher[] arrayTeacher = gson.fromJson(string, Teacher[].class);
-            list.setAdapter(new ArrayAdapter<Teacher>(getActivity(), android.R.layout.simple_list_item_1,
-                    android.R.id.text1, arrayTeacher));
+            //list.setAdapter(new ArrayAdapter<Teacher>(getActivity(), android.R.layout.simple_list_item_1,
+            //      android.R.id.text1, arrayTeacher));
+            //create cards
+            ArrayList<Card> cards = new ArrayList<Card>();
+            for (int i = 0; i < arrayTeacher.length; i++) {
+                Log.d(TAG, arrayTeacher[i].getId());
+                // Create a Card
+                Card card_on_list = new Card(getActivity());
+
+                // Create a CardHeader and add Header to card_on_list
+                CardHeader header = new CardHeader(getActivity());
+                header.setTitle("Teacher "+arrayTeacher[i].getId());
+                header.setButtonExpandVisible(true);
+                card_on_list.addCardHeader(header);
+
+                card_on_list.setId(arrayTeacher[i].getId());
+                card_on_list.setTitle("DNI/NIF\n"+arrayTeacher[i].getDNINIF());
+                card_on_list.setClickable(true);
+                card_on_list.setShadow(true);
+               CustomExpandCard expand= new CustomExpandCard(getActivity(),arrayTeacher[i]);
+                card_on_list.addCardExpand(expand);
+                //card_on_list.setBackgroundColorResourceId(R.color.Silver);==>this don't works
+                card_on_list.setOnClickListener(new Card.OnCardClickListener() {
+                    @Override
+                    public void onClick(Card card, View view) {
+                        Log.d(TAG, "Clickable card id: " + card.getId());
+                        //Toast.makeText(getActivity(), "Clickable card id: " + card.getId(), Toast.LENGTH_LONG).show();
+                        int position = mCardArrayAdapter.getPosition(card);
+                        list.setItemChecked(position, true);
+                        //) settings.edit().putString(SettingsActivity.SCHOOLS_LIST_KEY, Integer.toString(position)).apply();
+
+
+                    }
+
+                });
+                cards.add(card_on_list);
+            }
+
+            mCardArrayAdapter = new CardArrayAdapter(getActivity(), cards );
+            list = (CardListView) getActivity().findViewById(R.id.teachersList);
+            if (list != null) {
+               list.setAdapter(mCardArrayAdapter);
+                //list.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+                //GET FROM SETTINGS WHICH SCHOOL IS USED IN SETTINGS
+
+                String current_selected_teacher = arrayTeacher[0].getId().toString();
+
+                Log.d(TAG,"Getted current selected school: " + current_selected_teacher);
+
+                //list.setItemChecked(Integer.parseInt(current_selected_teacher), true);
+
+
+            }
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     /**
      * This interface must be implemented by activities that contain this
@@ -185,5 +234,84 @@ public class TeacherFragment extends Fragment {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
     }
+
+    public class CustomExpandCard extends CardExpand {
+        //We send an object teacher to fill text views
+          private Teacher teacher;
+        //Use your resource ID for your inner layout
+        public CustomExpandCard(Context context,Teacher teacher) {
+            super(context, R.layout.teacher_card_expand);
+            this.teacher = teacher;
+        }
+
+        @Override
+        public void setupInnerViewElements(ViewGroup parent, View view) {
+
+            if (view == null) return;
+
+            //Retrieve TextView elements
+            TextView id = (TextView) view.findViewById(R.id.contentId);
+            TextView personId = (TextView) view.findViewById(R.id.contentPersonId);
+            TextView userId = (TextView) view.findViewById(R.id.contentUserId);
+            TextView entryDate = (TextView) view.findViewById(R.id.contentEntryDate);
+            TextView lastUpdate = (TextView) view.findViewById(R.id.contentLastUpdate);
+            TextView lastUpdateUserId = (TextView) view.findViewById(R.id.contentLastUpdateUserId);
+            TextView creatorId = (TextView) view.findViewById(R.id.contentCreatorId);
+            TextView markedForDeletion = (TextView) view.findViewById(R.id.contentMarkedForDeletion);
+            TextView markedForDeletionDate = (TextView) view.findViewById(R.id.contentMarkedForDeletionDate);
+            TextView dniNif = (TextView) view.findViewById(R.id.contentDniNif);
+
+            //Set value in text views
+            if (id != null) {
+                id.setText("ID:"+teacher.getId());
+            }
+
+            if (personId != null) {
+                personId.setText("Person ID:" + teacher.getPersonId());
+            }
+            if (userId!= null) {
+                userId.setText("User ID:" + teacher.getUserId());
+            }
+            if (entryDate != null) {
+                entryDate.setText("Entry Date:" + teacher.getEntryDate());
+            }
+            if (lastUpdate != null) {
+                lastUpdate.setText("Last Update:" + teacher.getLastUpdate());
+            }
+            if (lastUpdateUserId != null) {
+                lastUpdateUserId.setText("Last Update user ID:" + teacher.getLastUpdateUserId());
+            }
+            if (creatorId != null) {
+                creatorId.setText("Creator ID:" + teacher.getCreatorId());
+            }
+            if (markedForDeletion != null) {
+                markedForDeletion.setText("Marked For Deletion:" + teacher.getMarkedForDeletion());
+            }
+            if (markedForDeletionDate != null) {
+                markedForDeletionDate.setText("Marked For Deletion Date:"+teacher.getMarkedForDeletionDate());
+            }
+            if (dniNif != null) {
+                dniNif.setText("DNI/NIF:" + teacher.getDNINIF());
+            }
+            int color = Color.argb(255,255, 255, 0);
+            //parent.setBackgroundColor(mContext.getResources().getColor(R.color.material_deep_teal_500);
+            parent.setBackgroundColor(color);
+
+        }
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }
