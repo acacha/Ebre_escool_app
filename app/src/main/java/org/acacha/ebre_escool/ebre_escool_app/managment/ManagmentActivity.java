@@ -15,11 +15,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
+import android.widget.Toast;
 
 import org.acacha.ebre_escool.ebre_escool_app.MainActivity;
 import org.acacha.ebre_escool.ebre_escool_app.R;
 import org.acacha.ebre_escool.ebre_escool_app.helpers.FragmentBase;
+import org.acacha.ebre_escool.ebre_escool_app.teacher.TeacherDetail;
 import org.acacha.ebre_escool.ebre_escool_app.teacher.TeacherFragment;
+
+import it.gmariotti.cardslib.library.internal.Card;
 
 public class ManagmentActivity extends ActionBarActivity
         implements ManagmentNavigationDrawerFragment.NavigationDrawerCallbacks,
@@ -239,5 +243,14 @@ public class ManagmentActivity extends ActionBarActivity
         // TODO Auto-generated method stub
 
     }
+   public void onCardClick(int id, int position){
+       Toast.makeText(this, "Click on card:"+id+"position:"+position , Toast.LENGTH_LONG).show();
+     
+
+   }
+
+
+
+
 
 }

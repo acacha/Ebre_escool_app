@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 
 import org.acacha.ebre_escool.ebre_escool_app.R;
+import org.acacha.ebre_escool.ebre_escool_app.managment.ManagmentActivity;
 import org.acacha.ebre_escool.ebre_escool_app.settings.SettingsActivity;
 import org.acacha.ebre_escool.ebre_escool_app.teacher.teacher_pojos.Teacher;
 
@@ -28,7 +29,9 @@ import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.internal.CardArrayAdapter;
 import it.gmariotti.cardslib.library.internal.CardExpand;
 import it.gmariotti.cardslib.library.internal.CardHeader;
+import it.gmariotti.cardslib.library.internal.CardThumbnail;
 import it.gmariotti.cardslib.library.view.CardListView;
+import it.gmariotti.cardslib.library.view.CardViewNative;
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
@@ -167,7 +170,9 @@ public class TeacherFragment extends Fragment {
             //list.setAdapter(new ArrayAdapter<Teacher>(getActivity(), android.R.layout.simple_list_item_1,
             //      android.R.id.text1, arrayTeacher));
             //create cards
+
             ArrayList<Card> cards = new ArrayList<Card>();
+            String image = "http://thumbs.dreamstime.com/x/teacher-wearing-glasses-holding-pointer-22978913.jpg";
             for (int i = 0; i < arrayTeacher.length; i++) {
                 Log.d(TAG, arrayTeacher[i].getId());
                 // Create a Card
@@ -193,12 +198,18 @@ public class TeacherFragment extends Fragment {
                         //Toast.makeText(getActivity(), "Clickable card id: " + card.getId(), Toast.LENGTH_LONG).show();
                         int position = mCardArrayAdapter.getPosition(card);
                         list.setItemChecked(position, true);
-                        //) settings.edit().putString(SettingsActivity.SCHOOLS_LIST_KEY, Integer.toString(position)).apply();
-
-
+                        ((ManagmentActivity)getActivity()).onCardClick(Integer.valueOf(card.getId()), position);
                     }
 
                 });
+                //Now we add the thumbnail
+                //Create thumbnail
+                CardThumbnail thumb = new CardThumbnail(getActivity());
+                //Set URL resource
+                thumb.setUrlResource(image);
+                //Add thumbnail to a card
+                card_on_list.addCardThumbnail(thumb);
+                //add card to list
                 cards.add(card_on_list);
             }
 
@@ -293,9 +304,10 @@ public class TeacherFragment extends Fragment {
             if (dniNif != null) {
                 dniNif.setText("DNI/NIF:" + teacher.getDNINIF());
             }
-            int color = Color.argb(255,255, 255, 0);
-            //parent.setBackgroundColor(mContext.getResources().getColor(R.color.material_deep_teal_500);
-            parent.setBackgroundColor(color);
+            //int color = Color.argb(255,255, 255, 0);
+            //parent.setBackgroundColor(color);
+            parent.setBackgroundColor(mContext.getResources().getColor(R.color.Yellow));
+
 
         }
 
