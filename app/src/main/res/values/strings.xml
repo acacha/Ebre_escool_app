@@ -11,6 +11,7 @@
     <string name="rememberUser">Recordar</string>
     <string name="username">Nom Usuari</string>
     <string name="password">Contrasenya</string>
+    <string name="teacher_fragment">TEACHERS LIST</string>
 
     <style name="ButtonText">
         <item name="android:layout_width">fill_parent</item>

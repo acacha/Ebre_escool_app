@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <!-- Name Label -->
+
+
+    <!-- content -->
+    <TextView
+        android:id="@+id/contentId"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="2dip"
+        android:paddingTop="6dip"
+        android:textColor="#000000" />
+
+
+     <!-- content -->
+    <TextView
+        android:id="@+id/contentPersonId"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="2dip"
+        android:paddingTop="6dip"
+        android:textColor="#000000"/>
+
+
+    <!-- content -->
+    <TextView
+        android:id="@+id/contentUserId"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="2dip"
+        android:paddingTop="6dip"
+        android:textColor="#000000" />
+
+
+    <!-- content -->
+    <TextView
+        android:id="@+id/contentEntryDate"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="2dip"
+        android:paddingTop="6dip"
+        android:textColor="#000000" />
+
+    <!-- content -->
+    <TextView
+        android:id="@+id/contentLastUpdate"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="2dip"
+        android:paddingTop="6dip"
+        android:textColor="#000000" />
+
+    <!-- content -->
+    <TextView
+        android:id="@+id/contentLastUpdateUserId"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="2dip"
+        android:paddingTop="6dip"
+        android:textColor="#000000" />
+
+
+    <!-- content -->
+    <TextView
+        android:id="@+id/contentCreatorId"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="2dip"
+        android:paddingTop="6dip"
+        android:textColor="#000000" />
+
+
+    <!-- content -->
+    <TextView
+        android:id="@+id/contentMarkedForDeletion"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="2dip"
+        android:paddingTop="6dip"
+        android:textColor="#000000" />
+
+
+    <!-- content -->
+    <TextView
+        android:id="@+id/contentMarkedForDeletionDate"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="2dip"
+        android:paddingTop="6dip"
+        android:textColor="#000000" />
+
+    <!-- content -->
+    <TextView
+        android:id="@+id/contentDniNif"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="2dip"
+        android:paddingTop="6dip"
+        android:textColor="#000000" />
+
+</LinearLayout>
+
