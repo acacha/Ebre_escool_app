@@ -20,10 +20,11 @@ import org.acacha.ebre_escool.ebre_escool_app.MainActivity;
 import org.acacha.ebre_escool.ebre_escool_app.R;
 import org.acacha.ebre_escool.ebre_escool_app.helpers.FragmentBase;
 import org.acacha.ebre_escool.ebre_escool_app.helpers.FragmentPerson;
+import org.acacha.ebre_escool.ebre_escool_app.helpers.OnFragmentInteractionListener;
 
 public class ManagmentActivity extends ActionBarActivity
         implements ManagmentNavigationDrawerFragment.NavigationDrawerCallbacks,
-        FragmentBase.OnFragmentInteractionListener, FragmentPerson.OnFragmentInteractionListener {
+        OnFragmentInteractionListener {
 
     private final static String TAG = "ManagmentActivity";
 
