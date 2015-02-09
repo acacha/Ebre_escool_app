@@ -253,7 +253,7 @@ public class InitialSettingsStep2Login extends WizardStep {
 	 * fragment to allow an interaction in this fragment to be communicated to
 	 * the activity and potentially other fragments contained in that activity.
 	 * <p>
-	 * See the Android Training lesson <a href=
+	 * See the Android Training fragment_lesson <a href=
 	 * "http://developer.android.com/training/basics/fragments/communicating.html"
 	 * >Communicating with Other Fragments</a> for more information.
 	 */
