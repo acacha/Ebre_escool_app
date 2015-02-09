@@ -1,4 +1,4 @@
-package org.acacha.ebre_escool.ebre_escool_app.managment;
+package org.acacha.ebre_escool.ebre_escool_app.classroom_group;
 
 import android.app.Activity;
 import android.net.Uri;
@@ -19,7 +19,7 @@ import org.acacha.ebre_escool.ebre_escool_app.helpers.FragmentBase;
  * this fragment.
  *
  */
-public class Managment_title_section4_classroom_groups extends Fragment {
+public class FragmentClassroomGroup extends Fragment {
 	// TODO: Rename parameter arguments, choose names that match
 	// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 	private static final String ARG_PARAM1 = "param1";
@@ -42,8 +42,8 @@ public class Managment_title_section4_classroom_groups extends Fragment {
 	 * @return A new instance of fragment FragmentType0.
 	 */
 	// TODO: Rename and change types and number of parameters
-	public static Managment_title_section4_classroom_groups newInstance(String param1, String param2) {
-        Managment_title_section4_classroom_groups fragment = new Managment_title_section4_classroom_groups();
+	public static FragmentClassroomGroup newInstance(String param1, String param2) {
+        FragmentClassroomGroup fragment = new FragmentClassroomGroup();
 		Bundle args = new Bundle();
 		args.putString(ARG_PARAM1, param1);
 		args.putString(ARG_PARAM2, param2);
@@ -51,7 +51,7 @@ public class Managment_title_section4_classroom_groups extends Fragment {
 		return fragment;
 	}
 
-	public Managment_title_section4_classroom_groups() {
+	public FragmentClassroomGroup() {
 		// Required empty public constructor
 	}
 
