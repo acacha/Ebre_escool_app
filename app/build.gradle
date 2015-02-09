@@ -26,7 +26,6 @@ dependencies {
     compile files('libs/twitter4j-core-4.0.2.jar')
 
     //universal-image-loader
-    
 
     //Core card library 1 stable
     //compile 'com.github.gabrielemariotti.cards:library:1.9.1'
@@ -36,15 +35,15 @@ dependencies {
 
     //CARDSLIB 2.0
     //Core
-    
+
     //Optional for built-in cards
-    
+
     //Optional for RecyclerView
-    
+
     //Optional for staggered grid view
-    
+
     //Optional for drag and drop
-    
+
     //Optional for twoway  (coming soon)
     //compile 'com.github.gabrielemariotti.cards:cardslib-extra-twoway:2.0.1'
     compile 'com.android.support:appcompat-v7:21.0.3'

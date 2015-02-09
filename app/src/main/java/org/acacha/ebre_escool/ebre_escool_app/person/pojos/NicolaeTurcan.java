@@ -1,4 +1,4 @@
-package org.acacha.ebre_escool.ebre_escool_app.lesson;
+package org.acacha.ebre_escool.ebre_escool_app.person.pojos;
 
 import android.app.Activity;
 import android.net.Uri;
@@ -10,15 +10,17 @@ import android.view.ViewGroup;
 
 import org.acacha.ebre_escool.ebre_escool_app.R;
 
+import com.google.android.gms.plus.PlusOneButton;
+
 /**
- * A simple {@link Fragment} subclass.
+ * A fragment with a Google +1 button.
  * Activities that contain this fragment must implement the
- * {@link fragment_lesson.OnFragmentInteractionListener} interface
+ * {@link NicolaeTurcan.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link fragment_lesson#newInstance} factory method to
+ * Use the {@link NicolaeTurcan#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class fragment_lesson extends Fragment {
+public class NicolaeTurcan extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -28,6 +30,14 @@ public class fragment_lesson extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    // The URL to +1.  Must be a valid URL.
+    private final String PLUS_ONE_URL = "http://developer.android.com";
+
+    // The request code must be 0 or greater.
+    private static final int PLUS_ONE_REQUEST_CODE = 0;
+
+    private PlusOneButton mPlusOneButton;
+
     private OnFragmentInteractionListener mListener;
 
     /**
@@ -36,11 +46,11 @@ public class fragment_lesson extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment fragment_lesson.
+     * @return A new instance of fragment NicolaeTurcan.
      */
     // TODO: Rename and change types and number of parameters
-    public static fragment_lesson newInstance(String param1, String param2) {
-        fragment_lesson fragment = new fragment_lesson();
+    public static NicolaeTurcan newInstance(String param1, String param2) {
+        NicolaeTurcan fragment = new NicolaeTurcan();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -48,7 +58,7 @@ public class fragment_lesson extends Fragment {
         return fragment;
     }
 
-    public fragment_lesson() {
+    public NicolaeTurcan() {
         // Required empty public constructor
     }
 
@@ -65,7 +75,21 @@ public class fragment_lesson extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_lesson, container, false);
+        View view = inflater.inflate(R.layout.fragment_person, container, false);
+
+        //Find the +1 button
+        mPlusOneButton = (PlusOneButton) view.findViewById(R.id.plus_one_button);
+
+        return view;
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        // Refresh the state of the +1 button each time the activity receives focus.
+        mPlusOneButton.initialize(PLUS_ONE_URL, PLUS_ONE_REQUEST_CODE);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -98,7 +122,7 @@ public class fragment_lesson extends Fragment {
      * to the activity and potentially other fragments contained in that
      * activity.
      * <p/>
-     * See the Android Training fragment_lesson <a href=
+     * See the Android Training lesson <a href=
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
