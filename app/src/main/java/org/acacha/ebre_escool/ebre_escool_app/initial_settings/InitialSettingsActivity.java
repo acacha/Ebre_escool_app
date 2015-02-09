@@ -264,8 +264,17 @@ public class InitialSettingsActivity extends FragmentActivity implements
 		mGoogleApiClient = new GoogleApiClient.Builder(this)
 		.addConnectionCallbacks(this)
 		.addOnConnectionFailedListener(this).addApi(Plus.API)
-		.addScope(Plus.SCOPE_PLUS_LOGIN).build();
-		
+		.addScope(Plus.SCOPE_PLUS_LOGIN).
+        build();
+
+        //TODO: Force us of accoount of domain!
+        /*mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this).addApi(Plus.API)
+                .addScope(Plus.SCOPE_PLUS_LOGIN).setAccountName("username@iesebre.com")
+                        build();
+		*/
+        
 		//FACEBOOK
 		uiHelper = new UiLifecycleHelper(this, callback);
         uiHelper.onCreate(savedInstanceState);
