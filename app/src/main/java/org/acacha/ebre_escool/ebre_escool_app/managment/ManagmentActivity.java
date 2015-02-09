@@ -21,14 +21,11 @@ import android.widget.Toast;
 import org.acacha.ebre_escool.ebre_escool_app.MainActivity;
 import org.acacha.ebre_escool.ebre_escool_app.R;
 import org.acacha.ebre_escool.ebre_escool_app.helpers.FragmentBase;
-import org.acacha.ebre_escool.ebre_escool_app.teacher.TeacherDetail;
-import org.acacha.ebre_escool.ebre_escool_app.teacher.TeacherFragment;
-
-import it.gmariotti.cardslib.library.internal.Card;
+import org.acacha.ebre_escool.ebre_escool_app.helpers.FragmentPerson;
 
 public class ManagmentActivity extends ActionBarActivity
         implements ManagmentNavigationDrawerFragment.NavigationDrawerCallbacks,
-        FragmentBase.OnFragmentInteractionListener,TeacherFragment.OnFragmentInteractionListener {
+        FragmentBase.OnFragmentInteractionListener, FragmentPerson.OnFragmentInteractionListener {
 
     private final static String TAG = "ManagmentActivity";
 
@@ -79,7 +76,8 @@ public class ManagmentActivity extends ActionBarActivity
                 break;
             case 2:
                 //managment_title_section3_persons
-                fragment = (Fragment) new FragmentBase();
+                //fragment = (Fragment) new FragmentBase();
+                fragment = (Fragment) new FragmentPerson();
                 break;
             case 3:
                 //managment_title_section4_classroom_groups
