@@ -24,7 +24,7 @@ import org.acacha.ebre_escool.ebre_escool_app.person.FragmentPerson;
 
 public class ManagmentActivity extends ActionBarActivity
         implements ManagmentNavigationDrawerFragment.NavigationDrawerCallbacks,
-        FragmentBase.OnFragmentInteractionListener, FragmentPerson.OnFragmentInteractionListener {
+        OnFragmentInteractionListener {
 
     private final static String TAG = "ManagmentActivity";
 
