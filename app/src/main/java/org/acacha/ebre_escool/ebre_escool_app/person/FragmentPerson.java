@@ -1,4 +1,4 @@
-package org.acacha.ebre_escool.ebre_escool_app.helpers;
+package org.acacha.ebre_escool.ebre_escool_app.person;
 
 import android.app.Activity;
 import android.net.Uri;
@@ -12,9 +12,9 @@ import org.acacha.ebre_escool.ebre_escool_app.R;
 
 /**
  * A simple {@link android.support.v4.app.Fragment} subclass. Activities that contain this fragment
- * must implement the {@link org.acacha.ebre_escool.ebre_escool_app.helpers.FragmentPerson.OnFragmentInteractionListener}
+ * must implement the {@link FragmentPerson.OnFragmentInteractionListener}
  * interface to handle interaction events. Use the
- * {@link org.acacha.ebre_escool.ebre_escool_app.helpers.FragmentPerson#newInstance} factory method to create an instance of
+ * {@link FragmentPerson#newInstance} factory method to create an instance of
  * this fragment.
  *
  */
