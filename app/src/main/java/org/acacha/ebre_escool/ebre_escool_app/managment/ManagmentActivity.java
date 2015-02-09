@@ -19,6 +19,7 @@ import android.support.v4.widget.DrawerLayout;
 import org.acacha.ebre_escool.ebre_escool_app.MainActivity;
 import org.acacha.ebre_escool.ebre_escool_app.R;
 import org.acacha.ebre_escool.ebre_escool_app.helpers.FragmentBase;
+import org.acacha.ebre_escool.ebre_escool_app.study_submodules.fragment_study_submodules;
 
 public class ManagmentActivity extends ActionBarActivity
         implements ManagmentNavigationDrawerFragment.NavigationDrawerCallbacks,
@@ -93,7 +94,7 @@ public class ManagmentActivity extends ActionBarActivity
                 break;
             case 7:
                 //managment_title_section8_study_submodules
-                fragment = (Fragment) new FragmentBase();
+                fragment = (Fragment) new fragment_study_submodules();
                 break;
             case 8:
                 //managment_title_section9_lessons
