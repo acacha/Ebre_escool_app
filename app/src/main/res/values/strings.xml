@@ -112,5 +112,10 @@
     <string name="twitter_oauth_error_title">Twitter oAuth tokens</string>
     <string name="twitter_oauth_error_label">Please set your twitter oauth tokens first!</string>
     <string name="loginlink">Ja tens un usuari?</string>
+    <string name="first_name_required">El camp nom és obligatori</string>
+    <string name="last_name_required">El camp cognom és obligatori</string>
+    <string name="email_required">El camp email és obligatori</string>
+    <string name="sign_up_password_required">El camp password és obligatori</string>
+    <string name="validating_sign_up">connectant al servidor...</string>
 
 </resources>

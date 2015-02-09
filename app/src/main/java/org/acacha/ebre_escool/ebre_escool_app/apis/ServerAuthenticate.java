@@ -5,7 +5,8 @@ package org.acacha.ebre_escool.ebre_escool_app.apis;
  */
 public interface ServerAuthenticate {
     public com.squareup.okhttp.Response
-        userSignUp(final String givenName,final String last_name,final String username, final String email, final String pass, String authType) throws Exception;
+        userSignUp(final String givenName,final String last_name, final String email,
+                   final String pass, String url, String authType) throws Exception;
     public com.squareup.okhttp.Response
         userSignIn(final String user, final String pass, String authType) throws Exception;
     public com.squareup.okhttp.Response

@@ -742,33 +742,50 @@ public class SignUpActivity extends FragmentActivity implements
      */
     private void signUpEbreescool(View v) {
 
-        String username = ((EditText) findViewById(R.id.username)).getText().toString();
-        String password = ((EditText) findViewById(R.id.password)).getText().toString();
+        String first_name = ((EditText) findViewById(R.id.first_name)).getText().toString();
+        String last_name = ((EditText) findViewById(R.id.last_name)).getText().toString();
+        String email = ((EditText) findViewById(R.id.email)).getText().toString();
+        String sign_up_password = ((EditText)
+                findViewById(R.id.sign_up_password)).getText().toString();
 
         //DEBUG
-        Log.d(TAG,"username: " + username);
-        //Log.d(TAG,"password: " + password);
+        Log.d(TAG,"first_name: " + first_name);
+        Log.d(TAG,"last_name: " + last_name);
+        Log.d(TAG,"email: " + email);
+        //Log.d(TAG,"sign_up_password: " + sign_up_password);
 
-
-        if (username.equals("")) {
+        if (first_name.equals("")) {
             int duration = Toast.LENGTH_LONG;
             Toast.makeText(getApplicationContext(),
-                    getString(R.string.username_required), duration).show();
+                    getString(R.string.first_name_required), duration).show();
+            return;
+        }
+        if (last_name.equals("")) {
+            int duration = Toast.LENGTH_LONG;
+            Toast.makeText(getApplicationContext(),
+                    getString(R.string.last_name_required), duration).show();
             return;
         }
 
-        if (password.equals("")) {
+        if (email.equals("")) {
             int duration = Toast.LENGTH_LONG;
             Toast.makeText(getApplicationContext(),
-                    getString(R.string.password_required), duration).show();
+                    getString(R.string.email_required), duration).show();
             return;
         }
 
-        String md5password = computeMD5Hash(password);
-        //Log.d(TAG,"MD5 password: " + md5password);
+        if (sign_up_password.equals("")) {
+            int duration = Toast.LENGTH_LONG;
+            Toast.makeText(getApplicationContext(),
+                    getString(R.string.sign_up_password_required), duration).show();
+            return;
+        }
+
+        String md5password = computeMD5Hash(sign_up_password);
+        Log.d(TAG,"MD5 password: " + md5password);
 
         SignUpToEbreEscoolAsyncTask login_task = new SignUpToEbreEscoolAsyncTask(this);
-        login_task.execute(username,md5password);
+        login_task.execute(first_name,last_name,email,md5password);
     }
 
     public String computeMD5Hash(String password){
@@ -817,13 +834,17 @@ public class SignUpActivity extends FragmentActivity implements
         }
 	}
 
-    private class LoginResultBundle {
+    private class SignUpResultBundle {
 
         public static final int ERROR_TYPE_CONNECT_EXCEPTION = -1;
 
         public static final int ERROR_TYPE_IO_EXCEPTION = -2;
 
-        private String username = "";
+        private String firstName;
+
+        private String lastName;
+
+        private String email;
 
         private String password = "";
 
@@ -862,12 +883,28 @@ public class SignUpActivity extends FragmentActivity implements
             this.result_ok = result_ok;
         }
 
-        public String getUsername() {
-            return username;
+        public String getFirstName() {
+            return firstName;
         }
 
-        public void setUsername(String username) {
-            this.username = username;
+        public void setFirstName(String firstName) {
+            this.firstName = firstName;
+        }
+
+        public String getLastName() {
+            return lastName;
+        }
+
+        public void setLastName(String lastName) {
+            this.lastName = lastName;
+        }
+
+        public String getEmail() {
+            return email;
+        }
+
+        public void setEmail(String email) {
+            this.email = email;
         }
 
         public String getPassword() {
@@ -880,7 +917,7 @@ public class SignUpActivity extends FragmentActivity implements
 
         @Override
         public String toString() {
-            String result = "username: " + this.getUsername() + " | " +
+            String result = "name: " + "TODO" + " | " +
                     "error_type: " + this.getError_type() + " | " +
                     "error_message: " + this.getError_message() + " | " +
                     "response: " + this.getResponse();
@@ -926,7 +963,7 @@ public class SignUpActivity extends FragmentActivity implements
         }
     }
 
-    private class SignUpToEbreEscoolAsyncTask extends AsyncTask<String, Void, LoginResultBundle> {
+    private class SignUpToEbreEscoolAsyncTask extends AsyncTask<String, Void, SignUpResultBundle> {
 
         private ProgressDialog dialog;
 
@@ -938,21 +975,26 @@ public class SignUpActivity extends FragmentActivity implements
         /** application context. */
         @Override
         protected void onPreExecute() {
-            this.dialog.setMessage("Validating login");
+            this.dialog.setMessage(getString(R.string.validating_sign_up));
             this.dialog.show();
         }
 
         @Override
-        protected LoginResultBundle doInBackground(final String... args) {
+        protected SignUpResultBundle doInBackground(final String... args) {
 
-            String username = args[0];
-            String password = args[1];
+            //login_task.execute(first_name,last_name,email,md5password);
+            String first_name = args[0];
+            String last_name = args[1];
+            String email = args[2];
+            String password = args[3];
 
             com.squareup.okhttp.Response response = null;
             String error_message ="";
-            LoginResultBundle result_bundle = new LoginResultBundle();
+            SignUpResultBundle result_bundle = new SignUpResultBundle();
             result_bundle.setResult_ok(true);
-            result_bundle.setUsername(username);
+            result_bundle.setFirstName(first_name);
+            result_bundle.setLastName(last_name);
+            result_bundle.setEmail(email);
             result_bundle.setPassword(password);
             result_bundle.setResult_ok(true);
 
@@ -987,27 +1029,24 @@ public class SignUpActivity extends FragmentActivity implements
             Log.d(TAG,"login_url: " + login_url);
 
             //TODO
-            String email = "TODO_EMAIL@TODO.ES";
-            String givenName = "John";
-            String lastName = "Doe Doe";
             try {
-                response = eeSA.userSignUp(givenName,lastName,
-                        username, email, password, EbreEscoolAccount.AUTHTOKEN_TYPE_FULL_ACCESS);
+                response = eeSA.userSignUp(first_name,last_name,
+                         email, password,login_url, EbreEscoolAccount.AUTHTOKEN_TYPE_FULL_ACCESS);
             } catch (ConnectException ce) {
                 error_message = ce.getLocalizedMessage();
                 result_bundle.setResult_ok(false);
-                result_bundle.setError_type(LoginResultBundle.ERROR_TYPE_CONNECT_EXCEPTION);
+                result_bundle.setError_type(SignUpResultBundle.ERROR_TYPE_CONNECT_EXCEPTION);
                 ce.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
                 error_message = e.getLocalizedMessage();
                 result_bundle.setResult_ok(false);
-                result_bundle.setError_type(LoginResultBundle.ERROR_TYPE_IO_EXCEPTION);
+                result_bundle.setError_type(SignUpResultBundle.ERROR_TYPE_IO_EXCEPTION);
             } catch (Exception e) {
                 e.printStackTrace();
                 error_message = e.getLocalizedMessage();
                 result_bundle.setResult_ok(false);
-                result_bundle.setError_type(LoginResultBundle.ERROR_TYPE_IO_EXCEPTION);
+                result_bundle.setError_type(SignUpResultBundle.ERROR_TYPE_IO_EXCEPTION);
             }
 
             Log.d(TAG,"Response: " + response);
@@ -1016,12 +1055,13 @@ public class SignUpActivity extends FragmentActivity implements
             if (error_message!=""){
                 Log.d(TAG,"Error message: " + error_message);
             }
+
             return result_bundle;
 
         }
 
         @Override
-        protected void onPostExecute(final LoginResultBundle result) {
+        protected void onPostExecute(final SignUpResultBundle result) {
             Log.d(TAG,"LoginResultBundle: " + result);
             if (dialog.isShowing()) {
                 dialog.dismiss();
@@ -1063,13 +1103,12 @@ public class SignUpActivity extends FragmentActivity implements
 
                         Log.d(TAG,getString(R.string.response_code_200));
 
-                        //Save username to settings: account_name
-                        mSettings.edit().putString(SettingsActivity.ACCOUNT_NAME_KEY, result.getUsername()).apply();
-
+                        //TODO: recover username from server signup. Server generate signup!
                         int duration = Toast.LENGTH_LONG;
                         Toast.makeText(getApplicationContext(),
                                 R.string.login_ok_label, duration).show();
-                        //LOGIN OK
+
+                        //SIGNUP OK
 
                         ResponseBody body = response.body();
                         String json_response = null;
@@ -1082,12 +1121,12 @@ public class SignUpActivity extends FragmentActivity implements
                         Log.d(TAG,"response body: " + json_response);
 
 
-                        EbreEscoolLoginResponse eeresponse = null;
-                        eeresponse = gson.fromJson(json_response, EbreEscoolLoginResponse.class);
+                        EbreEscoolSignUpResponse eeresponse = null;
+                        eeresponse = gson.fromJson(json_response, EbreEscoolSignUpResponse.class);
 
                         //TODO: Obtain data as result of asynctask. THIS IS ONLY FOR TEST:
                         Bundle data = new Bundle();
-                        String userName = result.getUsername();
+                        //String userName = result.getUsername();
                         String accountType = EbreEscoolAccount.ACCOUNT_TYPE;
 
                         //TODO: Get auth token form response body (GSON!)
@@ -1097,7 +1136,7 @@ public class SignUpActivity extends FragmentActivity implements
                         Log.d(TAG,"authtoken: " + authtoken);
 
                         String userPass = result.getPassword();
-                        data.putString(AccountManager.KEY_ACCOUNT_NAME, userName);
+                        //data.putString(AccountManager.KEY_ACCOUNT_NAME, userName);
                         data.putString(AccountManager.KEY_ACCOUNT_TYPE, accountType);
                         data.putString(AccountManager.KEY_AUTHTOKEN, authtoken);
                         data.putBoolean(ARG_IS_ADDING_NEW_ACCOUNT, true);
@@ -1106,8 +1145,11 @@ public class SignUpActivity extends FragmentActivity implements
                         final Intent res = new Intent();
                         res.putExtras(data);
 
-                        //TODO: finishSignUp(res);
-                        //finishLogin(res);
+                        //TODO: finishSignUp(res)????;
+
+                        //Compte creat correctament
+                        //Return to login page? Login User?
+                        //Wait for email confirmation?
                     }
                 }
             } else {

@@ -19,11 +19,15 @@ import android.support.v4.widget.DrawerLayout;
 import org.acacha.ebre_escool.ebre_escool_app.MainActivity;
 import org.acacha.ebre_escool.ebre_escool_app.R;
 import org.acacha.ebre_escool.ebre_escool_app.helpers.FragmentBase;
+<<<<<<< HEAD
 import org.acacha.ebre_escool.ebre_escool_app.study_submodules.fragment_study_submodules;
+=======
+import org.acacha.ebre_escool.ebre_escool_app.helpers.FragmentPerson;
+>>>>>>> upstream/master
 
 public class ManagmentActivity extends ActionBarActivity
         implements ManagmentNavigationDrawerFragment.NavigationDrawerCallbacks,
-        FragmentBase.OnFragmentInteractionListener {
+        OnFragmentInteractionListener {
 
     private final static String TAG = "ManagmentActivity";
 
@@ -74,7 +78,8 @@ public class ManagmentActivity extends ActionBarActivity
                 break;
             case 2:
                 //managment_title_section3_persons
-                fragment = (Fragment) new FragmentBase();
+                //fragment = (Fragment) new FragmentBase();
+                fragment = (Fragment) new FragmentPerson();
                 break;
             case 3:
                 //managment_title_section4_classroom_groups
