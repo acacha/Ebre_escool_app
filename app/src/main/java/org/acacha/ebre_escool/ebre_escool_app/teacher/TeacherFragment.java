@@ -30,6 +30,7 @@ import it.gmariotti.cardslib.library.internal.CardArrayAdapter;
 import it.gmariotti.cardslib.library.internal.CardExpand;
 import it.gmariotti.cardslib.library.internal.CardHeader;
 import it.gmariotti.cardslib.library.internal.CardThumbnail;
+import it.gmariotti.cardslib.library.internal.ViewToClickToExpand;
 import it.gmariotti.cardslib.library.view.CardListView;
 import it.gmariotti.cardslib.library.view.CardViewNative;
 import retrofit.Callback;
@@ -169,6 +170,8 @@ public class TeacherFragment extends Fragment {
             Teacher[] arrayTeacher = gson.fromJson(string, Teacher[].class);
             //list.setAdapter(new ArrayAdapter<Teacher>(getActivity(), android.R.layout.simple_list_item_1,
             //      android.R.id.text1, arrayTeacher));
+            //Get the cardlistview
+            list = (CardListView) getActivity().findViewById(R.id.teachersList);
             //create cards
 
             ArrayList<Card> cards = new ArrayList<Card>();
@@ -190,6 +193,12 @@ public class TeacherFragment extends Fragment {
                 card_on_list.setShadow(true);
                CustomExpandCard expand= new CustomExpandCard(getActivity(),arrayTeacher[i]);
                 card_on_list.addCardExpand(expand);
+                //Set expand on click
+               /* ViewToClickToExpand viewToClickToExpand =
+                        ViewToClickToExpand.builder()
+                                .highlightView(false)
+                                .setupCardElement(ViewToClickToExpand.CardElementUI.CARD);
+                card_on_list.setViewToClickToExpand(viewToClickToExpand);*/
                 //card_on_list.setBackgroundColorResourceId(R.color.Silver);==>this don't works
                 card_on_list.setOnClickListener(new Card.OnCardClickListener() {
                     @Override
@@ -198,7 +207,7 @@ public class TeacherFragment extends Fragment {
                         //Toast.makeText(getActivity(), "Clickable card id: " + card.getId(), Toast.LENGTH_LONG).show();
                         int position = mCardArrayAdapter.getPosition(card);
                         list.setItemChecked(position, true);
-                        ((ManagmentActivity)getActivity()).onCardClick(Integer.valueOf(card.getId()), position);
+                        ((ManagmentActivity)getActivity()).onCardClick(Integer.valueOf(card.getId()), position,card);
                     }
 
                 });
@@ -214,7 +223,7 @@ public class TeacherFragment extends Fragment {
             }
 
             mCardArrayAdapter = new CardArrayAdapter(getActivity(), cards );
-            list = (CardListView) getActivity().findViewById(R.id.teachersList);
+
             if (list != null) {
                list.setAdapter(mCardArrayAdapter);
                 //list.setChoiceMode(ListView.CHOICE_MODE_SINGLE);

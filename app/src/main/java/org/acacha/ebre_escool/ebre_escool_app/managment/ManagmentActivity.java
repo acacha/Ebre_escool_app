@@ -9,6 +9,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -243,9 +244,18 @@ public class ManagmentActivity extends ActionBarActivity
         // TODO Auto-generated method stub
 
     }
-   public void onCardClick(int id, int position){
+   public void onCardClick(int id, int position,Card card){
        Toast.makeText(this, "Click on card:"+id+"position:"+position , Toast.LENGTH_LONG).show();
-     
+       int collapsed=0;
+       //Check if it's expanded or not and expand or hide
+       Log.d(TAG, "EXPANDED : " + card.isExpanded());
+       /*  if (collapsed==1){
+             card.doCollapse();
+             collapsed=0;
+         }else{
+             card.doExpand();
+             collapsed=1;
+         }*/
 
    }
 
