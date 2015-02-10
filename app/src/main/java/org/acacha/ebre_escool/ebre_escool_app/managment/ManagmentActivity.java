@@ -24,6 +24,7 @@ import org.acacha.ebre_escool.ebre_escool_app.helpers.FragmentBase;
 
 import org.acacha.ebre_escool.ebre_escool_app.helpers.OnFragmentInteractionListener;
 import org.acacha.ebre_escool.ebre_escool_app.person.FragmentPerson;
+import org.acacha.ebre_escool.ebre_escool_app.teacher.TeacherDetail;
 import org.acacha.ebre_escool.ebre_escool_app.teacher.TeacherFragment;
 
 public class ManagmentActivity extends ActionBarActivity

@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 
 import org.acacha.ebre_escool.ebre_escool_app.R;
+import org.acacha.ebre_escool.ebre_escool_app.helpers.OnFragmentInteractionListener;
 import org.acacha.ebre_escool.ebre_escool_app.managment.ManagmentActivity;
 import org.acacha.ebre_escool.ebre_escool_app.settings.SettingsActivity;
 import org.acacha.ebre_escool.ebre_escool_app.teacher.teacher_pojos.Teacher;
@@ -240,6 +241,8 @@ public class TeacherFragment extends Fragment {
         }
     }
 
+
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -250,6 +253,7 @@ public class TeacherFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
+
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
