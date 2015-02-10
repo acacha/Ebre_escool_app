@@ -26,6 +26,10 @@ import org.acacha.ebre_escool.ebre_escool_app.helpers.OnFragmentInteractionListe
 import org.acacha.ebre_escool.ebre_escool_app.person.FragmentPerson;
 import org.acacha.ebre_escool.ebre_escool_app.teacher.TeacherDetail;
 import org.acacha.ebre_escool.ebre_escool_app.teacher.TeacherFragment;
+=======
+import org.acacha.ebre_escool.ebre_escool_app.helpers.OnFragmentInteractionListener;
+import org.acacha.ebre_escool.ebre_escool_app.person.FragmentPerson;
+>>>>>>> upstream/master
 
 public class ManagmentActivity extends ActionBarActivity
         implements ManagmentNavigationDrawerFragment.NavigationDrawerCallbacks,
