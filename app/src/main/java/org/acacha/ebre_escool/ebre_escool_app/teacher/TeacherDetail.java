@@ -3,12 +3,21 @@ package org.acacha.ebre_escool.ebre_escool_app.teacher;
 import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
+
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import org.acacha.ebre_escool.ebre_escool_app.R;
+import org.acacha.ebre_escool.ebre_escool_app.helpers.OnFragmentInteractionListener;
+import org.acacha.ebre_escool.ebre_escool_app.teacher.teacher_pojos.Teacher;
+
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,6 +38,10 @@ public class TeacherDetail extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+    //Retrofit adapter
+    private RestAdapter adapter;
+    private int teacherId;
+    public static final String ENDPOINT = "http://185.13.76.85:8769/ebre-escool/index.php/criminal/api/hell";
 
     /**
      * Use this factory method to create a new instance of
@@ -65,7 +78,16 @@ public class TeacherDetail extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_teacher_detail, container, false);
+        View view= inflater.inflate(R.layout.fragment_teacher_detail, container, false);
+        // data sended from teacher fragment
+        Bundle extras = getArguments();
+        if (extras != null) {
+            teacherId = extras.getInt("id");
+        }
+
+
+
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -84,6 +106,10 @@ public class TeacherDetail extends Fragment {
             throw new ClassCastException(activity.toString()
                     + " must implement OnFragmentInteractionListener");
         }
+          //set rest adapter
+          adapter = new RestAdapter.Builder()
+                .setEndpoint(ENDPOINT).build();
+          getOneTeacher(teacherId);
     }
 
     @Override
@@ -102,9 +128,29 @@ public class TeacherDetail extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
+    /*public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
+    }*/
+    //EXECUTE RETROFIT GET ONE TEACHER METHOD
+    public void getOneTeacher(Integer id){
+        Teacher teacherObject = null;
+        RetrofitApiService api =adapter.create(RetrofitApiService.class);
+        api.getTeacher(id,new Callback<Teacher>() {
+            @Override
+            public void success(Teacher teacher, Response response) {
+                // updateDisplay();
+                Toast.makeText(getActivity(),"id :"+teacher.getId(),Toast.LENGTH_LONG);
+
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_LONG).show();
+
+            }
+        });
+
     }
 
 }

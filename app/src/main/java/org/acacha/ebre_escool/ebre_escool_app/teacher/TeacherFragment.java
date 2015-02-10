@@ -5,6 +5,8 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -156,6 +158,8 @@ public class TeacherFragment extends Fragment {
         });
 
     }
+
+
     //Fill listview
     protected void updateDisplay() {
         if (teachersList != null) {
@@ -320,19 +324,27 @@ public class TeacherFragment extends Fragment {
     }
 
     public void onCardClick(int id, int position,Card card){
+        //get one teacher using id
+
         Toast.makeText(getActivity(), "Click on card:"+id+"position:"+position , Toast.LENGTH_LONG).show();
         int collapsed=0;
         //Check if it's expanded or not and expand or hide
         Log.d(TAG, "EXPANDED : " + card.isExpanded());
-       /*  if (collapsed==1){
-             card.doCollapse();
-             collapsed=0;
-         }else{
-             card.doExpand();
-             collapsed=1;
-         }*/
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        Fragment teacherDetail = new TeacherDetail();
+        transaction.addToBackStack(null);
+        transaction.hide(TeacherFragment.this);
+        transaction.add(R.id.container,teacherDetail);
+        transaction.commit();
 
+
+        //Pass the id to the fragment detail
+         Bundle extras = new Bundle();
+        extras.putInt("id",id);
+        teacherDetail.setArguments(extras);
     }
+
 
 
 
