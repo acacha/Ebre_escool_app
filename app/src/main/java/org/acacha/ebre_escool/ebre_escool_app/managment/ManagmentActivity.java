@@ -19,7 +19,8 @@ import android.support.v4.widget.DrawerLayout;
 import org.acacha.ebre_escool.ebre_escool_app.MainActivity;
 import org.acacha.ebre_escool.ebre_escool_app.R;
 import org.acacha.ebre_escool.ebre_escool_app.helpers.FragmentBase;
-import org.acacha.ebre_escool.ebre_escool_app.helpers.FragmentPerson;
+import org.acacha.ebre_escool.ebre_escool_app.helpers.OnFragmentInteractionListener;
+import org.acacha.ebre_escool.ebre_escool_app.person.FragmentPerson;
 
 public class ManagmentActivity extends ActionBarActivity
         implements ManagmentNavigationDrawerFragment.NavigationDrawerCallbacks,
