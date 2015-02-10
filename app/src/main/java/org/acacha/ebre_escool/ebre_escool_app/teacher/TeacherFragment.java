@@ -2,7 +2,6 @@ package org.acacha.ebre_escool.ebre_escool_app.teacher;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,8 +9,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,8 +16,6 @@ import com.google.gson.Gson;
 
 import org.acacha.ebre_escool.ebre_escool_app.R;
 import org.acacha.ebre_escool.ebre_escool_app.helpers.OnFragmentInteractionListener;
-import org.acacha.ebre_escool.ebre_escool_app.managment.ManagmentActivity;
-import org.acacha.ebre_escool.ebre_escool_app.settings.SettingsActivity;
 import org.acacha.ebre_escool.ebre_escool_app.teacher.teacher_pojos.Teacher;
 
 import java.util.ArrayList;
@@ -31,9 +26,7 @@ import it.gmariotti.cardslib.library.internal.CardArrayAdapter;
 import it.gmariotti.cardslib.library.internal.CardExpand;
 import it.gmariotti.cardslib.library.internal.CardHeader;
 import it.gmariotti.cardslib.library.internal.CardThumbnail;
-import it.gmariotti.cardslib.library.internal.ViewToClickToExpand;
 import it.gmariotti.cardslib.library.view.CardListView;
-import it.gmariotti.cardslib.library.view.CardViewNative;
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
@@ -253,11 +246,11 @@ public class TeacherFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-
-    public interface OnFragmentInteractionListener {
+//We use helpers interface
+   /* public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
-    }
+    }*/
 
     public class CustomExpandCard extends CardExpand {
         //We send an object teacher to fill text views
