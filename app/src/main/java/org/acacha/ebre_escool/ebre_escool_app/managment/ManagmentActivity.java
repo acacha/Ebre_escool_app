@@ -21,7 +21,10 @@ import android.widget.Toast;
 import org.acacha.ebre_escool.ebre_escool_app.MainActivity;
 import org.acacha.ebre_escool.ebre_escool_app.R;
 import org.acacha.ebre_escool.ebre_escool_app.helpers.FragmentBase;
-import org.acacha.ebre_escool.ebre_escool_app.helpers.FragmentPerson;
+
+import org.acacha.ebre_escool.ebre_escool_app.helpers.OnFragmentInteractionListener;
+import org.acacha.ebre_escool.ebre_escool_app.person.FragmentPerson;
+import org.acacha.ebre_escool.ebre_escool_app.teacher.TeacherFragment;
 
 public class ManagmentActivity extends ActionBarActivity
         implements ManagmentNavigationDrawerFragment.NavigationDrawerCallbacks,
@@ -242,20 +245,7 @@ public class ManagmentActivity extends ActionBarActivity
         // TODO Auto-generated method stub
 
     }
-   public void onCardClick(int id, int position,Card card){
-       Toast.makeText(this, "Click on card:"+id+"position:"+position , Toast.LENGTH_LONG).show();
-       int collapsed=0;
-       //Check if it's expanded or not and expand or hide
-       Log.d(TAG, "EXPANDED : " + card.isExpanded());
-       /*  if (collapsed==1){
-             card.doCollapse();
-             collapsed=0;
-         }else{
-             card.doExpand();
-             collapsed=1;
-         }*/
 
-   }
 
 
 

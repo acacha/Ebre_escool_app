@@ -207,7 +207,7 @@ public class TeacherFragment extends Fragment {
                         //Toast.makeText(getActivity(), "Clickable card id: " + card.getId(), Toast.LENGTH_LONG).show();
                         int position = mCardArrayAdapter.getPosition(card);
                         list.setItemChecked(position, true);
-                        ((ManagmentActivity)getActivity()).onCardClick(Integer.valueOf(card.getId()), position,card);
+                       onCardClick(Integer.valueOf(card.getId()), position,card);
                     }
 
                 });
@@ -322,7 +322,20 @@ public class TeacherFragment extends Fragment {
 
     }
 
+    public void onCardClick(int id, int position,Card card){
+        Toast.makeText(getActivity(), "Click on card:"+id+"position:"+position , Toast.LENGTH_LONG).show();
+        int collapsed=0;
+        //Check if it's expanded or not and expand or hide
+        Log.d(TAG, "EXPANDED : " + card.isExpanded());
+       /*  if (collapsed==1){
+             card.doCollapse();
+             collapsed=0;
+         }else{
+             card.doExpand();
+             collapsed=1;
+         }*/
 
+    }
 
 
 
