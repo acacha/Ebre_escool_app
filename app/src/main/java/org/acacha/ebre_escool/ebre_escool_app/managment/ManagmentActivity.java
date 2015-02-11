@@ -18,11 +18,11 @@ import android.view.ViewGroup;
 
 import org.acacha.ebre_escool.ebre_escool_app.MainActivity;
 import org.acacha.ebre_escool.ebre_escool_app.R;
-import org.acacha.ebre_escool.ebre_escool_app.classroom_group.FragmentClassroomGroup;
+import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.classroom_group.FragmentClassroomGroup;
 import org.acacha.ebre_escool.ebre_escool_app.helpers.FragmentBase;
 import org.acacha.ebre_escool.ebre_escool_app.helpers.OnFragmentInteractionListener;
-import org.acacha.ebre_escool.ebre_escool_app.person.FragmentPerson;
-import org.acacha.ebre_escool.ebre_escool_app.teacher.TeacherFragment;
+import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.person.FragmentPerson;
+import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.teacher.TeacherFragment;
 
 
 public class ManagmentActivity extends ActionBarActivity
