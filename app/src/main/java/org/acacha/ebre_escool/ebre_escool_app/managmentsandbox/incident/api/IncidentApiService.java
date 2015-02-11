@@ -1,4 +1,4 @@
-package org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.incident.ApiIncident;
+package org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.incident.api;
 
 /**
  * Created by liviu on 11/02/15.
@@ -20,8 +20,5 @@ public interface IncidentApiService {
     void incidents(Callback<Map<String, incident>> cb);
     @GET("/incidents/{id}")
     void incidents(Callback<incident> cb, @Path("id") String id);
-
-
-
 
 }
