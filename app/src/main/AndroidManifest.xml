@@ -113,6 +113,12 @@
                     android:scheme="oauth" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name=".employees.api.EmployeesApiService"
+            android:enabled="true"
+            android:exported="true" >
+        </service>
     </application>
 
 </manifest>
