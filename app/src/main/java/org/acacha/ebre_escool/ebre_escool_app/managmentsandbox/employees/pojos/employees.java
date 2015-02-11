@@ -1,7 +1,6 @@
-package org.acacha.ebre_escool.ebre_escool_app.employees.pojos;
+package org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.employees.pojos;
 
 import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 
 /**
  * Created: pdavila on 11/02/15.

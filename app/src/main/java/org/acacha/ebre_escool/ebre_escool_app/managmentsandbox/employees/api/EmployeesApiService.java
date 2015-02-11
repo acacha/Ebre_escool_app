@@ -1,6 +1,6 @@
-package org.acacha.ebre_escool.ebre_escool_app.employees.api;
+package org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.employees.api;
 
-import org.acacha.ebre_escool.ebre_escool_app.employees.pojos.employees;
+import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.employees.pojos.employees;
 
 import java.util.List;
 import java.util.Map;
