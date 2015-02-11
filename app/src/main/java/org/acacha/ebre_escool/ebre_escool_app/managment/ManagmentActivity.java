@@ -6,39 +6,26 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-<<<<<<< HEAD
-=======
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
->>>>>>> upstream/master
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-<<<<<<< HEAD
-=======
->>>>>>> upstream/master
 
 import org.acacha.ebre_escool.ebre_escool_app.MainActivity;
 import org.acacha.ebre_escool.ebre_escool_app.R;
 import org.acacha.ebre_escool.ebre_escool_app.helpers.FragmentBase;
-<<<<<<< HEAD
-
-import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.study_submodules.FragmentStudySubmodules;
-
-import org.acacha.ebre_escool.ebre_escool_app.person.FragmentPerson;
-import org.acacha.ebre_escool.ebre_escool_app.teacher.TeacherFragment;
-=======
 import org.acacha.ebre_escool.ebre_escool_app.helpers.OnFragmentInteractionListener;
 
 
 import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.person.FragmentPerson;
 import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.classroom_group.FragmentClassroomGroup;
 import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.teacher.TeacherFragment;
->>>>>>> upstream/master
+import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.study_submodules.FragmentStudySubmodules;
 
 
 public class ManagmentActivity extends ActionBarActivity
