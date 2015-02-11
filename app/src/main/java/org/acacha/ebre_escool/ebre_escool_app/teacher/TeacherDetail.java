@@ -9,6 +9,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.acacha.ebre_escool.ebre_escool_app.R;
@@ -41,8 +44,23 @@ public class TeacherDetail extends Fragment {
     private OnFragmentInteractionListener mListener;
     //Retrofit adapter
     private RestAdapter adapter;
+    private Teacher teacherObject;
     private int teacherId;
     public static final String ENDPOINT = "http://185.13.76.85:8769/ebre-escool/index.php/criminal/api/hell";
+    //Controls
+    private TextView ID;
+    private EditText personId;
+    private EditText userId;
+    private EditText entryDate;
+    private EditText lastUpdate;
+    private EditText lastUpdateUserId;
+    private EditText creatorId;
+    private EditText markedForDeletion;
+    private EditText markedForDeletionDate;
+    private EditText dniNif;
+    private Button btnUpdate;
+
+
 
     /**
      * Use this factory method to create a new instance of
@@ -79,12 +97,28 @@ public class TeacherDetail extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+       // View view= inflater.inflate(R.layout.fragment_teacher_detail, container, false);
         View view= inflater.inflate(R.layout.fragment_teacher_detail, container, false);
-        // data sended from teacher fragment
+        //Get controls
+        ID =(TextView)view.findViewById(R.id.teacherId);
+        personId =(EditText)view.findViewById(R.id.personId);
+        userId = (EditText)view.findViewById(R.id.userId);
+        entryDate = (EditText)view.findViewById(R.id.entryDate);
+        lastUpdate = (EditText)view.findViewById(R.id.lastUpdate);
+        lastUpdateUserId = (EditText)view.findViewById(R.id.lastUpdateUserId);
+        creatorId = (EditText)view.findViewById(R.id.creatorId);
+        markedForDeletion = (EditText)view.findViewById(R.id.markedForDeletion);
+        markedForDeletionDate = (EditText)view.findViewById(R.id.markedForDeletionDate);
+        dniNif =(EditText)view.findViewById(R.id.dniNif);
+        btnUpdate = (Button)view.findViewById(R.id.btnUpdate);
+        //Set click listener
+        btnUpdate.setOnClickListener((View.OnClickListener) getActivity());
+        // get data send from teacher fragment
         Bundle extras = getArguments();
         if (extras != null) {
             teacherId = extras.getInt("id");
             Log.d("tag", "detail id :" + teacherId);
+
         }
 
         //set rest adapter
@@ -119,6 +153,9 @@ public class TeacherDetail extends Fragment {
         super.onDetach();
         mListener = null;
     }
+    //OnclickButton update
+ 
+
 
     /**
      * This interface must be implemented by activities that contain this
@@ -136,7 +173,7 @@ public class TeacherDetail extends Fragment {
     }*/
     //EXECUTE RETROFIT GET ONE TEACHER METHOD
     public void getOneTeacher(Integer id){
-        Teacher teacherObject = null;
+
         Log.d("tag","get :"+id);
         RetrofitApiService api =adapter.create(RetrofitApiService.class);
         api.getTeacher(id,new Callback<Teacher>() {
@@ -144,7 +181,8 @@ public class TeacherDetail extends Fragment {
             public void success(Teacher teacher, Response response) {
                 // updateDisplay();
                 Log.d("tag","success");
-                Toast.makeText(getActivity(),"id :"+teacher.getId(),Toast.LENGTH_LONG);
+                teacherObject=teacher;
+                updateDisplay();
 
             }
 
@@ -154,6 +192,25 @@ public class TeacherDetail extends Fragment {
                 Log.d("tag","failure");
             }
         });
+
+    }
+    //Update layout
+    private void updateDisplay(){
+        if(teacherObject==null){
+            return;
+        }
+        //Set text on controls
+        ID.setText(teacherObject.getId().toString());
+        personId.setText(teacherObject.getPersonId());
+        userId.setText(teacherObject.getUserId());
+        entryDate.setText(teacherObject.getEntryDate());
+        lastUpdate.setText(teacherObject.getLastUpdate());
+        lastUpdateUserId.setText(teacherObject.getLastUpdateUserId());
+        creatorId.setText(teacherObject.getCreatorId());
+        markedForDeletion.setText(teacherObject.getMarkedForDeletion());
+        markedForDeletionDate.setText(teacherObject.getMarkedForDeletionDate());
+        dniNif.setText(teacherObject.getDNINIF());
+
 
     }
 
