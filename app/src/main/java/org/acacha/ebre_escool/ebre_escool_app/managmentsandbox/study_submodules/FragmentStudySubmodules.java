@@ -1,4 +1,4 @@
-package org.acacha.ebre_escool.ebre_escool_app.study_submodules;
+package org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.study_submodules;
 
 import android.app.Activity;
 import android.net.Uri;

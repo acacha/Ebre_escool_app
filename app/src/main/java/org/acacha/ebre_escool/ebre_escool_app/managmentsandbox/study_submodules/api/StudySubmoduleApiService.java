@@ -1,6 +1,6 @@
-package org.acacha.ebre_escool.ebre_escool_app.study_submodules.api;
+package org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.study_submodules.api;
 
-import org.acacha.ebre_escool.ebre_escool_app.study_submodules.pojos.StudySubmodules;
+import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.study_submodules.pojos.StudySubmodules;
 
 import java.util.List;
 import java.util.Map;

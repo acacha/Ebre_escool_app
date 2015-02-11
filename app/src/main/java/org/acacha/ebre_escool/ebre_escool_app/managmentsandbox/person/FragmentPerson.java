@@ -1,4 +1,4 @@
-package org.acacha.ebre_escool.ebre_escool_app.managment;
+package org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.person;
 
 import android.app.Activity;
 import android.net.Uri;
@@ -9,17 +9,17 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.acacha.ebre_escool.ebre_escool_app.R;
-import org.acacha.ebre_escool.ebre_escool_app.helpers.FragmentBase;
+import org.acacha.ebre_escool.ebre_escool_app.helpers.OnFragmentInteractionListener;
 
 /**
  * A simple {@link android.support.v4.app.Fragment} subclass. Activities that contain this fragment
- * must implement the {@link FragmentBase.OnFragmentInteractionListener}
+ * must implement the {@link OnFragmentInteractionListener}
  * interface to handle interaction events. Use the
- * {@link FragmentBase#newInstance} factory method to create an instance of
+ * {@link FragmentPerson#newInstance} factory method to create an instance of
  * this fragment.
  *
  */
-public class Managment_title_section4_classroom_groups extends Fragment {
+public class FragmentPerson extends Fragment {
 	// TODO: Rename parameter arguments, choose names that match
 	// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 	private static final String ARG_PARAM1 = "param1";
@@ -42,8 +42,8 @@ public class Managment_title_section4_classroom_groups extends Fragment {
 	 * @return A new instance of fragment FragmentType0.
 	 */
 	// TODO: Rename and change types and number of parameters
-	public static Managment_title_section4_classroom_groups newInstance(String param1, String param2) {
-        Managment_title_section4_classroom_groups fragment = new Managment_title_section4_classroom_groups();
+	public static FragmentPerson newInstance(String param1, String param2) {
+		FragmentPerson fragment = new FragmentPerson();
 		Bundle args = new Bundle();
 		args.putString(ARG_PARAM1, param1);
 		args.putString(ARG_PARAM2, param2);
@@ -51,7 +51,7 @@ public class Managment_title_section4_classroom_groups extends Fragment {
 		return fragment;
 	}
 
-	public Managment_title_section4_classroom_groups() {
+	public FragmentPerson() {
 		// Required empty public constructor
 	}
 
@@ -68,7 +68,7 @@ public class Managment_title_section4_classroom_groups extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
-		return inflater.inflate(R.layout.fragment_base, container,
+		return inflater.inflate(R.layout.fragment_person, container,
 				false);
 	}
 
@@ -94,20 +94,6 @@ public class Managment_title_section4_classroom_groups extends Fragment {
 	public void onDetach() {
 		super.onDetach();
 		mListener = null;
-	}
-
-	/**
-	 * This interface must be implemented by activities that contain this
-	 * fragment to allow an interaction in this fragment to be communicated to
-	 * the activity and potentially other fragments contained in that activity.
-	 * <p>
-	 * See the Android Training lesson <a href=
-	 * "http://developer.android.com/training/basics/fragments/communicating.html"
-	 * >Communicating with Other Fragments</a> for more information.
-	 */
-	public interface OnFragmentInteractionListener {
-		// TODO: Update argument type and name
-		public void onFragmentInteraction(Uri uri);
 	}
 
 }
