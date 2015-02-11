@@ -1,4 +1,4 @@
-package org.acacha.ebre_escool.ebre_escool_app.study_submodules;
+package org.acacha.ebre_escool.ebre_escool_app.study_submodules.api;
 
 import org.acacha.ebre_escool.ebre_escool_app.study_submodules.pojos.study_submodules;
 import java.util.List;
@@ -10,7 +10,7 @@ import retrofit.http.Path;
 /**
  * Created by alex on 09/02/15.
  */
-public class StudySubmoduleApiService {
+public interface StudySubmoduleApiService {
     @GET("/study_submodules")
     void personsAsList(Callback<List<study_submodules>> cb);
 
