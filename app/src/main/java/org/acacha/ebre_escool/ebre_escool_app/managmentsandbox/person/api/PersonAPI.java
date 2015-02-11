@@ -1,4 +1,4 @@
-package org.acacha.ebre_escool.ebre_escool_app.person.api;
+package org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.person.api;
 
 /**
  * Created by nicolae on 30/01/15.

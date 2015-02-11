@@ -1,6 +1,6 @@
-package org.acacha.ebre_escool.ebre_escool_app.teacher;
+package org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.teacher;
 
-import org.acacha.ebre_escool.ebre_escool_app.teacher.teacher_pojos.Teacher;
+import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.teacher.teacher_pojos.Teacher;
 
 import java.util.List;
 

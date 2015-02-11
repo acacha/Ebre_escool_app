@@ -1,4 +1,4 @@
-package org.acacha.ebre_escool.ebre_escool_app.person;
+package org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.person;
 
 import android.app.Activity;
 import android.net.Uri;
@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 
 import org.acacha.ebre_escool.ebre_escool_app.R;
 import org.acacha.ebre_escool.ebre_escool_app.helpers.OnFragmentInteractionListener;
-import org.acacha.ebre_escool.ebre_escool_app.person.api.PersonAPI;
+import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.person.api.PersonAPI;
 
 import it.gmariotti.cardslib.library.view.CardListView;
 import retrofit.RestAdapter;
