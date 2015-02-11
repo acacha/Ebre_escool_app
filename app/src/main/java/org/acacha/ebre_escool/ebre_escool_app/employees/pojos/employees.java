@@ -4,7 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Created by pdavila on 11/02/15.
+ * Created: pdavila on 11/02/15.
  */
 public class employees {
     @Expose
