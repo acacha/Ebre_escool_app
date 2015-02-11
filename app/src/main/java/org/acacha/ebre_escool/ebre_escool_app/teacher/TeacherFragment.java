@@ -328,8 +328,7 @@ public class TeacherFragment extends Fragment {
 
         Toast.makeText(getActivity(), "Click on card:"+id+"position:"+position , Toast.LENGTH_LONG).show();
         int collapsed=0;
-        //Check if it's expanded or not and expand or hide
-        Log.d(TAG, "EXPANDED : " + card.isExpanded());
+       //Change the fragment
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         Fragment teacherDetail = new TeacherDetail();

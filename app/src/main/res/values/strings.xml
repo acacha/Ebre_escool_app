@@ -12,6 +12,11 @@
     <string name="username">Nom Usuari</string>
     <string name="password">Contrasenya</string>
     <string name="teacher_detail"> UPDATE TEACHER</string>
+    <string name="labelTeacherId">Teacher ID</string>
+    <string name="labelPersonId">Person ID</string>
+    <string name="labelUserId">User ID</string>
+    <string name="labelEntryDate">Entry Date</string>
+    <string name="labelLastUpdate">Last Update</string>
 
     <style name="ButtonText">
         <item name="android:layout_width">fill_parent</item>

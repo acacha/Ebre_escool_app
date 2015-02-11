@@ -1,12 +1,144 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/Sky"
     tools:context="org.acacha.ebre_escool.ebre_escool_app.teacher.TeacherDetail">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:background="@color/greenlight"
+        android:textStyle="bold"
+        android:textSize="20dp"
+        android:layout_height="wrap_content"
         android:text="@string/teacher_detail" />
 
-</FrameLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/labelTeacherId"
+        android:id="@+id/textView2"
+        android:layout_alignParentTop="true"
+        android:textStyle="bold"
+        android:textSize="20dp"
+        android:background="@color/orangelight"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="33dp"
+        android:layout_alignRight="@+id/labelPersonId"
+        android:layout_alignEnd="@+id/labelPersonId" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:id="@+id/teacherId"
+        android:layout_alignTop="@+id/textView2"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/labelPersonId"
+        android:id="@+id/labelPersonId"
+        android:textStyle="bold"
+        android:textSize="20dp"
+        android:background="@color/orangelight"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignRight="@+id/textView3"
+        android:layout_alignEnd="@+id/textView3"
+        android:layout_alignBottom="@+id/textView2" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/personId"
+        android:layout_below="@+id/teacherId"
+        android:textStyle="bold"
+        android:textSize="20dp"
+        android:layout_alignLeft="@+id/teacherId"
+        android:layout_alignStart="@+id/teacherId"
+        android:layout_alignRight="@+id/teacherId"
+        android:layout_alignEnd="@+id/teacherId" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/labelUserId"
+        android:id="@+id/textView3"
+        android:textStyle="bold"
+        android:textSize="20dp"
+        android:background="@color/orangelight"
+        android:layout_alignBottom="@+id/userId"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignRight="@+id/textView4"
+        android:layout_alignEnd="@+id/textView4" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/userId"
+        android:textStyle="bold"
+        android:textSize="20dp"
+        android:layout_alignLeft="@+id/personId"
+        android:layout_alignStart="@+id/personId"
+        android:layout_alignRight="@+id/personId"
+        android:layout_alignEnd="@+id/personId"
+        android:layout_below="@+id/teacherId" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="20dp"
+        android:background="@color/orangelight"
+        android:text="@string/labelEntryDate"
+        android:id="@+id/textView4"
+        android:layout_alignBottom="@+id/editText"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignRight="@+id/textView5"
+        android:layout_alignEnd="@+id/textView5" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText"
+        android:layout_below="@+id/userId"
+        android:textStyle="bold"
+        android:textSize="20dp"
+        android:layout_alignLeft="@+id/userId"
+        android:layout_alignStart="@+id/userId"
+        android:layout_alignRight="@+id/userId"
+        android:layout_alignEnd="@+id/userId" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/labelLastUpdate"
+        android:id="@+id/textView5"
+        android:textStyle="bold"
+        android:textSize="20dp"
+        android:background="@color/orangelight"
+        android:layout_alignBottom="@+id/lastUpdate"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/lastUpdate"
+        android:textStyle="bold"
+        android:textSize="20dp"
+        android:layout_below="@+id/editText"
+        android:layout_alignLeft="@+id/editText"
+        android:layout_alignStart="@+id/editText"
+        android:layout_alignRight="@+id/editText"
+        android:layout_alignEnd="@+id/editText" />
+
+</RelativeLayout>

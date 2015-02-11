@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -83,9 +84,13 @@ public class TeacherDetail extends Fragment {
         Bundle extras = getArguments();
         if (extras != null) {
             teacherId = extras.getInt("id");
+            Log.d("tag", "detail id :" + teacherId);
         }
 
-
+        //set rest adapter
+        adapter = new RestAdapter.Builder()
+                .setEndpoint(ENDPOINT).build();
+        getOneTeacher(teacherId);
 
         return view;
     }
@@ -106,10 +111,7 @@ public class TeacherDetail extends Fragment {
             throw new ClassCastException(activity.toString()
                     + " must implement OnFragmentInteractionListener");
         }
-          //set rest adapter
-          adapter = new RestAdapter.Builder()
-                .setEndpoint(ENDPOINT).build();
-          getOneTeacher(teacherId);
+
     }
 
     @Override
@@ -135,11 +137,13 @@ public class TeacherDetail extends Fragment {
     //EXECUTE RETROFIT GET ONE TEACHER METHOD
     public void getOneTeacher(Integer id){
         Teacher teacherObject = null;
+        Log.d("tag","get :"+id);
         RetrofitApiService api =adapter.create(RetrofitApiService.class);
         api.getTeacher(id,new Callback<Teacher>() {
             @Override
             public void success(Teacher teacher, Response response) {
                 // updateDisplay();
+                Log.d("tag","success");
                 Toast.makeText(getActivity(),"id :"+teacher.getId(),Toast.LENGTH_LONG);
 
             }
@@ -147,7 +151,7 @@ public class TeacherDetail extends Fragment {
             @Override
             public void failure(RetrofitError error) {
                 Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_LONG).show();
-
+                Log.d("tag","failure");
             }
         });
 
