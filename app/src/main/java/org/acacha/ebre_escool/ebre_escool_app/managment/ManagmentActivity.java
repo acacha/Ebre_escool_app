@@ -9,20 +9,18 @@ import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
-import android.widget.Toast;
 
 import org.acacha.ebre_escool.ebre_escool_app.MainActivity;
 import org.acacha.ebre_escool.ebre_escool_app.R;
 import org.acacha.ebre_escool.ebre_escool_app.helpers.FragmentBase;
 
-import org.acacha.ebre_escool.ebre_escool_app.study_submodules.fragment_study_submodules;
+import org.acacha.ebre_escool.ebre_escool_app.study_submodules.FragmentStudySubmodules;
 
 import org.acacha.ebre_escool.ebre_escool_app.person.FragmentPerson;
 import org.acacha.ebre_escool.ebre_escool_app.teacher.TeacherFragment;
@@ -106,7 +104,7 @@ public class ManagmentActivity extends ActionBarActivity
                 break;
             case 7:
                 //managment_title_section8_study_submodules
-                fragment = (Fragment) new fragment_study_submodules();
+                fragment = (Fragment) new FragmentStudySubmodules();
                 break;
             case 8:
                 //managment_title_section9_lessons

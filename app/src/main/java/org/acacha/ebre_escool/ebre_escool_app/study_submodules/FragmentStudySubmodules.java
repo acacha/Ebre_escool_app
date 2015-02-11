@@ -12,13 +12,13 @@ import org.acacha.ebre_escool.ebre_escool_app.R;
 
 /**
  * A simple {@link Fragment} subclass. Activities that contain this fragment
- * must implement the {@link fragment_study_submodules.OnFragmentInteractionListener}
+ * must implement the {@link FragmentStudySubmodules.OnFragmentInteractionListener}
  * interface to handle interaction events. Use the
- * {@link fragment_study_submodules#newInstance} factory method to create an instance of
+ * {@link FragmentStudySubmodules#newInstance} factory method to create an instance of
  * this fragment.
  *
  */
-public class fragment_study_submodules extends Fragment {
+public class FragmentStudySubmodules extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -41,8 +41,8 @@ public class fragment_study_submodules extends Fragment {
      * @return A new instance of fragment FragmentType1.
      */
     // TODO: Rename and change types and number of parameters
-    public static fragment_study_submodules newInstance(String param1, String param2) {
-        fragment_study_submodules fragment = new fragment_study_submodules();
+    public static FragmentStudySubmodules newInstance(String param1, String param2) {
+        FragmentStudySubmodules fragment = new FragmentStudySubmodules();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -50,7 +50,7 @@ public class fragment_study_submodules extends Fragment {
         return fragment;
     }
 
-    public fragment_study_submodules() {
+    public FragmentStudySubmodules() {
         // Required empty public constructor
     }
 

@@ -1,6 +1,7 @@
 package org.acacha.ebre_escool.ebre_escool_app.study_submodules.api;
 
-import org.acacha.ebre_escool.ebre_escool_app.study_submodules.pojos.study_submodules;
+import org.acacha.ebre_escool.ebre_escool_app.study_submodules.pojos.StudySubmodules;
+
 import java.util.List;
 import java.util.Map;
 import retrofit.Callback;
@@ -12,11 +13,11 @@ import retrofit.http.Path;
  */
 public interface StudySubmoduleApiService {
     @GET("/study_submodules")
-    void personsAsList(Callback<List<study_submodules>> cb);
+    void personsAsList(Callback<List<StudySubmodules>> cb);
 
     @GET("/study_submodules")
-    void persons(Callback<Map<String, study_submodules>> cb);
+    void persons(Callback<Map<String, StudySubmodules>> cb);
 
     @GET("/study_submodule/{id}")
-    void person(Callback<study_submodules> cb, @Path("id") String id);
+    void person(Callback<StudySubmodules> cb, @Path("id") String id);
 }

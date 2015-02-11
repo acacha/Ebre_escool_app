@@ -6,7 +6,7 @@ package org.acacha.ebre_escool.ebre_escool_app.study_submodules.pojos;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class study_submodules {
+public class StudySubmodules {
 
     @Expose
     private String id;
