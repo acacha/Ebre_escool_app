@@ -1,4 +1,4 @@
-package org.acacha.ebre_escool.ebre_escool_app.teacher;
+package org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.teacher;
 
 import android.app.Activity;
 import android.net.Uri;
@@ -16,7 +16,7 @@ import android.widget.Toast;
 
 import org.acacha.ebre_escool.ebre_escool_app.R;
 import org.acacha.ebre_escool.ebre_escool_app.helpers.OnFragmentInteractionListener;
-import org.acacha.ebre_escool.ebre_escool_app.teacher.teacher_pojos.Teacher;
+import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.teacher.teacher_pojos.Teacher;
 
 import retrofit.Callback;
 import retrofit.RestAdapter;

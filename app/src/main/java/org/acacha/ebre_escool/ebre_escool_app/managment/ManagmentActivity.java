@@ -3,27 +3,28 @@ package org.acacha.ebre_escool.ebre_escool_app.managment;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.os.Bundle;
-import android.util.Log;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.support.v4.widget.DrawerLayout;
-import android.widget.Toast;
 
 import org.acacha.ebre_escool.ebre_escool_app.MainActivity;
 import org.acacha.ebre_escool.ebre_escool_app.R;
 import org.acacha.ebre_escool.ebre_escool_app.helpers.FragmentBase;
 import org.acacha.ebre_escool.ebre_escool_app.helpers.OnFragmentInteractionListener;
-import org.acacha.ebre_escool.ebre_escool_app.person.FragmentPerson;
-import org.acacha.ebre_escool.ebre_escool_app.teacher.TeacherFragment;
+
+
+import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.person.FragmentPerson;
+import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.classroom_group.FragmentClassroomGroup;
+import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.teacher.TeacherFragment;
 
 
 public class ManagmentActivity extends ActionBarActivity
@@ -84,7 +85,7 @@ public class ManagmentActivity extends ActionBarActivity
                 break;
             case 3:
                 //managment_title_section4_classroom_groups
-                fragment = (Fragment) new FragmentBase();
+                fragment = (Fragment) new FragmentClassroomGroup();
                 break;
             case 4:
                 //managment_title_section5_teachers
