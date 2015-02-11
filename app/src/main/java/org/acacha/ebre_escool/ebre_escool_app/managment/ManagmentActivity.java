@@ -16,16 +16,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
 
-import org.acacha.ebre_escool.ebre_escool_app.Incident;
 import org.acacha.ebre_escool.ebre_escool_app.MainActivity;
 import org.acacha.ebre_escool.ebre_escool_app.R;
 import org.acacha.ebre_escool.ebre_escool_app.helpers.FragmentBase;
 import org.acacha.ebre_escool.ebre_escool_app.helpers.OnFragmentInteractionListener;
 import org.acacha.ebre_escool.ebre_escool_app.person.FragmentPerson;
+import org.acacha.ebre_escool.ebre_escool_app.incident.FragmentIncident;
 
 public class ManagmentActivity extends ActionBarActivity
         implements ManagmentNavigationDrawerFragment.NavigationDrawerCallbacks,
-        Incident.OnFragmentInteractionListener {
+        OnFragmentInteractionListener {
 
     private final static String TAG = "ManagmentActivity";
 
@@ -93,7 +93,7 @@ public class ManagmentActivity extends ActionBarActivity
                 break;
             case 6:
                 //managment_title_section7_incidents
-                fragment = (Fragment) new FragmentBase();
+                fragment = (Fragment) new FragmentIncident();
                 break;
             case 7:
                 //managment_title_section8_study_submodules
