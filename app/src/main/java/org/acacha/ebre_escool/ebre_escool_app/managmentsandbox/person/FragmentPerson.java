@@ -1,4 +1,4 @@
-package org.acacha.ebre_escool.ebre_escool_app.classroom_group;
+package org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.person;
 
 import android.app.Activity;
 import android.net.Uri;
@@ -9,18 +9,17 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.acacha.ebre_escool.ebre_escool_app.R;
-import org.acacha.ebre_escool.ebre_escool_app.helpers.FragmentBase;
 import org.acacha.ebre_escool.ebre_escool_app.helpers.OnFragmentInteractionListener;
 
 /**
  * A simple {@link android.support.v4.app.Fragment} subclass. Activities that contain this fragment
- * must implement the {@link FragmentBase.OnFragmentInteractionListener}
+ * must implement the {@link OnFragmentInteractionListener}
  * interface to handle interaction events. Use the
- * {@link FragmentBase#newInstance} factory method to create an instance of
+ * {@link FragmentPerson#newInstance} factory method to create an instance of
  * this fragment.
  *
  */
-public class FragmentClassroomGroup extends Fragment {
+public class FragmentPerson extends Fragment {
 	// TODO: Rename parameter arguments, choose names that match
 	// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 	private static final String ARG_PARAM1 = "param1";
@@ -43,8 +42,8 @@ public class FragmentClassroomGroup extends Fragment {
 	 * @return A new instance of fragment FragmentType0.
 	 */
 	// TODO: Rename and change types and number of parameters
-	public static FragmentClassroomGroup newInstance(String param1, String param2) {
-        FragmentClassroomGroup fragment = new FragmentClassroomGroup();
+	public static FragmentPerson newInstance(String param1, String param2) {
+		FragmentPerson fragment = new FragmentPerson();
 		Bundle args = new Bundle();
 		args.putString(ARG_PARAM1, param1);
 		args.putString(ARG_PARAM2, param2);
@@ -52,7 +51,7 @@ public class FragmentClassroomGroup extends Fragment {
 		return fragment;
 	}
 
-	public FragmentClassroomGroup() {
+	public FragmentPerson() {
 		// Required empty public constructor
 	}
 
@@ -69,7 +68,7 @@ public class FragmentClassroomGroup extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
-		return inflater.inflate(R.layout.fragment_base, container,
+		return inflater.inflate(R.layout.fragment_person, container,
 				false);
 	}
 
@@ -80,21 +79,21 @@ public class FragmentClassroomGroup extends Fragment {
 		}
 	}
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            mListener = (OnFragmentInteractionListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		try {
+			mListener = (OnFragmentInteractionListener) activity;
+		} catch (ClassCastException e) {
+			throw new ClassCastException(activity.toString()
+					+ " must implement OnFragmentInteractionListener");
+		}
+	}
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
+	@Override
+	public void onDetach() {
+		super.onDetach();
+		mListener = null;
+	}
 
 }

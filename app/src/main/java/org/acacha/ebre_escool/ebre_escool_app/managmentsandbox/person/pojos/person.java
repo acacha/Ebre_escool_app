@@ -1,4 +1,4 @@
-package org.acacha.ebre_escool.ebre_escool_app.person.pojos;
+package org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.person.pojos;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

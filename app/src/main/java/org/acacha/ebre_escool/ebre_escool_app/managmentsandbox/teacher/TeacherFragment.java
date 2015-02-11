@@ -1,4 +1,4 @@
-package org.acacha.ebre_escool.ebre_escool_app.teacher;
+package org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.teacher;
 
 import android.app.Activity;
 import android.content.Context;
@@ -18,7 +18,7 @@ import com.google.gson.Gson;
 
 import org.acacha.ebre_escool.ebre_escool_app.R;
 import org.acacha.ebre_escool.ebre_escool_app.helpers.OnFragmentInteractionListener;
-import org.acacha.ebre_escool.ebre_escool_app.teacher.teacher_pojos.Teacher;
+import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.teacher.teacher_pojos.Teacher;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,8 +33,6 @@ import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
-
-import static org.acacha.ebre_escool.ebre_escool_app.R.color.wallet_holo_blue_light;
 
 /**
  * A simple {@link Fragment} subclass.
