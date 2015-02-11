@@ -1,17 +1,21 @@
-package org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.teacher;
+package org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.teacher.api;
 
-import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.teacher.teacher_pojos.Teacher;
+import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.teacher.pojos.Teacher;
+import org.apache.http.NameValuePair;
 
 import java.util.List;
 
 import retrofit.Callback;
+import retrofit.http.Field;
+import retrofit.http.FormUrlEncoded;
 import retrofit.http.GET;
+import retrofit.http.POST;
 import retrofit.http.Path;
 
 /**
  * Created by criminal on 2/02/15.
  */
-public interface RetrofitApiService {
+public interface TeacherApiService {
 
 
     /**CallBacks specifies de type of object we are going to get
@@ -27,6 +31,11 @@ public interface RetrofitApiService {
 
     @GET("/teacher/id/{id}")
     public void getTeacher(@Path("id") Integer id, Callback<Teacher> callback);
+
+    //Post Teacher method(Update one teacher)
+    //@FormUrlEncoded
+    //@POST("teacher")
+    //public void updateTeacher(@Field List<NameValuePair> teacher,Callback callback);
 
 
 

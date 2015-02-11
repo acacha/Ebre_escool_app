@@ -16,7 +16,9 @@ import android.widget.Toast;
 
 import org.acacha.ebre_escool.ebre_escool_app.R;
 import org.acacha.ebre_escool.ebre_escool_app.helpers.OnFragmentInteractionListener;
-import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.teacher.teacher_pojos.Teacher;
+import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.teacher.api.TeacherApi;
+import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.teacher.api.TeacherApiService;
+import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.teacher.pojos.Teacher;
 
 import retrofit.Callback;
 import retrofit.RestAdapter;
@@ -46,7 +48,6 @@ public class TeacherDetail extends Fragment {
     private RestAdapter adapter;
     private Teacher teacherObject;
     private int teacherId;
-    public static final String ENDPOINT = "http://185.13.76.85:8769/ebre-escool/index.php/criminal/api/hell";
     //Controls
     private TextView ID;
     private EditText personId;
@@ -111,8 +112,17 @@ public class TeacherDetail extends Fragment {
         markedForDeletionDate = (EditText)view.findViewById(R.id.markedForDeletionDate);
         dniNif =(EditText)view.findViewById(R.id.dniNif);
         btnUpdate = (Button)view.findViewById(R.id.btnUpdate);
-        //Set click listener
-        btnUpdate.setOnClickListener((View.OnClickListener) getActivity());
+        //Set click listener for button
+        btnUpdate.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+              Toast.makeText(getActivity(),"Teacher ID: "+ID.getText().toString(),Toast.LENGTH_LONG).show();
+            }
+        });
+
+
         // get data send from teacher fragment
         Bundle extras = getArguments();
         if (extras != null) {
@@ -123,7 +133,7 @@ public class TeacherDetail extends Fragment {
 
         //set rest adapter
         adapter = new RestAdapter.Builder()
-                .setEndpoint(ENDPOINT).build();
+                .setEndpoint(TeacherApi.ENDPOINT).build();
         getOneTeacher(teacherId);
 
         return view;
@@ -135,6 +145,8 @@ public class TeacherDetail extends Fragment {
             mListener.onFragmentInteraction(uri);
         }
     }
+
+
 
     @Override
     public void onAttach(Activity activity) {
@@ -153,8 +165,6 @@ public class TeacherDetail extends Fragment {
         super.onDetach();
         mListener = null;
     }
-    //OnclickButton update
- 
 
 
     /**
@@ -175,7 +185,7 @@ public class TeacherDetail extends Fragment {
     public void getOneTeacher(Integer id){
 
         Log.d("tag","get :"+id);
-        RetrofitApiService api =adapter.create(RetrofitApiService.class);
+        TeacherApiService api =adapter.create(TeacherApiService.class);
         api.getTeacher(id,new Callback<Teacher>() {
             @Override
             public void success(Teacher teacher, Response response) {
