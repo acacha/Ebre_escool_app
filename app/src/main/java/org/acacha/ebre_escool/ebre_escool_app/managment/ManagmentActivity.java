@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
 
+import org.acacha.ebre_escool.ebre_escool_app.Incident;
 import org.acacha.ebre_escool.ebre_escool_app.MainActivity;
 import org.acacha.ebre_escool.ebre_escool_app.R;
 import org.acacha.ebre_escool.ebre_escool_app.helpers.FragmentBase;
@@ -23,7 +24,7 @@ import org.acacha.ebre_escool.ebre_escool_app.helpers.FragmentPerson;
 
 public class ManagmentActivity extends ActionBarActivity
         implements ManagmentNavigationDrawerFragment.NavigationDrawerCallbacks,
-        OnFragmentInteractionListener {
+        Incident.OnFragmentInteractionListener {
 
     private final static String TAG = "ManagmentActivity";
 
