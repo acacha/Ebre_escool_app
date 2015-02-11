@@ -1,4 +1,4 @@
-package org.acacha.ebre_escool.ebre_escool_app.employees;
+package org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.employees;
 
 import android.app.Activity;
 import android.net.Uri;
