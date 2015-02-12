@@ -174,7 +174,7 @@ public class TeacherFragment extends Fragment {
             ArrayList<Card> cards = new ArrayList<Card>();
 
             for (int i = 0; i < arrayTeacher.length; i++) {
-                Log.d(TAG, arrayTeacher[i].getId());
+                Log.d(TAG, ""+arrayTeacher[i].getId());
                 // Create a Card
                 Card card_on_list = new Card(getActivity());
 
@@ -226,9 +226,9 @@ public class TeacherFragment extends Fragment {
                 //list.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
                 //GET FROM SETTINGS WHICH SCHOOL IS USED IN SETTINGS
 
-                String current_selected_teacher = arrayTeacher[0].getId().toString();
+               // String current_selected_teacher = arrayTeacher[0].getId().toString();
 
-                Log.d(TAG,"Getted current selected school: " + current_selected_teacher);
+               // Log.d(TAG,"Getted current selected school: " + current_selected_teacher);
 
                 //list.setItemChecked(Integer.parseInt(current_selected_teacher), true);
 

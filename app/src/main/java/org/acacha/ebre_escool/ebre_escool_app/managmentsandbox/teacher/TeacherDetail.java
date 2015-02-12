@@ -18,6 +18,7 @@ import org.acacha.ebre_escool.ebre_escool_app.R;
 import org.acacha.ebre_escool.ebre_escool_app.helpers.OnFragmentInteractionListener;
 import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.teacher.api.TeacherApi;
 import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.teacher.api.TeacherApiService;
+import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.teacher.pojos.Result;
 import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.teacher.pojos.Teacher;
 
 import retrofit.Callback;
@@ -60,6 +61,7 @@ public class TeacherDetail extends Fragment {
     private EditText markedForDeletionDate;
     private EditText dniNif;
     private Button btnUpdate;
+    private String TAG = "tag";
 
 
 
@@ -118,7 +120,9 @@ public class TeacherDetail extends Fragment {
             @Override
             public void onClick(View v)
             {
-              Toast.makeText(getActivity(),"Teacher ID: "+ID.getText().toString(),Toast.LENGTH_LONG).show();
+              //Toast.makeText(getActivity(),"Teacher ID: "+ID.getText().toString(),Toast.LENGTH_LONG).show();
+              updateTeacher();
+
             }
         });
 
@@ -223,5 +227,67 @@ public class TeacherDetail extends Fragment {
 
 
     }
+    private Teacher getDataTeacher() {
+        Teacher teacher = new Teacher();
+        teacher.setId(ID.getText().toString());
+        //Check if fields are empty
+        if(!personId.getText().toString().equals("")||!personId.getText().toString().equals("0"))
+            teacher.setPersonId(personId.getText().toString());
+        if(!userId.getText().toString().equals("")||userId.getText().toString().equals("0"))
+            teacher.setUserId(userId.getText().toString());
+        if(!entryDate.getText().toString().equals("")||!entryDate.getText().toString().equals("0"))
+            teacher.setEntryDate(entryDate.getText().toString());
+        teacher.setLastUpdate("");
+        //can be null on the database
+         teacher.setLastUpdateUserId(lastUpdateUserId.getText().toString());
+         teacher.setCreatorId(creatorId.getText().toString());
+        if(!markedForDeletion.getText().toString().equals("")||!markedForDeletion.getText().toString().equals("0"))
+            teacher.setMarkedForDeletion(markedForDeletion.getText().toString());
+        if(!markedForDeletionDate.getText().toString().equals("")||!markedForDeletionDate.getText().toString().equals("0"))
+            teacher.setMarkedForDeletionDate(markedForDeletionDate.getText().toString());
+        if(!dniNif.getText().toString().equals("")||!dniNif.getText().toString().equals("0"))
+            teacher.setDNINIF(dniNif.getText().toString());
+        //Return object teacher
+        return teacher;
+     }
+    //Method to call retrofit post sending teacher to update
+    private void updateTeacher(){
+        //Get the teacher object
+        Teacher teacher = getDataTeacher();
+        Log.d(TAG,"id "+teacher.getId());
+        Log.d(TAG,"id "+teacher.getPersonId());
+        Log.d(TAG,"id "+teacher.getUserId());
+        Log.d(TAG,"id "+teacher.getEntryDate());
+        Log.d(TAG,"id "+teacher.getCreatorId());
+        Log.d(TAG,"id "+teacher.getLastUpdate());
+        Log.d(TAG,"id "+teacher.getLastUpdateUserId());
+        Log.d(TAG,"id "+teacher.getMarkedForDeletion());
+        Log.d(TAG,"id "+teacher.getMarkedForDeletionDate());
+        Log.d(TAG,"id "+teacher.getDNINIF());
+
+        //set rest adapter
+        RestAdapter adapter = new RestAdapter.Builder()
+                .setEndpoint(TeacherApi.ENDPOINT).build();
+        TeacherApiService api =adapter.create(TeacherApiService.class);
+
+        api.updateTeacher(teacher,new Callback<Result>() {
+            @Override
+            public void success(Result result, Response response) {
+                Toast.makeText(getActivity(),"Teacher "+ID.getText().toString()+" UPDATED!",Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Toast.makeText(getActivity(),"ERROR!"+error.getMessage(),Toast.LENGTH_LONG).show();
+            }
+        });
+
+
+
+
+
+
+    }
+
 
 }

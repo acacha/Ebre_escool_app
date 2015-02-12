@@ -1,11 +1,14 @@
 package org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.teacher.api;
 
+
+import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.teacher.pojos.Result;
 import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.teacher.pojos.Teacher;
 import org.apache.http.NameValuePair;
 
 import java.util.List;
 
 import retrofit.Callback;
+import retrofit.http.Body;
 import retrofit.http.Field;
 import retrofit.http.FormUrlEncoded;
 import retrofit.http.GET;
@@ -34,8 +37,9 @@ public interface TeacherApiService {
 
     //Post Teacher method(Update one teacher)
     //@FormUrlEncoded
-    //@POST("teacher")
-    //public void updateTeacher(@Field List<NameValuePair> teacher,Callback callback);
+    @POST("/teacher")
+    public void updateTeacher(@Body Teacher teacher,Callback<Result> callback);
+
 
 
 
