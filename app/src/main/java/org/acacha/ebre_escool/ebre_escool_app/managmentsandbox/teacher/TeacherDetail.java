@@ -237,7 +237,8 @@ public class TeacherDetail extends Fragment {
             teacher.setUserId(userId.getText().toString());
         if(!entryDate.getText().toString().equals("")||!entryDate.getText().toString().equals("0"))
             teacher.setEntryDate(entryDate.getText().toString());
-        teacher.setLastUpdate("");
+        //We dont need last update
+        //teacher.setLastUpdate("");
         //can be null on the database
          teacher.setLastUpdateUserId(lastUpdateUserId.getText().toString());
          teacher.setCreatorId(creatorId.getText().toString());
