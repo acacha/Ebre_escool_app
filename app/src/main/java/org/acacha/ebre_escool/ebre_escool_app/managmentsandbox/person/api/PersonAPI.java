@@ -10,5 +10,5 @@ public class PersonAPI {
 
     //URL of image no available
     public final static String EBRE_ESCOOL_PUBLIC_IMAGE_NOT_AVAILABLE =
-            "/usr/share/ebre-escool/uploads/person_photos";
+            "http://acacha.org/acacha_manager/uploads/school_logos/no_picture.gif";
 }
