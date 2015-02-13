@@ -331,9 +331,9 @@ public class TeacherFragment extends Fragment {
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         Fragment teacherDetail = new TeacherDetail();
-        transaction.addToBackStack(null);
-       //transaction.hide(TeacherFragment.this);
+        //transaction.hide(TeacherFragment.this);
         transaction.replace(R.id.container,teacherDetail);
+        transaction.addToBackStack(null);
         transaction.commit();
 
 
