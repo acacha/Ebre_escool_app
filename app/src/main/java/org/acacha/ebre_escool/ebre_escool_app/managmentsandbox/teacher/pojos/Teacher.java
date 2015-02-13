@@ -1,4 +1,4 @@
-package org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.teacher.teacher_pojos;
+package org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.teacher.pojos;
 
 /**
  * Created by criminal on 2/02/15.
@@ -10,7 +10,7 @@ import com.google.gson.annotations.SerializedName;
 
 
 public class Teacher {
-
+    @SerializedName("id")
     @Expose
     private String id;
     @SerializedName("person_id")

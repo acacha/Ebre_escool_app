@@ -18,7 +18,9 @@ import com.google.gson.Gson;
 
 import org.acacha.ebre_escool.ebre_escool_app.R;
 import org.acacha.ebre_escool.ebre_escool_app.helpers.OnFragmentInteractionListener;
-import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.teacher.teacher_pojos.Teacher;
+import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.teacher.api.TeacherApi;
+import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.teacher.api.TeacherApiService;
+import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.teacher.pojos.Teacher;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +59,6 @@ public class TeacherFragment extends Fragment {
     ////Teacher fields//////////////////////
     private CardListView list;
     private RestAdapter adapter;
-    public static final String ENDPOINT = "http://185.13.76.85:8769/ebre-escool/index.php/criminal/api/hell";
     //To get teachers/teacher
     private List<Teacher> teachersList;
     private String TAG = "tag";
@@ -123,7 +124,7 @@ public class TeacherFragment extends Fragment {
         }
         //set rest adapter
         adapter = new RestAdapter.Builder()
-                .setEndpoint(ENDPOINT).build();
+                .setEndpoint(TeacherApi.ENDPOINT).build();
         getAllTeachers();
 
     }
@@ -139,7 +140,7 @@ public class TeacherFragment extends Fragment {
         Log.d(TAG, "En el método requestData()");
 
         //now get the interface declared methods using this adapter
-        RetrofitApiService api = adapter.create(RetrofitApiService.class);
+        TeacherApiService api = adapter.create(TeacherApiService.class);
         api.getTeachers(new Callback<List<Teacher>>() {
             @Override
             public void success(List<Teacher> teachers, Response response) {
@@ -171,9 +172,9 @@ public class TeacherFragment extends Fragment {
             //create cards
 
             ArrayList<Card> cards = new ArrayList<Card>();
-            String image = "http://thumbs.dreamstime.com/x/teacher-wearing-glasses-holding-pointer-22978913.jpg";
+
             for (int i = 0; i < arrayTeacher.length; i++) {
-                Log.d(TAG, arrayTeacher[i].getId());
+                Log.d(TAG, ""+arrayTeacher[i].getId());
                 // Create a Card
                 Card card_on_list = new Card(getActivity());
 
@@ -211,7 +212,7 @@ public class TeacherFragment extends Fragment {
                 //Create thumbnail
                 CardThumbnail thumb = new CardThumbnail(getActivity());
                 //Set URL resource
-                thumb.setUrlResource(image);
+                thumb.setUrlResource(TeacherApi.IMAGE);
                 //Add thumbnail to a card
                 card_on_list.addCardThumbnail(thumb);
                 //add card to list
@@ -225,9 +226,9 @@ public class TeacherFragment extends Fragment {
                 //list.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
                 //GET FROM SETTINGS WHICH SCHOOL IS USED IN SETTINGS
 
-                String current_selected_teacher = arrayTeacher[0].getId().toString();
+               // String current_selected_teacher = arrayTeacher[0].getId().toString();
 
-                Log.d(TAG,"Getted current selected school: " + current_selected_teacher);
+               // Log.d(TAG,"Getted current selected school: " + current_selected_teacher);
 
                 //list.setItemChecked(Integer.parseInt(current_selected_teacher), true);
 
@@ -331,8 +332,8 @@ public class TeacherFragment extends Fragment {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         Fragment teacherDetail = new TeacherDetail();
         transaction.addToBackStack(null);
-        transaction.hide(TeacherFragment.this);
-        transaction.add(R.id.container,teacherDetail);
+       //transaction.hide(TeacherFragment.this);
+        transaction.replace(R.id.container,teacherDetail);
         transaction.commit();
 
 
