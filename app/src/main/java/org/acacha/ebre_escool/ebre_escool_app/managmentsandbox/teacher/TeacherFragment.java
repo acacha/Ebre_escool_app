@@ -178,7 +178,7 @@ public class TeacherFragment extends Fragment {
             for (int i = 0; i < arrayTeacher.length; i++) {
                 Log.d(TAG, ""+arrayTeacher[i].getId());
                 // Create a Card
-                final Card card_on_list = new Card(getActivity());
+                final CustomTeacherCard card_on_list = new CustomTeacherCard(getActivity());
 
                 // Create a CardHeader and add Header to card_on_list
                 CardHeader header = new CardHeader(getActivity());
@@ -374,6 +374,11 @@ public class TeacherFragment extends Fragment {
         }else{
             card.doCollapse();
         }
+
+    }
+    public void  clickButtons(int cardId){
+
+
     }
 
 
