@@ -23,6 +23,10 @@
     <string name="labelMarkedForDeletionDate">Marked For Deletion Date</string>
     <string name="dni_nif">DNI/NIF</string>
     <string name="btnUpdate">Update</string>
+    <string name="putTeacher">Put</string>
+    <string name="deleteTeacher">Delete</string>
+    <string name="expandTeacher">Expand/Collapse</string>
+
 
 
 

@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -30,6 +31,7 @@ import it.gmariotti.cardslib.library.internal.CardArrayAdapter;
 import it.gmariotti.cardslib.library.internal.CardExpand;
 import it.gmariotti.cardslib.library.internal.CardHeader;
 import it.gmariotti.cardslib.library.internal.CardThumbnail;
+import it.gmariotti.cardslib.library.internal.base.BaseCard;
 import it.gmariotti.cardslib.library.view.CardListView;
 import retrofit.Callback;
 import retrofit.RestAdapter;
@@ -176,13 +178,35 @@ public class TeacherFragment extends Fragment {
             for (int i = 0; i < arrayTeacher.length; i++) {
                 Log.d(TAG, ""+arrayTeacher[i].getId());
                 // Create a Card
-                Card card_on_list = new Card(getActivity());
+                final Card card_on_list = new Card(getActivity());
 
                 // Create a CardHeader and add Header to card_on_list
                 CardHeader header = new CardHeader(getActivity());
                 header.setTitle("Teacher "+arrayTeacher[i].getId());
                 header.setButtonExpandVisible(true);
-                card_on_list.addCardHeader(header);
+                //Add a popup menu. This method sets OverFlow button to visibile
+                header.setPopupMenu(R.menu.teacher_card_overflow_menu, new CardHeader.OnClickCardHeaderPopupMenuListener() {
+                            @Override
+                            public void onMenuItemClick(BaseCard baseCard, MenuItem menuItem) {
+                                Toast.makeText(getActivity(), "Click on "+menuItem.getTitle(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), "Click on "+card_on_list.getId(), Toast.LENGTH_SHORT).show();
+                                Log.d(TAG,"ITEMid: "+menuItem.getItemId());
+                                Log.d(TAG,"id: "+R.id.expandTeacher);
+                                switch(menuItem.getItemId()){
+                                    case(R.id.putTeacher):
+                                        //TODO
+                                        break;
+                                    case(R.id.deleteTeacher):
+                                        //TODO
+                                        break;
+                                    case(R.id.expandTeacher):
+                                   // Log.d(TAG,"id: "+baseCard.getParentCard().getId());
+                                    expandCard(card_on_list);
+                                        break;
+                                }
+                            }
+                        });
+                        card_on_list.addCardHeader(header);
 
                 card_on_list.setId(arrayTeacher[i].getId());
                 card_on_list.setTitle("DNI/NIF\n"+arrayTeacher[i].getDNINIF());
@@ -343,6 +367,14 @@ public class TeacherFragment extends Fragment {
         teacherDetail.setArguments(extras);
     }
 
+    private void expandCard(Card card){
+
+        if(!card.isExpanded()){
+            card.doExpand();
+        }else{
+            card.doCollapse();
+        }
+    }
 
 
 
