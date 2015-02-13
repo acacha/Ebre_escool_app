@@ -22,6 +22,7 @@ import org.acacha.ebre_escool.ebre_escool_app.helpers.FragmentBase;
 import org.acacha.ebre_escool.ebre_escool_app.helpers.OnFragmentInteractionListener;
 
 
+import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.employees.FragmentEmployees;
 import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.person.FragmentPerson;
 import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.classroom_group.FragmentClassroomGroup;
 import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.teacher.TeacherFragment;
@@ -110,7 +111,7 @@ public class ManagmentActivity extends ActionBarActivity
                 break;
             case 9:
                 //managment_title_section10_employees
-                fragment = (Fragment) new FragmentBase();
+                fragment = (Fragment) new FragmentEmployees();
                 break;
             case 10:
                 startActivity(new Intent(this, MainActivity.class));

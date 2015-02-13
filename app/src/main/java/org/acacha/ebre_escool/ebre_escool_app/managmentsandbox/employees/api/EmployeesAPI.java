@@ -7,7 +7,7 @@ package org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.employees.api;
 public class EmployeesAPI {
     // URL OF PUBLIC API EBRE-ESCOOL
     public final static String EBRE_ESCOOL_PUBLIC_API_URL =
-            "http://192.168.160.106/ebre-escool/index.php/tauriel/api/employee";
+            "http://192.168.160.106/ebre-escool/index.php/paolodavila/api/employee";
 
     //URL of image no available
     public final static String EBRE_ESCOOL_PUBLIC_IMAGE_NOT_AVAILABLE =
