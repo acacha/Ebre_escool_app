@@ -61,6 +61,7 @@ public class TeacherDetail extends Fragment {
     private EditText markedForDeletionDate;
     private EditText dniNif;
     private Button btnUpdate;
+    private Button btnPut;
     private String TAG = "tag";
 
 
@@ -114,7 +115,8 @@ public class TeacherDetail extends Fragment {
         markedForDeletionDate = (EditText)view.findViewById(R.id.markedForDeletionDate);
         dniNif =(EditText)view.findViewById(R.id.dniNif);
         btnUpdate = (Button)view.findViewById(R.id.btnUpdate);
-        //Set click listener for button
+        btnPut = (Button)view.findViewById(R.id.btnPut);
+        //Set click listener for button update
         btnUpdate.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -125,20 +127,47 @@ public class TeacherDetail extends Fragment {
 
             }
         });
+        btnPut.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                //Toast.makeText(getActivity(),"Teacher ID: "+ID.getText().toString(),Toast.LENGTH_LONG).show();
+                updateTeacher();
 
+            }
+        });
+        //set rest adapter
+        adapter = new RestAdapter.Builder()
+                .setEndpoint(TeacherApi.ENDPOINT).build();
 
         // get data send from teacher fragment
         Bundle extras = getArguments();
         if (extras != null) {
             teacherId = extras.getInt("id");
+            String action =extras.getString(TeacherApi.ACTION);
             Log.d("tag", "detail id :" + teacherId);
+            switch(action){
+                case TeacherApi.DETAIL:
+                btnUpdate.setVisibility(View.INVISIBLE);
+                    btnPut.setVisibility(View.INVISIBLE);
+                    getOneTeacher(teacherId);
+                    break;
+                case TeacherApi.EDIT:
+                    btnUpdate.setVisibility(View.VISIBLE);
+                    btnPut.setVisibility(View.INVISIBLE);
+                    getOneTeacher(teacherId);
+                    break;
+                case TeacherApi.PUT:
+                    btnPut.setVisibility(View.VISIBLE);
+                    btnUpdate.setVisibility(View.INVISIBLE);
+                    markedForDeletion.setText("n");
 
+            }
         }
 
-        //set rest adapter
-        adapter = new RestAdapter.Builder()
-                .setEndpoint(TeacherApi.ENDPOINT).build();
-        getOneTeacher(teacherId);
+
+
 
         return view;
     }
@@ -274,7 +303,7 @@ public class TeacherDetail extends Fragment {
         api.updateTeacher(teacher,new Callback<Result>() {
             @Override
             public void success(Result result, Response response) {
-                Toast.makeText(getActivity(),"Teacher "+ID.getText().toString()+" UPDATED!",Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(),"Teacher "+result.getId()+" "+result.getMessage(),Toast.LENGTH_LONG).show();
             }
 
             @Override

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -12,6 +13,8 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +34,7 @@ import it.gmariotti.cardslib.library.internal.CardArrayAdapter;
 import it.gmariotti.cardslib.library.internal.CardExpand;
 import it.gmariotti.cardslib.library.internal.CardHeader;
 import it.gmariotti.cardslib.library.internal.CardThumbnail;
+import it.gmariotti.cardslib.library.internal.ViewToClickToExpand;
 import it.gmariotti.cardslib.library.internal.base.BaseCard;
 import it.gmariotti.cardslib.library.view.CardListView;
 import retrofit.Callback;
@@ -46,7 +50,7 @@ import retrofit.client.Response;
  * Use the {@link TeacherFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TeacherFragment extends Fragment {
+public class TeacherFragment extends Fragment  {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -65,6 +69,9 @@ public class TeacherFragment extends Fragment {
     private List<Teacher> teachersList;
     private String TAG = "tag";
     CardArrayAdapter mCardArrayAdapter;
+    CustomTeacherCard card_on_list;
+    //This lets vibrate on click button actions
+    Vibrator vibe;
 
     /**
      * Use this factory method to create a new instance of
@@ -107,6 +114,17 @@ public class TeacherFragment extends Fragment {
 
         return view;
     }
+    @Override
+    public  void onStart(){
+        super.onStart();
+        vibe = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE) ;
+        //set rest adapter
+        adapter = new RestAdapter.Builder()
+                .setEndpoint(TeacherApi.ENDPOINT).build();
+        getAllTeachers();
+
+
+    }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -124,10 +142,7 @@ public class TeacherFragment extends Fragment {
             throw new ClassCastException(activity.toString()
                     + " must implement OnFragmentInteractionListener");
         }
-        //set rest adapter
-        adapter = new RestAdapter.Builder()
-                .setEndpoint(TeacherApi.ENDPOINT).build();
-        getAllTeachers();
+
 
     }
 
@@ -178,57 +193,55 @@ public class TeacherFragment extends Fragment {
             for (int i = 0; i < arrayTeacher.length; i++) {
                 Log.d(TAG, ""+arrayTeacher[i].getId());
                 // Create a Card
-                final CustomTeacherCard card_on_list = new CustomTeacherCard(getActivity());
-
+                 card_on_list = new CustomTeacherCard(getActivity());
+                //Set card id with teacher id
+                 card_on_list.setId(arrayTeacher[i].getId());
                 // Create a CardHeader and add Header to card_on_list
                 CardHeader header = new CardHeader(getActivity());
                 header.setTitle("Teacher "+arrayTeacher[i].getId());
-                header.setButtonExpandVisible(true);
+               // header.setButtonExpandVisible(true);
                 //Add a popup menu. This method sets OverFlow button to visibile
                 header.setPopupMenu(R.menu.teacher_card_overflow_menu, new CardHeader.OnClickCardHeaderPopupMenuListener() {
                             @Override
                             public void onMenuItemClick(BaseCard baseCard, MenuItem menuItem) {
-                                Toast.makeText(getActivity(), "Click on "+menuItem.getTitle(), Toast.LENGTH_SHORT).show();
-                                Toast.makeText(getActivity(), "Click on "+card_on_list.getId(), Toast.LENGTH_SHORT).show();
-                                Log.d(TAG,"ITEMid: "+menuItem.getItemId());
-                                Log.d(TAG,"id: "+R.id.expandTeacher);
+                                vibe.vibrate(60); // 60 is time in ms
                                 switch(menuItem.getItemId()){
                                     case(R.id.putTeacher):
-                                        //TODO
+                                        Log.d(TAG,"CARD ID PUT"+baseCard.getId());
+                                        int put = 9999;
+                                        onCardClick(put,TeacherApi.PUT);
                                         break;
                                     case(R.id.deleteTeacher):
                                         //TODO
                                         break;
-                                    case(R.id.expandTeacher):
-                                   // Log.d(TAG,"id: "+baseCard.getParentCard().getId());
-                                    expandCard(card_on_list);
-                                        break;
+                                    case(R.id.otherActions):
+                                      Toast.makeText(getActivity(),"Future actions",Toast.LENGTH_SHORT).show();
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           break;
                                 }
                             }
                         });
                         card_on_list.addCardHeader(header);
 
-                card_on_list.setId(arrayTeacher[i].getId());
+
                 card_on_list.setTitle("DNI/NIF\n"+arrayTeacher[i].getDNINIF());
                 card_on_list.setClickable(true);
                 card_on_list.setShadow(true);
                CustomExpandCard expand= new CustomExpandCard(getActivity(),arrayTeacher[i]);
                 card_on_list.addCardExpand(expand);
                 //Set expand on click
-               /* ViewToClickToExpand viewToClickToExpand =
+               ViewToClickToExpand viewToClickToExpand =
                         ViewToClickToExpand.builder()
                                 .highlightView(false)
                                 .setupCardElement(ViewToClickToExpand.CardElementUI.CARD);
-                card_on_list.setViewToClickToExpand(viewToClickToExpand);*/
+                card_on_list.setViewToClickToExpand(viewToClickToExpand);
                 //card_on_list.setBackgroundColorResourceId(R.color.Silver);==>this don't works
                 card_on_list.setOnClickListener(new Card.OnCardClickListener() {
                     @Override
                     public void onClick(Card card, View view) {
+                        vibe.vibrate(60); // 6  0 is time in ms
                         Log.d(TAG, "Clickable card id: " + card.getId());
-                        //Toast.makeText(getActivity(), "Clickable card id: " + card.getId(), Toast.LENGTH_LONG).show();
                         int position = mCardArrayAdapter.getPosition(card);
                         list.setItemChecked(position, true);
-                       onCardClick(Integer.valueOf(card.getId()), position,card);
                     }
 
                 });
@@ -261,6 +274,60 @@ public class TeacherFragment extends Fragment {
         }
     }
 
+
+//Custom card class
+public class CustomTeacherCard extends Card implements View.OnClickListener {
+
+
+    private String title;
+
+    //Constructor
+    public CustomTeacherCard(Context context) {
+        super(context, R.layout.teacher_card_inside_buttons);
+    }
+
+    @Override
+    public void setupInnerViewElements(ViewGroup parent, View view) {
+        //Get controls and set button listeners
+        TextView tx = (TextView) view.findViewById(R.id.titleTeacher);
+        Button btnDetail = (Button) view.findViewById(R.id.btnDetail);
+        Button btnEdit = (Button) view.findViewById(R.id.btnEdit);
+        tx.setText(title);
+        if (btnDetail != null) {
+            btnDetail.setOnClickListener(this);
+
+        }
+        if (btnEdit != null) {
+            btnEdit.setOnClickListener(this);
+
+        }
+    }
+        @Override
+        public void onClick(View v) {
+            //Vibrate on click
+            vibe.vibrate(60); // 50 is time in ms
+            switch(v.getId()){
+                case R.id.btnDetail:
+                    onCardClick(Integer.valueOf(getId()), TeacherApi.DETAIL);
+                    break;
+                case  R.id.btnEdit:
+                    onCardClick(Integer.valueOf(getId()), TeacherApi.EDIT);
+                    break;
+            }
+
+        }
+
+    @Override
+    public String getTitle() {
+        return title;
+    }
+
+    @Override
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+}
 
 
     /**
@@ -346,11 +413,7 @@ public class TeacherFragment extends Fragment {
 
     }
 
-    public void onCardClick(int id, int position,Card card){
-        //get one teacher using id
-
-        Toast.makeText(getActivity(), "Click on card:"+id+"position:"+position , Toast.LENGTH_LONG).show();
-        int collapsed=0;
+    public void onCardClick(int id,String action){
        //Change the fragment
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
@@ -364,32 +427,8 @@ public class TeacherFragment extends Fragment {
         //Pass the id to the fragment detail
          Bundle extras = new Bundle();
         extras.putInt("id",id);
+        extras.putString(TeacherApi.ACTION,action);
         teacherDetail.setArguments(extras);
     }
-
-    private void expandCard(Card card){
-
-        if(!card.isExpanded()){
-            card.doExpand();
-        }else{
-            card.doCollapse();
-        }
-
-    }
-    public void  clickButtons(int cardId){
-
-
-    }
-
-
-
-
-
-
-
-
-
-
-
 
 }

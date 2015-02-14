@@ -5,7 +5,7 @@
         android:showAsAction="never" />
     <item android:id="@+id/deleteTeacher" android:title="@string/deleteTeacher"
         android:orderInCategory="100" android:showAsAction="never" />
-    <item android:id="@+id/expandTeacher" android:title="@string/expandTeacher"
+    <item android:id="@+id/otherActions" android:title="@string/otherActions"
         android:orderInCategory="100" android:showAsAction="never" />
 
 

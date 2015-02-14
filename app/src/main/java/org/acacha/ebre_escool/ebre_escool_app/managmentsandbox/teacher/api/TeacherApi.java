@@ -9,5 +9,9 @@ public class TeacherApi {
     //public static final String ENDPOINT = "http://192.168.202.113/ebre-escool/index.php/criminal/api/hell";
     //Image url
     public static final String IMAGE = "http://thumbs.dreamstime.com/x/teacher-wearing-glasses-holding-pointer-22978913.jpg";
+    public static final String ACTION ="action";
+    public static final String DETAIL ="detail";
+    public static final String EDIT ="edit";
+    public static final String PUT ="put";
 
 }
