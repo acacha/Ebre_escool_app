@@ -133,7 +133,7 @@ public class TeacherDetail extends Fragment {
             public void onClick(View v)
             {
                 //Toast.makeText(getActivity(),"Teacher ID: "+ID.getText().toString(),Toast.LENGTH_LONG).show();
-                updateTeacher();
+                putTeacher();
 
             }
         });
@@ -284,16 +284,6 @@ public class TeacherDetail extends Fragment {
     private void updateTeacher(){
         //Get the teacher object
         Teacher teacher = getDataTeacher();
-        Log.d(TAG,"id "+teacher.getId());
-        Log.d(TAG,"id "+teacher.getPersonId());
-        Log.d(TAG,"id "+teacher.getUserId());
-        Log.d(TAG,"id "+teacher.getEntryDate());
-        Log.d(TAG,"id "+teacher.getCreatorId());
-        Log.d(TAG,"id "+teacher.getLastUpdate());
-        Log.d(TAG,"id "+teacher.getLastUpdateUserId());
-        Log.d(TAG,"id "+teacher.getMarkedForDeletion());
-        Log.d(TAG,"id "+teacher.getMarkedForDeletionDate());
-        Log.d(TAG,"id "+teacher.getDNINIF());
 
         //set rest adapter
         RestAdapter adapter = new RestAdapter.Builder()
@@ -308,15 +298,40 @@ public class TeacherDetail extends Fragment {
 
             @Override
             public void failure(RetrofitError error) {
-                Toast.makeText(getActivity(),"ERROR!"+error.getMessage(),Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(),"UPDATE ERROR! "+error.getMessage(),Toast.LENGTH_LONG).show();
             }
         });
+     }
 
+    //Method to put teacher
+    private void putTeacher(){
+        Teacher teacher = getDataTeacher();teacher.setId("");
+       /* Log.d(TAG,"id "+teacher.getId());
+        Log.d(TAG,"id "+teacher.getPersonId());
+        Log.d(TAG,"id "+teacher.getUserId());
+        Log.d(TAG,"id "+teacher.getEntryDate());
+        Log.d(TAG,"id "+teacher.getCreatorId());
+        Log.d(TAG,"id "+teacher.getLastUpdate());
+        Log.d(TAG,"id "+teacher.getLastUpdateUserId());
+        Log.d(TAG,"id "+teacher.getMarkedForDeletion());
+        Log.d(TAG,"id "+teacher.getMarkedForDeletionDate());
+        Log.d(TAG,"id "+teacher.getDNINIF());*/
+        //Call put method
+        RestAdapter adapter = new RestAdapter.Builder()
+                .setEndpoint(TeacherApi.ENDPOINT).build();
+        TeacherApiService api = adapter.create(TeacherApiService.class);
+        api.putTeacher(teacher, new Callback<Result>() {
+            @Override
+            public void success(Result result, Response response) {
+                Toast.makeText(getActivity(),"Teacher "+result.getId()+" "+result.getMessage(),Toast.LENGTH_LONG).show();
+            }
 
+            @Override
+            public void failure(RetrofitError error) {
+                Toast.makeText(getActivity(),"PUT ERROR! "+error.getMessage(),Toast.LENGTH_LONG).show();
 
-
-
-
+            }
+        });
     }
 
 

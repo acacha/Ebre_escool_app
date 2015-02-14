@@ -24,6 +24,7 @@ import org.acacha.ebre_escool.ebre_escool_app.R;
 import org.acacha.ebre_escool.ebre_escool_app.helpers.OnFragmentInteractionListener;
 import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.teacher.api.TeacherApi;
 import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.teacher.api.TeacherApiService;
+import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.teacher.pojos.Result;
 import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.teacher.pojos.Teacher;
 
 import java.util.ArrayList;
@@ -212,7 +213,8 @@ public class TeacherFragment extends Fragment  {
                                         onCardClick(put,TeacherApi.PUT);
                                         break;
                                     case(R.id.deleteTeacher):
-                                        //TODO
+                                        //Call the method to delete
+                                        deleteTeacher(Integer.valueOf(baseCard.getId()));
                                         break;
                                     case(R.id.otherActions):
                                       Toast.makeText(getActivity(),"Future actions",Toast.LENGTH_SHORT).show();
@@ -429,6 +431,26 @@ public class CustomTeacherCard extends Card implements View.OnClickListener {
         extras.putInt("id",id);
         extras.putString(TeacherApi.ACTION,action);
         teacherDetail.setArguments(extras);
+    }
+    //DELETE teacher method
+    private void deleteTeacher(int id){
+        Log.d(TAG,"delete id:"+id);
+        RestAdapter adapter = new RestAdapter.Builder()
+                .setEndpoint(TeacherApi.ENDPOINT).build();
+        TeacherApiService api = adapter.create(TeacherApiService.class);
+        api.deleteTeacher(id,new Callback<Result>() {
+            @Override
+            public void success(Result result, Response response) {
+                Toast.makeText(getActivity(),"Teacher "+result.getId()+" "+result.getMessage(),Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Toast.makeText(getActivity(),"DELETE ERROR! "+error.getMessage(),Toast.LENGTH_LONG).show();
+
+            }
+        });
+
     }
 
 }
