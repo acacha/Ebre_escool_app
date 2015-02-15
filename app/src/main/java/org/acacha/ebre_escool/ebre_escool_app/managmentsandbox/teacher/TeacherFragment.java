@@ -1,7 +1,9 @@
 package org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.teacher;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Vibrator;
@@ -14,7 +16,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -68,7 +69,7 @@ public class TeacherFragment extends Fragment  {
     private RestAdapter adapter;
     //To get teachers/teacher
     private List<Teacher> teachersList;
-    private String TAG = "tag";
+    private final String TAG = "tag";
     CardArrayAdapter mCardArrayAdapter;
     CustomTeacherCard card_on_list;
     //This lets vibrate on click button actions
@@ -222,7 +223,28 @@ public class TeacherFragment extends Fragment  {
                                 }
                             }
                         });
-                        card_on_list.addCardHeader(header);
+                card_on_list.addCardHeader(header);
+                //set swipe and action it will mark for deletion
+                card_on_list.setSwipeable(true);
+                card_on_list.setOnSwipeListener(new Card.OnSwipeListener() {
+                    @Override
+                    public void onSwipe(Card card) {
+                        //we mark for deletion
+                        vibe.vibrate(60); // 60 is time in ms
+                        markForDeletion(card.getId(),"y");
+
+                    }
+                });
+                //swipe undo action
+                card_on_list.setOnUndoSwipeListListener(new Card.OnUndoSwipeListListener() {
+                    @Override
+                    public void onUndoSwipe(Card card) {
+                        //we undo the mark for deletion
+                        vibe.vibrate(60); // 60 is time in ms
+                        markForDeletion(card.getId(),"n");
+
+                    }
+                });
 
 
                 card_on_list.setTitle("DNI/NIF\n"+arrayTeacher[i].getDNINIF());
@@ -254,11 +276,14 @@ public class TeacherFragment extends Fragment  {
                 thumb.setUrlResource(TeacherApi.IMAGE);
                 //Add thumbnail to a card
                 card_on_list.addCardThumbnail(thumb);
+
                 //add card to list
                 cards.add(card_on_list);
             }
 
             mCardArrayAdapter = new CardArrayAdapter(getActivity(), cards );
+            //enable swipe undo action
+            mCardArrayAdapter.setEnableUndo(true);
 
             if (list != null) {
                list.setAdapter(mCardArrayAdapter);
@@ -307,7 +332,7 @@ public class CustomTeacherCard extends Card implements View.OnClickListener {
         @Override
         public void onClick(View v) {
             //Vibrate on click
-            vibe.vibrate(60); // 50 is time in ms
+            vibe.vibrate(60); // 60 is time in ms
             switch(v.getId()){
                 case R.id.btnDetail:
                     onCardClick(Integer.valueOf(getId()), TeacherApi.DETAIL);
@@ -350,7 +375,7 @@ public class CustomTeacherCard extends Card implements View.OnClickListener {
 
     public class CustomExpandCard extends CardExpand {
         //We send an object teacher to fill text views
-          private Teacher teacher;
+          private final Teacher teacher;
         //Use your resource ID for your inner layout
         public CustomExpandCard(Context context,Teacher teacher) {
             super(context, R.layout.teacher_card_expand);
@@ -433,20 +458,79 @@ public class CustomTeacherCard extends Card implements View.OnClickListener {
         teacherDetail.setArguments(extras);
     }
     //DELETE teacher method
-    private void deleteTeacher(int id){
+    private void deleteTeacher(final int id){
         Log.d(TAG,"delete id:"+id);
+        final int teacherId = id;
+        //We use alert yes-cancel dialog to be sure user want to delete teacher
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+             builder.setTitle("DELETE");
+             builder.setMessage("Are you sure to delete " + teacherId + "?");
+             builder.setIcon(R.drawable.advise);
+             builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int which) {
+                vibe.vibrate(60); // 60 is time in ms
+                //iF YES CALL TO DELETE METHOD
+                RestAdapter adapter = new RestAdapter.Builder()
+                        .setEndpoint(TeacherApi.ENDPOINT).build();
+                TeacherApiService api = adapter.create(TeacherApiService.class);
+
+                api.deleteTeacher(teacherId,new Callback<Result>() {
+                    @Override
+                    public void success(Result result, Response response) {
+                        Toast.makeText(getActivity(),"Teacher "+result.getId()+" "+result.getMessage(),Toast.LENGTH_LONG).show();
+                        //Refresh screen
+                        onStart();
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                        Toast.makeText(getActivity(),"DELETE ERROR! "+error.getMessage(),Toast.LENGTH_LONG).show();
+
+                    }
+                });
+
+                dialog.dismiss();
+            }
+
+        });
+
+        builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Do nothing
+                vibe.vibrate(60); // 60 is time in ms
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog alert = builder.create();
+        alert.show();
+
+
+
+    }
+    //Method to mark for deletion
+    private void markForDeletion(String id,String action){
+        //Object teacher to send with the parametres
+        Teacher teacher = new Teacher();
+        teacher.setId(id);
+        teacher.setMarkedForDeletion(action);
         RestAdapter adapter = new RestAdapter.Builder()
                 .setEndpoint(TeacherApi.ENDPOINT).build();
         TeacherApiService api = adapter.create(TeacherApiService.class);
-        api.deleteTeacher(id,new Callback<Result>() {
+        api.markForDeletion(teacher,new Callback<Result>() {
             @Override
             public void success(Result result, Response response) {
                 Toast.makeText(getActivity(),"Teacher "+result.getId()+" "+result.getMessage(),Toast.LENGTH_LONG).show();
+
             }
 
             @Override
             public void failure(RetrofitError error) {
-                Toast.makeText(getActivity(),"DELETE ERROR! "+error.getMessage(),Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(),"UPDATE ERROR! "+error.getMessage(),Toast.LENGTH_LONG).show();
 
             }
         });

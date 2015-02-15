@@ -51,8 +51,13 @@ public interface TeacherApiService {
     public void putTeacher(@Body Teacher teacher,Callback<Result> callback);
 
     //DELETE teacher
-    @DELETE("/teacher")
-    public void deleteTeacher(int id,Callback<Result> callback);
+    @DELETE("/teacher/id/{id}")
+    public void deleteTeacher(@Path("id") int id,Callback<Result>callback);
+
+    //Mark for deletion
+    @POST("/markForDeletion")
+    public void markForDeletion(@Body Teacher teacher,Callback<Result> callback);
+
 
 
 

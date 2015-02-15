@@ -22,8 +22,8 @@
     <string name="labelMarkedForDeletion">Marked For Deletion</string>
     <string name="labelMarkedForDeletionDate">Marked For Deletion Date</string>
     <string name="labelDni_nif">DNI/NIF</string>
-    <string name="btnUpdate">Update</string>
-    <string name="btnPut">Create</string>
+    <string name="btnUpdate">UPDATE</string>
+    <string name="btnPut">CREATE</string>
     <string name="putTeacher">Put</string>
     <string name="deleteTeacher">Delete</string>
     <string name="otherActions">Other</string>
