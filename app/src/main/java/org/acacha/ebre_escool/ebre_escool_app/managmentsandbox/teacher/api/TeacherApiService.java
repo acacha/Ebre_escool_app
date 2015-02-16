@@ -16,6 +16,7 @@ import retrofit.http.DELETE;
 import retrofit.http.Field;
 import retrofit.http.FormUrlEncoded;
 import retrofit.http.GET;
+import retrofit.http.Headers;
 import retrofit.http.POST;
 import retrofit.http.PUT;
 import retrofit.http.Path;
@@ -33,28 +34,33 @@ public interface TeacherApiService {
      * app until it finish
      **/
     //Get all teachers method
+    @Headers("X-API-KEY:"+TeacherApi.API_KEY)
     @GET("/teachers")
     public void getTeachers(Callback<List<Teacher>> callback);
 
     //Get one teacher method
-
+    @Headers("X-API-KEY:"+TeacherApi.API_KEY)
     @GET("/teacher/id/{id}")
     public void getTeacher(@Path("id") Integer id, Callback<Teacher> callback);
 
     //Post Teacher method(Update one teacher)
     //@FormUrlEncoded
+    @Headers("X-API-KEY:"+TeacherApi.API_KEY)
     @POST("/teacher")
     public void updateTeacher(@Body Teacher teacher,Callback<Result> callback);
 
     //PUT method
+    @Headers("X-API-KEY:"+TeacherApi.API_KEY)
     @PUT("/teacher")
     public void putTeacher(@Body Teacher teacher,Callback<Result> callback);
 
     //DELETE teacher
+    @Headers("X-API-KEY:"+TeacherApi.API_KEY)
     @DELETE("/teacher/id/{id}")
     public void deleteTeacher(@Path("id") int id,Callback<Result>callback);
 
     //Mark for deletion
+    @Headers("X-API-KEY:"+TeacherApi.API_KEY)
     @POST("/markForDeletion")
     public void markForDeletion(@Body Teacher teacher,Callback<Result> callback);
 

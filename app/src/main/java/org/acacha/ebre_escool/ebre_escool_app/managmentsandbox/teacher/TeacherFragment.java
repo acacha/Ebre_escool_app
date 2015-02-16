@@ -40,6 +40,7 @@ import it.gmariotti.cardslib.library.internal.ViewToClickToExpand;
 import it.gmariotti.cardslib.library.internal.base.BaseCard;
 import it.gmariotti.cardslib.library.view.CardListView;
 import retrofit.Callback;
+import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -120,6 +121,7 @@ public class TeacherFragment extends Fragment  {
     public  void onStart(){
         super.onStart();
         vibe = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE) ;
+
         //set rest adapter
         adapter = new RestAdapter.Builder()
                 .setEndpoint(TeacherApi.ENDPOINT).build();
@@ -155,6 +157,8 @@ public class TeacherFragment extends Fragment  {
     }
     //Execute retrofit getTeachers method
     private void getAllTeachers(){
+
+
 
         Log.d(TAG, "En el método requestData()");
 
