@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/putTeacher" android:title="@string/putTeacher"
+        android:showAsAction="never" />
+    <item android:id="@+id/deleteTeacher" android:title="@string/deleteTeacher"
+        android:orderInCategory="100" android:showAsAction="never" />
+    <item android:id="@+id/otherActions" android:title="@string/otherActions"
+        android:orderInCategory="100" android:showAsAction="never" />
+
+
+</menu>
