@@ -24,9 +24,10 @@
     <string name="labelDni_nif">DNI/NIF</string>
     <string name="btnUpdate">UPDATE</string>
     <string name="btnPut">CREATE</string>
-    <string name="putTeacher">Put</string>
+    <string name="oneAction">Action 1</string>
+    <string name="otherActions">Action 2</string>
     <string name="deleteTeacher">Delete</string>
-    <string name="otherActions">Other</string>
+    <string name="put_teacher">CREATE</string>
 
 
 

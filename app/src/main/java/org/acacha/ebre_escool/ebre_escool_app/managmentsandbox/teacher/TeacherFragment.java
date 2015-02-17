@@ -2,6 +2,7 @@ package org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.teacher;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ClipData;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.net.Uri;
@@ -12,6 +13,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -112,11 +115,35 @@ public class TeacherFragment extends Fragment  {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
        View view = inflater.inflate(R.layout.fragment_teacher, container, false);
+        //Add button on action bar
+        setHasOptionsMenu(true);
 
 
 
         return view;
     }
+    //We override this method to create our new put button
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.teacher_put_button, menu);
+        super.onCreateOptionsMenu(menu,inflater);
+        //Get the new menu item
+        MenuItem putTeacher = (MenuItem)menu.findItem(R.id.putTeacher);
+        //Set on click listener
+        putTeacher.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                //On click go to create a new teacher.
+                Log.d(TAG,"PUT ITEM");
+                vibe.vibrate(60); // 60 is time in ms
+                int put = 9999;
+                onCardClick(put,TeacherApi.PUT);
+                return false;
+            }
+        });
+
+    }
+
     @Override
     public  void onStart(){
         super.onStart();
@@ -212,18 +239,19 @@ public class TeacherFragment extends Fragment  {
                             public void onMenuItemClick(BaseCard baseCard, MenuItem menuItem) {
                                 vibe.vibrate(60); // 60 is time in ms
                                 switch(menuItem.getItemId()){
-                                    case(R.id.putTeacher):
+                                    case(R.id.oneAction):
                                         Log.d(TAG,"CARD ID PUT"+baseCard.getId());
-                                        int put = 9999;
-                                        onCardClick(put,TeacherApi.PUT);
+                                        //Future actions here
+                                        Toast.makeText(getActivity(),"Future action 1",Toast.LENGTH_SHORT).show();
                                         break;
+                                    case(R.id.otherActions):
+                                        //Future actions here
+                                      Toast.makeText(getActivity(),"Future action 2",Toast.LENGTH_SHORT).show();
+                                      break;
                                     case(R.id.deleteTeacher):
                                         //Call the method to delete
                                         deleteTeacher(Integer.valueOf(baseCard.getId()));
                                         break;
-                                    case(R.id.otherActions):
-                                      Toast.makeText(getActivity(),"Future actions",Toast.LENGTH_SHORT).show();
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           break;
                                 }
                             }
                         });
