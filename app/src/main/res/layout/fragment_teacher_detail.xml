@@ -98,7 +98,7 @@
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:textSize="20dip"
-            android:hint="@string/labelEntryDate"
+            android:hint="@string/edtEntryDate"
             android:inputType="datetime"
             android:id="@+id/entryDate"
             android:layout_row="3"

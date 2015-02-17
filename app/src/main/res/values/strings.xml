@@ -16,6 +16,7 @@
     <string name="labelPersonId">Person ID</string>
     <string name="labelUserId">User ID</string>
     <string name="labelEntryDate">Entry Date</string>
+    <string name="edtEntryDate">YYYY-MM-DD HH:MM:SS</string>
     <string name="labelLastUpdate">Last Update</string>
     <string name="labelLastUpdateUserId">Last Update User ID</string>
     <string name="labelCreatorId">Creator ID</string>
