@@ -42,7 +42,6 @@ public class InitialSettingsStep1Schools extends WizardStep {
      * The collection of all schools in the app.
      */
     private static School[] mSchools;
-
     private ListView lstSchools;
 
     //settings
