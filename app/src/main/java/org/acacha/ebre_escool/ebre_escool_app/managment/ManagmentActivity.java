@@ -29,6 +29,7 @@ import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.classroom_group.F
 import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.teacher.TeacherFragment;
 import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.study_submodules.FragmentStudySubmodules;
 import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.incident.FragmentIncident;
+import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.users.FragmentUsers;
 
 
 public class ManagmentActivity extends ActionBarActivity
@@ -97,7 +98,7 @@ public class ManagmentActivity extends ActionBarActivity
                 break;
             case 5:
                 //managment_title_section6_users
-                fragment = (Fragment) new FragmentBase();
+                fragment = (Fragment) new FragmentUsers();
                 break;
             case 6:
                 //managment_title_section7_incidents
