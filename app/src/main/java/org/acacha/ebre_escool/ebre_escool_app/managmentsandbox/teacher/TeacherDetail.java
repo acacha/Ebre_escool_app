@@ -259,24 +259,54 @@ public class TeacherDetail extends Fragment {
     private Teacher getDataTeacher() {
         Teacher teacher = new Teacher();
         teacher.setId(ID.getText().toString());
+        Log.d(TAG, "personid length: " + personId.getText().toString().length());
+        Log.d(TAG, userId.getText().toString());
+        Log.d(TAG,entryDate.getText().toString());
+        Log.d(TAG, dniNif.getText().toString());
+
+
+
         //Check if fields are empty
-        if(!personId.getText().toString().equals("")||!personId.getText().toString().equals("0"))
+        if(!(personId.getText().toString().length() ==0)){
             teacher.setPersonId(personId.getText().toString());
-        if(!userId.getText().toString().equals("")||userId.getText().toString().equals("0"))
+        }else{
+            Toast.makeText(getActivity(),"Some field is empty",Toast.LENGTH_LONG).show();
+            return null;
+        }
+
+        if(!(userId.getText().toString().length()==0)) {
             teacher.setUserId(userId.getText().toString());
-        if(!entryDate.getText().toString().equals("")||!entryDate.getText().toString().equals("0"))
+        }else{
+            Toast.makeText(getActivity(),"Some field is empty",Toast.LENGTH_LONG).show();
+            return null;
+        }
+        if(!(entryDate.getText().toString().length()==0)) {
+
             teacher.setEntryDate(entryDate.getText().toString());
+        }else{
+            Toast.makeText(getActivity(),"Some field is empty",Toast.LENGTH_LONG).show();
+            return null;
+        }
         //We dont need last update
         //teacher.setLastUpdate("");
         //can be null on the database
          teacher.setLastUpdateUserId(lastUpdateUserId.getText().toString());
          teacher.setCreatorId(creatorId.getText().toString());
-        if(!markedForDeletion.getText().toString().equals("")||!markedForDeletion.getText().toString().equals("0"))
+        if(!(markedForDeletion.getText().toString().length()==0)) {
             teacher.setMarkedForDeletion(markedForDeletion.getText().toString());
-        if(!markedForDeletionDate.getText().toString().equals("")||!markedForDeletionDate.getText().toString().equals("0"))
+        }else{
+            Toast.makeText(getActivity(),"Some field is empty",Toast.LENGTH_LONG).show();
+            return null;
+        }
+       
             teacher.setMarkedForDeletionDate(markedForDeletionDate.getText().toString());
-        if(!dniNif.getText().toString().equals("")||!dniNif.getText().toString().equals("0"))
+
+        if(!(dniNif.getText().toString().length()==0)) {
             teacher.setDNINIF(dniNif.getText().toString());
+        }else{
+            Toast.makeText(getActivity(),"Some field is empty",Toast.LENGTH_LONG).show();
+            return null;
+        }
         //Return object teacher
         return teacher;
      }
@@ -304,18 +334,11 @@ public class TeacherDetail extends Fragment {
      }
 
     //Method to put teacher
-    private void putTeacher(){
-        Teacher teacher = getDataTeacher();teacher.setId("");
-       /* Log.d(TAG,"id "+teacher.getId());
-        Log.d(TAG,"id "+teacher.getPersonId());
-        Log.d(TAG,"id "+teacher.getUserId());
-        Log.d(TAG,"id "+teacher.getEntryDate());
-        Log.d(TAG,"id "+teacher.getCreatorId());
-        Log.d(TAG,"id "+teacher.getLastUpdate());
-        Log.d(TAG,"id "+teacher.getLastUpdateUserId());
-        Log.d(TAG,"id "+teacher.getMarkedForDeletion());
-        Log.d(TAG,"id "+teacher.getMarkedForDeletionDate());
-        Log.d(TAG,"id "+teacher.getDNINIF());*/
+    private void putTeacher() {
+        Teacher teacher = getDataTeacher();
+        if (!(teacher == null)){
+            teacher.setId("");
+
         //Call put method
         RestAdapter adapter = new RestAdapter.Builder()
                 .setEndpoint(TeacherApi.ENDPOINT).build();
@@ -323,15 +346,16 @@ public class TeacherDetail extends Fragment {
         api.putTeacher(teacher, new Callback<Result>() {
             @Override
             public void success(Result result, Response response) {
-                Toast.makeText(getActivity(),"Teacher "+result.getId()+" "+result.getMessage(),Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "Teacher " + result.getId() + " " + result.getMessage(), Toast.LENGTH_LONG).show();
             }
 
             @Override
             public void failure(RetrofitError error) {
-                Toast.makeText(getActivity(),"PUT ERROR! "+error.getMessage(),Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "PUT ERROR! " + error.getMessage(), Toast.LENGTH_LONG).show();
 
             }
         });
+       }
     }
 
 
