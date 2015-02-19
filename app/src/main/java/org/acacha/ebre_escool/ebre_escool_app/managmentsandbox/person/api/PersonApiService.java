@@ -1,22 +1,27 @@
 package org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.person.api;
 
-import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.person.pojos.person;
+import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.person.pojos.Person;
 
 import java.util.List;
 import java.util.Map;
+
 import retrofit.Callback;
+import retrofit.http.Body;
+import retrofit.http.Field;
+import retrofit.http.FormUrlEncoded;
 import retrofit.http.GET;
+import retrofit.http.POST;
 import retrofit.http.Path;
 
 public interface PersonApiService {
     @GET("/persons")
-    void personsAsList(Callback<List<person>> cb);
+    void personsAsList(Callback<List<Person>> cb);
 
     @GET("/persons")
-    void persons(Callback<Map<String, person>> cb);
+    void persons(Callback<Map<String, Person>> cb);
 
-    @GET("/person/{id}")
-    void person(Callback<person> cb, @Path("id") String id);
+    @GET("/persons/person/id/{id}")
+    void person(Callback<Person> cb, @Path("id") String id);
 
 
 }

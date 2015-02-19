@@ -132,4 +132,10 @@
     <string name="sign_up_password_required">El camp password és obligatori</string>
     <string name="validating_sign_up">connectant al servidor...</string>
 
+
+
+
+    <!-- Strings de Nicolae -->
+    <string name="choose_a_person">Escolliu una persona.</string>
+
 </resources>

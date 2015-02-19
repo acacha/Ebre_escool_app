@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Created by nicolae on 5/02/15.
  */
-public class person {
+public class Person {
 
     @Expose
     private String id;
@@ -41,6 +41,33 @@ public class person {
     private String officialIdType2;
     @Expose
     private String homePostalAddress;
+    @Expose
+    private String photo;
+    @SerializedName("locality_id")
+    @Expose
+    private String localityId;
+    @Expose
+    private String telephoneNumber;
+    @Expose
+    private String mobile;
+    @SerializedName("bank_account_id")
+    @Expose
+    private String bankAccountId;
+    @Expose
+    private String notes;
+    @Expose
+    private String entryDate;
+    @SerializedName("last_update")
+    @Expose
+    private String lastUpdate;
+    @Expose
+    private String creationUserId;
+    @Expose
+    private String lastupdateUserId;
+    @Expose
+    private String markedForDeletion;
+    @Expose
+    private String markedForDeletionDate;
 
     /**
      *
@@ -292,5 +319,221 @@ public class person {
      */
     public void setHomePostalAddress(String homePostalAddress) {
         this.homePostalAddress = homePostalAddress;
+    }
+
+    /**
+     *
+     * @return
+     * The photo
+     */
+    public String getPhoto() {
+        return photo;
+    }
+
+    /**
+     *
+     * @param photo
+     * The photo
+     */
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
+
+    /**
+     *
+     * @return
+     * The localityId
+     */
+    public String getLocalityId() {
+        return localityId;
+    }
+
+    /**
+     *
+     * @param localityId
+     * The locality_id
+     */
+    public void setLocalityId(String localityId) {
+        this.localityId = localityId;
+    }
+
+    /**
+     *
+     * @return
+     * The telephoneNumber
+     */
+    public String getTelephoneNumber() {
+        return telephoneNumber;
+    }
+
+    /**
+     *
+     * @param telephoneNumber
+     * The telephoneNumber
+     */
+    public void setTelephoneNumber(String telephoneNumber) {
+        this.telephoneNumber = telephoneNumber;
+    }
+
+    /**
+     *
+     * @return
+     * The mobile
+     */
+    public String getMobile() {
+        return mobile;
+    }
+
+    /**
+     *
+     * @param mobile
+     * The mobile
+     */
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    /**
+     *
+     * @return
+     * The bankAccountId
+     */
+    public String getBankAccountId() {
+        return bankAccountId;
+    }
+
+    /**
+     *
+     * @param bankAccountId
+     * The bank_account_id
+     */
+    public void setBankAccountId(String bankAccountId) {
+        this.bankAccountId = bankAccountId;
+    }
+
+    /**
+     *
+     * @return
+     * The notes
+     */
+    public String getNotes() {
+        return notes;
+    }
+
+    /**
+     *
+     * @param notes
+     * The notes
+     */
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
+    /**
+     *
+     * @return
+     * The entryDate
+     */
+    public String getEntryDate() {
+        return entryDate;
+    }
+
+    /**
+     *
+     * @param entryDate
+     * The entryDate
+     */
+    public void setEntryDate(String entryDate) {
+        this.entryDate = entryDate;
+    }
+
+    /**
+     *
+     * @return
+     * The lastUpdate
+     */
+    public String getLastUpdate() {
+        return lastUpdate;
+    }
+
+    /**
+     *
+     * @param lastUpdate
+     * The last_update
+     */
+    public void setLastUpdate(String lastUpdate) {
+        this.lastUpdate = lastUpdate;
+    }
+
+    /**
+     *
+     * @return
+     * The creationUserId
+     */
+    public String getCreationUserId() {
+        return creationUserId;
+    }
+
+    /**
+     *
+     * @param creationUserId
+     * The creationUserId
+     */
+    public void setCreationUserId(String creationUserId) {
+        this.creationUserId = creationUserId;
+    }
+
+    /**
+     *
+     * @return
+     * The lastupdateUserId
+     */
+    public String getLastupdateUserId() {
+        return lastupdateUserId;
+    }
+
+    /**
+     *
+     * @param lastupdateUserId
+     * The lastupdateUserId
+     */
+    public void setLastupdateUserId(String lastupdateUserId) {
+        this.lastupdateUserId = lastupdateUserId;
+    }
+
+    /**
+     *
+     * @return
+     * The markedForDeletion
+     */
+    public String getMarkedForDeletion() {
+        return markedForDeletion;
+    }
+
+    /**
+     *
+     * @param markedForDeletion
+     * The markedForDeletion
+     */
+    public void setMarkedForDeletion(String markedForDeletion) {
+        this.markedForDeletion = markedForDeletion;
+    }
+
+    /**
+     *
+     * @return
+     * The markedForDeletionDate
+     */
+    public String getMarkedForDeletionDate() {
+        return markedForDeletionDate;
+    }
+
+    /**
+     *
+     * @param markedForDeletionDate
+     * The markedForDeletionDate
+     */
+    public void setMarkedForDeletionDate(String markedForDeletionDate) {
+        this.markedForDeletionDate = markedForDeletionDate;
     }
 }
