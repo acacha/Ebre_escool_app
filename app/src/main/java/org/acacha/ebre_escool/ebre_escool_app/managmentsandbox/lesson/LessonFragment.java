@@ -3,14 +3,32 @@ package org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.lesson;
 import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
+
+import com.google.gson.Gson;
+
+import it.gmariotti.cardslib.library.internal.Card;
+import it.gmariotti.cardslib.library.internal.CardArrayAdapter;
+import it.gmariotti.cardslib.library.internal.CardHeader;
+import it.gmariotti.cardslib.library.internal.CardThumbnail;
+import it.gmariotti.cardslib.library.view.CardListView;
 import retrofit.RestAdapter;
 
 import org.acacha.ebre_escool.ebre_escool_app.R;
+import org.acacha.ebre_escool.ebre_escool_app.apis.EbreEscoolAPI;
 import org.acacha.ebre_escool.ebre_escool_app.helpers.OnFragmentInteractionListener;
+import org.acacha.ebre_escool.ebre_escool_app.pojos.School;
+import org.acacha.ebre_escool.ebre_escool_app.settings.SettingsActivity;
+import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.lesson.pojos.*;
+
+import java.util.ArrayList;
 
 
 /**
@@ -30,6 +48,8 @@ public class LessonFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    CardArrayAdapter mCardArrayAdapter;
+    private static lesson[] lessons;
 
     private OnFragmentInteractionListener mListener;
 
@@ -77,6 +97,52 @@ public class LessonFragment extends Fragment {
             mListener.onFragmentInteraction(uri);
         }
     }
+
+
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        ArrayList<Card> cards = new ArrayList<Card>();
+
+        for (int i = 0; i < lessons.length; i++) {
+            Log.d("########## TEST: ", lessons[i].getId());
+            // Create a Card
+            Card card_on_list = new Card(getActivity());
+
+            // Create a CardHeader and add Header to card_on_list
+            CardHeader header = new CardHeader(getActivity());
+            header.setTitle(lessons[i].getId());
+
+            card_on_list.addCardHeader(header);
+
+            card_on_list.setId(lessons[i].getId());
+            card_on_list.setTitle(lessons[i].getId());
+            card_on_list.setClickable(true);
+
+
+
+            //Obtain thumbnail from an URL and add to card
+            CardThumbnail thumb = new CardThumbnail(getActivity());
+            //thumb.setDrawableResource(listImages[i]);
+            if (lessons[i].getDNINIF()!=""){
+                thumb.setUrlResource(lessons[i].getDNINIF());
+            } else {
+                thumb.setUrlResource(EbreEscoolAPI.EBRE_ESCOOL_PUBLIC_IMAGE_NOT_AVAILABLE);
+
+            }
+            card_on_list.addCardThumbnail(thumb);
+
+            //Add card to car List
+            cards.add(card_on_list);
+        }
+
+        mCardArrayAdapter = new CardArrayAdapter(getActivity(), cards );
+
+
+    }
+
 
 
     @Override
