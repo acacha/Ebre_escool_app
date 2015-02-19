@@ -77,7 +77,7 @@ public class FragmentClassroomGroup extends Fragment {
 	public FragmentClassroomGroup() {
 		// Required empty public constructor
 	}
-
+/*
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -90,7 +90,7 @@ public class FragmentClassroomGroup extends Fragment {
 
         /*Gson gson = new Gson();
         mmClassroom_group = gson.fromJson(json_schools_list, School[].class);*/
-
+/*
         Classroom_group patata1 = new Classroom_group();
         Classroom_group patata2 = new Classroom_group();
         Classroom_group patata3 = new Classroom_group();
@@ -146,7 +146,7 @@ public class FragmentClassroomGroup extends Fragment {
                          showAlertDialog(getActivity(), getString(R.string.incorrect_school_data_title),
                                  error_message_validating_school + ". " + getString(R.string.incorrect_school_data_label), false);
                      }
-    */
+    *//*
                  }
              }
             );
@@ -156,7 +156,7 @@ public class FragmentClassroomGroup extends Fragment {
             //thumb.setDrawableResource(listImages[i]);
             /*if (mClassroom_group[i].getLogoURL()!=""){
                 thumb.setUrlResource(mClassroom_group[i].getLogoURL());
-            } else {*/
+            } else {
                 thumb.setUrlResource(EbreEscoolAPI.EBRE_ESCOOL_PUBLIC_IMAGE_NOT_AVAILABLE);
 
             //}
@@ -194,8 +194,8 @@ public class FragmentClassroomGroup extends Fragment {
 
             String current_value = settings.getString(SettingsActivity.SCHOOLS_LIST_KEY,"0");
             settings.edit().putString(SettingsActivity.SCHOOLS_LIST_KEY, current_value).apply();
-        }*/
-    }
+        }
+    }*/
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
