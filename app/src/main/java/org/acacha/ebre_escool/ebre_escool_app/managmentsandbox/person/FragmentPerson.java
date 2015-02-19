@@ -10,6 +10,10 @@ import android.view.ViewGroup;
 
 import org.acacha.ebre_escool.ebre_escool_app.R;
 import org.acacha.ebre_escool.ebre_escool_app.helpers.OnFragmentInteractionListener;
+import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.person.api.PersonAPI;
+
+import it.gmariotti.cardslib.library.view.CardListView;
+import retrofit.RestAdapter;
 
 /**
  * A simple {@link android.support.v4.app.Fragment} subclass. Activities that contain this fragment
@@ -31,7 +35,11 @@ public class FragmentPerson extends Fragment {
 
 	private OnFragmentInteractionListener mListener;
 
-	/**
+    private CardListView list;
+    private RestAdapter adapter;
+    public static String api = PersonAPI.EBRE_ESCOOL_PUBLIC_API_URL;
+
+    /**
 	 * Use this factory method to create a new instance of this fragment using
 	 * the provided parameters.
 	 *

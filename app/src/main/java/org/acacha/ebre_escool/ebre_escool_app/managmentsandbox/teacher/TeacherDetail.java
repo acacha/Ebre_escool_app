@@ -9,11 +9,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.acacha.ebre_escool.ebre_escool_app.R;
 import org.acacha.ebre_escool.ebre_escool_app.helpers.OnFragmentInteractionListener;
-import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.teacher.teacher_pojos.Teacher;
+import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.teacher.api.TeacherApi;
+import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.teacher.api.TeacherApiService;
+import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.teacher.pojos.Result;
+import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.teacher.pojos.Teacher;
 
 import retrofit.Callback;
 import retrofit.RestAdapter;
@@ -41,8 +47,24 @@ public class TeacherDetail extends Fragment {
     private OnFragmentInteractionListener mListener;
     //Retrofit adapter
     private RestAdapter adapter;
+    private Teacher teacherObject;
     private int teacherId;
-    public static final String ENDPOINT = "http://185.13.76.85:8769/ebre-escool/index.php/criminal/api/hell";
+    //Controls
+    private TextView ID;
+    private EditText personId;
+    private EditText userId;
+    private EditText entryDate;
+    private EditText lastUpdate;
+    private EditText lastUpdateUserId;
+    private EditText creatorId;
+    private EditText markedForDeletion;
+    private EditText markedForDeletionDate;
+    private EditText dniNif;
+    private Button btnUpdate;
+    private Button btnPut;
+    private String TAG = "tag";
+
+
 
     /**
      * Use this factory method to create a new instance of
@@ -79,18 +101,73 @@ public class TeacherDetail extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+       // View view= inflater.inflate(R.layout.fragment_teacher_detail, container, false);
         View view= inflater.inflate(R.layout.fragment_teacher_detail, container, false);
-        // data sended from teacher fragment
+        //Get controls
+        ID =(TextView)view.findViewById(R.id.teacherId);
+        personId =(EditText)view.findViewById(R.id.personId);
+        userId = (EditText)view.findViewById(R.id.userId);
+        entryDate = (EditText)view.findViewById(R.id.entryDate);
+        lastUpdate = (EditText)view.findViewById(R.id.lastUpdate);
+        lastUpdateUserId = (EditText)view.findViewById(R.id.lastUpdateUserId);
+        creatorId = (EditText)view.findViewById(R.id.creatorId);
+        markedForDeletion = (EditText)view.findViewById(R.id.markedForDeletion);
+        markedForDeletionDate = (EditText)view.findViewById(R.id.markedForDeletionDate);
+        dniNif =(EditText)view.findViewById(R.id.dniNif);
+        btnUpdate = (Button)view.findViewById(R.id.btnUpdate);
+        btnPut = (Button)view.findViewById(R.id.btnPut);
+        //Set click listener for button update
+        btnUpdate.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+              //Toast.makeText(getActivity(),"Teacher ID: "+ID.getText().toString(),Toast.LENGTH_LONG).show();
+              updateTeacher();
+
+            }
+        });
+        btnPut.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                //Toast.makeText(getActivity(),"Teacher ID: "+ID.getText().toString(),Toast.LENGTH_LONG).show();
+                putTeacher();
+
+            }
+        });
+        //set rest adapter
+        adapter = new RestAdapter.Builder()
+                .setEndpoint(TeacherApi.ENDPOINT).build();
+
+        // get data send from teacher fragment
         Bundle extras = getArguments();
         if (extras != null) {
             teacherId = extras.getInt("id");
+            String action =extras.getString(TeacherApi.ACTION);
             Log.d("tag", "detail id :" + teacherId);
+            switch(action){
+                case TeacherApi.DETAIL:
+                btnUpdate.setVisibility(View.INVISIBLE);
+                    btnPut.setVisibility(View.INVISIBLE);
+                    getOneTeacher(teacherId);
+                    break;
+                case TeacherApi.EDIT:
+                    btnUpdate.setVisibility(View.VISIBLE);
+                    btnPut.setVisibility(View.INVISIBLE);
+                    getOneTeacher(teacherId);
+                    break;
+                case TeacherApi.PUT:
+                    btnPut.setVisibility(View.VISIBLE);
+                    btnUpdate.setVisibility(View.INVISIBLE);
+                    markedForDeletion.setText("n");
+
+            }
         }
 
-        //set rest adapter
-        adapter = new RestAdapter.Builder()
-                .setEndpoint(ENDPOINT).build();
-        getOneTeacher(teacherId);
+
+
 
         return view;
     }
@@ -101,6 +178,8 @@ public class TeacherDetail extends Fragment {
             mListener.onFragmentInteraction(uri);
         }
     }
+
+
 
     @Override
     public void onAttach(Activity activity) {
@@ -120,6 +199,7 @@ public class TeacherDetail extends Fragment {
         mListener = null;
     }
 
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -136,15 +216,16 @@ public class TeacherDetail extends Fragment {
     }*/
     //EXECUTE RETROFIT GET ONE TEACHER METHOD
     public void getOneTeacher(Integer id){
-        Teacher teacherObject = null;
+
         Log.d("tag","get :"+id);
-        RetrofitApiService api =adapter.create(RetrofitApiService.class);
+        TeacherApiService api =adapter.create(TeacherApiService.class);
         api.getTeacher(id,new Callback<Teacher>() {
             @Override
             public void success(Teacher teacher, Response response) {
                 // updateDisplay();
                 Log.d("tag","success");
-                Toast.makeText(getActivity(),"id :"+teacher.getId(),Toast.LENGTH_LONG);
+                teacherObject=teacher;
+                updateDisplay();
 
             }
 
@@ -156,5 +237,126 @@ public class TeacherDetail extends Fragment {
         });
 
     }
+    //Update layout
+    private void updateDisplay(){
+        if(teacherObject==null){
+            return;
+        }
+        //Set text on controls
+        ID.setText(teacherObject.getId().toString());
+        personId.setText(teacherObject.getPersonId());
+        userId.setText(teacherObject.getUserId());
+        entryDate.setText(teacherObject.getEntryDate());
+        lastUpdate.setText(teacherObject.getLastUpdate());
+        lastUpdateUserId.setText(teacherObject.getLastUpdateUserId());
+        creatorId.setText(teacherObject.getCreatorId());
+        markedForDeletion.setText(teacherObject.getMarkedForDeletion());
+        markedForDeletionDate.setText(teacherObject.getMarkedForDeletionDate());
+        dniNif.setText(teacherObject.getDNINIF());
+
+
+    }
+    private Teacher getDataTeacher() {
+        Teacher teacher = new Teacher();
+        teacher.setId(ID.getText().toString());
+        Log.d(TAG, "personid length: " + personId.getText().toString().length());
+        Log.d(TAG, userId.getText().toString());
+        Log.d(TAG,entryDate.getText().toString());
+        Log.d(TAG, dniNif.getText().toString());
+
+
+
+        //Check if fields are empty
+        if(!(personId.getText().toString().length() ==0)){
+            teacher.setPersonId(personId.getText().toString());
+        }else{
+            Toast.makeText(getActivity(),"Some field is empty",Toast.LENGTH_LONG).show();
+            return null;
+        }
+
+        if(!(userId.getText().toString().length()==0)) {
+            teacher.setUserId(userId.getText().toString());
+        }else{
+            Toast.makeText(getActivity(),"Some field is empty",Toast.LENGTH_LONG).show();
+            return null;
+        }
+        if(!(entryDate.getText().toString().length()==0)) {
+
+            teacher.setEntryDate(entryDate.getText().toString());
+        }else{
+            Toast.makeText(getActivity(),"Some field is empty",Toast.LENGTH_LONG).show();
+            return null;
+        }
+        //We dont need last update
+        //teacher.setLastUpdate("");
+        //can be null on the database
+         teacher.setLastUpdateUserId(lastUpdateUserId.getText().toString());
+         teacher.setCreatorId(creatorId.getText().toString());
+        if(!(markedForDeletion.getText().toString().length()==0)) {
+            teacher.setMarkedForDeletion(markedForDeletion.getText().toString());
+        }else{
+            Toast.makeText(getActivity(),"Some field is empty",Toast.LENGTH_LONG).show();
+            return null;
+        }
+       
+            teacher.setMarkedForDeletionDate(markedForDeletionDate.getText().toString());
+
+        if(!(dniNif.getText().toString().length()==0)) {
+            teacher.setDNINIF(dniNif.getText().toString());
+        }else{
+            Toast.makeText(getActivity(),"Some field is empty",Toast.LENGTH_LONG).show();
+            return null;
+        }
+        //Return object teacher
+        return teacher;
+     }
+    //Method to call retrofit post sending teacher to update
+    private void updateTeacher(){
+        //Get the teacher object
+        Teacher teacher = getDataTeacher();
+
+        //set rest adapter
+        RestAdapter adapter = new RestAdapter.Builder()
+                .setEndpoint(TeacherApi.ENDPOINT).build();
+        TeacherApiService api =adapter.create(TeacherApiService.class);
+
+        api.updateTeacher(teacher,new Callback<Result>() {
+            @Override
+            public void success(Result result, Response response) {
+                Toast.makeText(getActivity(),"Teacher "+result.getId()+" "+result.getMessage(),Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Toast.makeText(getActivity(),"UPDATE ERROR! "+error.getMessage(),Toast.LENGTH_LONG).show();
+            }
+        });
+     }
+
+    //Method to put teacher
+    private void putTeacher() {
+        Teacher teacher = getDataTeacher();
+        if (!(teacher == null)){
+            teacher.setId("");
+
+        //Call put method
+        RestAdapter adapter = new RestAdapter.Builder()
+                .setEndpoint(TeacherApi.ENDPOINT).build();
+        TeacherApiService api = adapter.create(TeacherApiService.class);
+        api.putTeacher(teacher, new Callback<Result>() {
+            @Override
+            public void success(Result result, Response response) {
+                Toast.makeText(getActivity(), "Teacher " + result.getId() + " " + result.getMessage(), Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Toast.makeText(getActivity(), "PUT ERROR! " + error.getMessage(), Toast.LENGTH_LONG).show();
+
+            }
+        });
+       }
+    }
+
 
 }

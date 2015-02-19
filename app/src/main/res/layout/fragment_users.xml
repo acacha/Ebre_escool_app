@@ -1,14 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.employees.FragmentEmployees">
-
-    <!-- TODO: Update blank fragment layout -->
+    tools:context="org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.users.FragmentUsers">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/managment_title_section10_employees" />
-
+        android:text="@string/managment_title_section6_users"/>
 </FrameLayout>

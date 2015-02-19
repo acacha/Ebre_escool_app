@@ -1,4 +1,4 @@
-package org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.study_submodules;
+package org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.users;
 
 import android.app.Activity;
 import android.net.Uri;
@@ -9,17 +9,16 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.acacha.ebre_escool.ebre_escool_app.R;
-import org.acacha.ebre_escool.ebre_escool_app.helpers.OnFragmentInteractionListener;
 
 /**
- * A simple {@link android.support.v4.app.Fragment} subclass. Activities that contain this fragment
- * must implement the {@link org.acacha.ebre_escool.ebre_escool_app.helpers.OnFragmentInteractionListener}
- * interface to handle interaction events. Use the
- * {@link FragmentStudySubmodules#newInstance} factory method to create an instance of
- * this fragment.
- *
+ * A simple {@link android.support.v4.app.Fragment} subclass.
+ * Activities that contain this fragment must implement the
+ * {@link org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.users.FragmentUsers.OnFragmentInteractionListener} interface
+ * to handle interaction events.
+ * Use the {@link org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.users.FragmentUsers#newInstance} factory method to
+ * create an instance of this fragment.
  */
-public class FragmentStudySubmodules extends Fragment {
+public class FragmentUsers extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -32,18 +31,16 @@ public class FragmentStudySubmodules extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     /**
-     * Use this factory method to create a new instance of this fragment using
-     * the provided parameters.
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
      *
-     * @param param1
-     *            Parameter 1.
-     * @param param2
-     *            Parameter 2.
-     * @return A new instance of fragment FragmentType1.
+     * @param param1 Parameter 1.
+     * @param param2 Parameter 2.
+     * @return A new instance of fragment FragmentUsers.
      */
     // TODO: Rename and change types and number of parameters
-    public static FragmentStudySubmodules newInstance(String param1, String param2) {
-        FragmentStudySubmodules fragment = new FragmentStudySubmodules();
+    public static FragmentUsers newInstance(String param1, String param2) {
+        FragmentUsers fragment = new FragmentUsers();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -51,7 +48,7 @@ public class FragmentStudySubmodules extends Fragment {
         return fragment;
     }
 
-    public FragmentStudySubmodules() {
+    public FragmentUsers() {
         // Required empty public constructor
     }
 
@@ -66,10 +63,9 @@ public class FragmentStudySubmodules extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_study_submodules, container,
-                false);
+        return inflater.inflate(R.layout.fragment_users, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -96,5 +92,19 @@ public class FragmentStudySubmodules extends Fragment {
         mListener = null;
     }
 
+    /**
+     * This interface must be implemented by activities that contain this
+     * fragment to allow an interaction in this fragment to be communicated
+     * to the activity and potentially other fragments contained in that
+     * activity.
+     * <p/>
+     * See the Android Training lesson <a href=
+     * "http://developer.android.com/training/basics/fragments/communicating.html"
+     * >Communicating with Other Fragments</a> for more information.
+     */
+    public interface OnFragmentInteractionListener {
+        // TODO: Update argument type and name
+        public void onFragmentInteraction(Uri uri);
+    }
 
 }

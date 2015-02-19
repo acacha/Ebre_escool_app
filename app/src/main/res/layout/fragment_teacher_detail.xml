@@ -1,144 +1,285 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/Sky"
-    tools:context="org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.teacher.TeacherDetail">
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/Sky"
+        android:gravity="center"
+        android:orientation="vertical"
+        tools:context="org.acacha.ebre_escool.ebre_escool_app.teacher.TeacherDetail">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:background="@color/greenlight"
-        android:textStyle="bold"
-        android:textSize="20dp"
-        android:layout_height="wrap_content"
-        android:text="@string/teacher_detail" />
+        <TextView
+            android:layout_width="250dip"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:text="@string/labelTeacherId"
+            android:id="@+id/textView2"
+            android:layout_alignParentTop="true"
+            android:textStyle="bold"
+            android:textSize="20dip"
+            android:background="@color/Aqua"
+            android:layout_row="0"
+            android:layout_column="0" />
+        <TextView
+            android:layout_width="250dip"
+            android:gravity="center"
+            android:layout_height="41dip"
+            android:text="New Text"
+            android:textSize="20dip"
+            android:textStyle="bold"
+            android:id="@+id/teacherId"
+            android:layout_alignTop="@+id/textView2"
+            android:layout_row="0"
+            android:layout_column="1" />
+        <TextView
+            android:layout_width="250dip"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:text="@string/labelPersonId"
+            android:id="@+id/labelPersonId"
+            android:textStyle="bold"
+            android:textSize="20dip"
+            android:background="@color/Aqua"
+            android:layout_row="1"
+            android:layout_column="0" />
+        <EditText
+            android:layout_width="250dip"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:id="@+id/personId"
+            android:hint="@string/labelPersonId"
+            android:textStyle="bold"
+            android:inputType="number"
+            android:textSize="20dip"
+            android:layout_row="1"
+            android:layout_column="1" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/labelTeacherId"
-        android:id="@+id/textView2"
-        android:layout_alignParentTop="true"
-        android:textStyle="bold"
-        android:textSize="20dp"
-        android:background="@color/orangelight"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="33dp"
-        android:layout_alignRight="@+id/labelPersonId"
-        android:layout_alignEnd="@+id/labelPersonId" />
+        <TextView
+            android:layout_width="250dip"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:text="@string/labelUserId"
+            android:textStyle="bold"
+            android:textSize="20dip"
+            android:background="@color/Aqua"
+            android:id="@+id/textView4"
+            android:layout_row="2"
+            android:layout_column="0" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Text"
-        android:textSize="20dp"
-        android:textStyle="bold"
-        android:id="@+id/teacherId"
-        android:layout_alignTop="@+id/textView2"
-        android:layout_centerHorizontal="true" />
+        <EditText
+            android:layout_width="250dip"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:id="@+id/userId"
+            android:hint="@string/labelUserId"
+            android:inputType="number"
+            android:textStyle="bold"
+            android:textSize="20dip"
+            android:layout_row="2"
+            android:layout_column="1" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/labelPersonId"
-        android:id="@+id/labelPersonId"
-        android:textStyle="bold"
-        android:textSize="20dp"
-        android:background="@color/orangelight"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignRight="@+id/textView3"
-        android:layout_alignEnd="@+id/textView3"
-        android:layout_alignBottom="@+id/textView2" />
+        <TextView
+            android:layout_width="250dip"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="20dip"
+            android:background="@color/Aqua"
+            android:text="@string/labelEntryDate"
+            android:id="@+id/textView5"
+            android:layout_row="3"
+            android:layout_column="0" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/personId"
-        android:layout_below="@+id/teacherId"
-        android:textStyle="bold"
-        android:textSize="20dp"
-        android:layout_alignLeft="@+id/teacherId"
-        android:layout_alignStart="@+id/teacherId"
-        android:layout_alignRight="@+id/teacherId"
-        android:layout_alignEnd="@+id/teacherId" />
+        <EditText
+            android:layout_width="250dip"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="20dip"
+            android:hint="@string/edtEntryDate"
+            android:inputType="datetime"
+            android:id="@+id/entryDate"
+            android:layout_row="3"
+            android:layout_column="1" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/labelUserId"
-        android:id="@+id/textView3"
-        android:textStyle="bold"
-        android:textSize="20dp"
-        android:background="@color/orangelight"
-        android:layout_alignBottom="@+id/userId"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignRight="@+id/textView4"
-        android:layout_alignEnd="@+id/textView4" />
+        <TextView
+            android:layout_width="250dip"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="20dip"
+            android:background="@color/Aqua"
+            android:text="@string/labelLastUpdate"
+            android:id="@+id/textView6"
+            android:layout_row="4"
+            android:layout_column="0" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/userId"
-        android:textStyle="bold"
-        android:textSize="20dp"
-        android:layout_alignLeft="@+id/personId"
-        android:layout_alignStart="@+id/personId"
-        android:layout_alignRight="@+id/personId"
-        android:layout_alignEnd="@+id/personId"
-        android:layout_below="@+id/teacherId" />
+        <EditText
+            android:layout_width="250dip"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:textStyle="bold"
+            android:textSize="20dip"
+            android:hint="@string/labelLastUpdate"
+            android:id="@+id/lastUpdate"
+            android:layout_row="4"
+            android:layout_column="1" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:textSize="20dp"
-        android:background="@color/orangelight"
-        android:text="@string/labelEntryDate"
-        android:id="@+id/textView4"
-        android:layout_alignBottom="@+id/editText"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignRight="@+id/textView5"
-        android:layout_alignEnd="@+id/textView5" />
+        <TextView
+            android:layout_width="250dip"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:textSize="20dip"
+            android:background="@color/Aqua"
+            android:textStyle="bold"
+            android:text="@string/labelLastUpdateUserId"
+            android:id="@+id/textView7"
+            android:layout_row="5"
+            android:layout_column="0" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/editText"
-        android:layout_below="@+id/userId"
-        android:textStyle="bold"
-        android:textSize="20dp"
-        android:layout_alignLeft="@+id/userId"
-        android:layout_alignStart="@+id/userId"
-        android:layout_alignRight="@+id/userId"
-        android:layout_alignEnd="@+id/userId" />
+        <EditText
+            android:layout_width="250dip"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="20dip"
+            android:inputType="number"
+            android:hint="@string/labelLastUpdateUserId"
+            android:id="@+id/lastUpdateUserId"
+            android:layout_row="5"
+            android:layout_column="1" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/labelLastUpdate"
-        android:id="@+id/textView5"
-        android:textStyle="bold"
-        android:textSize="20dp"
-        android:background="@color/orangelight"
-        android:layout_alignBottom="@+id/lastUpdate"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        <TextView
+            android:layout_width="250dip"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="20dip"
+            android:background="@color/Aqua"
+            android:text="@string/labelCreatorId"
+            android:id="@+id/textView8"
+            android:layout_row="6"
+            android:layout_column="0" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/lastUpdate"
-        android:textStyle="bold"
-        android:textSize="20dp"
-        android:layout_below="@+id/editText"
-        android:layout_alignLeft="@+id/editText"
-        android:layout_alignStart="@+id/editText"
-        android:layout_alignRight="@+id/editText"
-        android:layout_alignEnd="@+id/editText" />
+        <EditText
+            android:layout_width="250dip"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="20dip"
+            android:hint="@string/labelCreatorId"
+            android:inputType="number"
+            android:id="@+id/creatorId"
+            android:layout_row="6"
+            android:layout_column="1" />
 
-</RelativeLayout>
+        <TextView
+            android:layout_width="250dip"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="20dip"
+            android:background="@color/Aqua"
+            android:text="@string/labelMarkedForDeletion"
+            android:id="@+id/textView9"
+            android:layout_row="7"
+            android:layout_column="0" />
+
+        <EditText
+            android:layout_width="250dip"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:hint="@string/labelMarkedForDeletion"
+            android:textStyle="bold"
+            android:textSize="20dip"
+            android:id="@+id/markedForDeletion"
+            android:layout_row="7"
+            android:layout_column="1" />
+
+        <TextView
+
+            android:layout_width="250dip"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="20dip"
+            android:background="@color/Aqua"
+            android:text="@string/labelMarkedForDeletionDate"
+            android:id="@+id/textView10"
+            android:layout_row="8"
+            android:layout_column="0" />
+
+        <EditText
+            android:layout_width="250dip"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="20dip"
+            android:clickable="false"
+            android:hint="@string/labelMarkedForDeletionDate"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:id="@+id/markedForDeletionDate"
+            android:layout_row="8"
+            android:layout_column="1" />
+
+        <TextView
+            android:layout_width="250dip"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+             android:textSize="20dip"
+            android:background="@color/Aqua"
+            android:text="@string/labelDni_nif"
+            android:id="@+id/textView11"
+            android:layout_row="9"
+            android:layout_column="0" />
+
+        <EditText
+            android:layout_width="250dip"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="20dip"
+            android:hint="@string/labelDni_nif"
+            android:id="@+id/dniNif"
+            android:layout_row="9"
+            android:layout_column="1" />
+
+        <Button
+            android:layout_width="148dp"
+            android:layout_height="wrap_content"
+            android:background="@color/Teal"
+            android:textStyle="bold"
+            android:textSize="16dip"
+            android:text="@string/btnUpdate"
+            android:id="@+id/btnUpdate"
+            android:layout_row="10"
+            android:layout_column="1"
+            android:layout_gravity="center_horizontal" />
+        <Button
+            android:layout_width="148dp"
+            android:layout_height="wrap_content"
+            android:background="@color/Teal"
+            android:textStyle="bold"
+            android:textSize="16dip"
+            android:text="@string/btnPut"
+            android:id="@+id/btnPut"
+            android:layout_row="10"
+            android:layout_column="1"
+            android:layout_gravity="center_horizontal" />
+
+
+    </LinearLayout>
+</ScrollView>
