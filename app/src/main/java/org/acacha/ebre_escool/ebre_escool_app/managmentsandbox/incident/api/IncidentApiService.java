@@ -5,7 +5,6 @@ package org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.incident.api;
  */
 
 import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.incident.pojos.incident;
-
 import java.util.List;
 import java.util.Map;
 import retrofit.Callback;
