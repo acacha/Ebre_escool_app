@@ -6,8 +6,9 @@
     tools:context="org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.study_submodules.FragmentStudySubmodules">
 
     <!-- TODO: Update blank fragment layout -->
+
     <it.gmariotti.cardslib.library.view.CardListView
-        android:id="@+id/studysubmodulesList"
+        android:id="@+id/schoolsList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/greenlight"

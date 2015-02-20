@@ -8,6 +8,18 @@ import com.google.gson.annotations.SerializedName;
 
 public class StudySubmodules {
 
+
+    @SerializedName("logourl")
+    @Expose
+    private String logoURL;
+    @SerializedName("logo_relative_url")
+    @Expose
+    private String relativeLogoURL;
+    @SerializedName("api_url")
+    @Expose
+    private String api_url;
+
+
     @Expose
     private String id;
     @Expose
@@ -272,4 +284,52 @@ public class StudySubmodules {
     }
 
 
+    /**
+     *
+     * @return
+     * The logo full URL
+     */
+    public String getLogoURL() {
+        return logoURL;
+    }
+    /**
+     *
+     * @param logoURL
+     * The logo url
+     */
+    public void setLogoURL(String logoURL) {
+        this.logoURL = logoURL;
+    }
+    /**
+     *
+     * @return
+     * The logo realative URL
+     */
+    public String getRelativeLogoURL() {
+        return relativeLogoURL;
+    }
+    /**
+     *
+     * @param relativeLogoURL
+     * The logo relative url
+     */
+    public void setRelativeLogoURL(String relativeLogoURL) {
+        this.relativeLogoURL = relativeLogoURL;
+    }
+    /**
+     *
+     * @return
+     * The API URL of School
+     */
+    public String getApi_url() {
+        return api_url;
+    }
+    /**
+     *
+     * @param api_url
+     * The API url
+     */
+    public void setApi_url(String api_url) {
+        this.api_url = api_url;
+    }
 }
