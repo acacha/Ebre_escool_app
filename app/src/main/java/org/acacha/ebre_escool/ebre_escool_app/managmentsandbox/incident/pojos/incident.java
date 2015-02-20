@@ -5,7 +5,7 @@ package org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.incident.pojos;
         import com.google.gson.annotations.Expose;
         import com.google.gson.annotations.SerializedName;
 
-public class studysubmodules {
+public class incident {
     @SerializedName("incident_id")
     @Expose
     private String incidentId;
