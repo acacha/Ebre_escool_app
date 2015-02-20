@@ -7,8 +7,8 @@ public class IncidentApi {
 
     // URL OF PUBLIC API EBRE-ESCOOL
 
-   /* public final static String EBRE_ESCOOL_PUBLIC_API_URL =
-            "http://185.13.76.85:8762/ebre-escool/index.php/liviucoronciuc/api/report/incidents/"*/;
+   public final static String EBRE_ESCOOL_PUBLIC_API_URL =
+            "http://185.13.76.85:8762/ebre-escool/index.php/liviucoronciuc/api/report/";
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////
 

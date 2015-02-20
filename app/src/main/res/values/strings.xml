@@ -16,13 +16,20 @@
     <string name="labelPersonId">Person ID</string>
     <string name="labelUserId">User ID</string>
     <string name="labelEntryDate">Entry Date</string>
+    <string name="edtEntryDate">YYYY-MM-DD HH:MM:SS</string>
     <string name="labelLastUpdate">Last Update</string>
     <string name="labelLastUpdateUserId">Last Update User ID</string>
     <string name="labelCreatorId">Creator ID</string>
     <string name="labelMarkedForDeletion">Marked For Deletion</string>
     <string name="labelMarkedForDeletionDate">Marked For Deletion Date</string>
-    <string name="dni_nif">DNI/NIF</string>
-    <string name="btnUpdate">Update</string>
+    <string name="labelDni_nif">DNI/NIF</string>
+    <string name="btnUpdate">UPDATE</string>
+    <string name="btnPut">CREATE</string>
+    <string name="oneAction">Action 1</string>
+    <string name="otherActions">Action 2</string>
+    <string name="deleteTeacher">Delete</string>
+    <string name="put_teacher">CREATE</string>
+
 
 
 

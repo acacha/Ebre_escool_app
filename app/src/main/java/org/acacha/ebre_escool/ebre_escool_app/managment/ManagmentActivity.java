@@ -22,10 +22,13 @@ import org.acacha.ebre_escool.ebre_escool_app.helpers.FragmentBase;
 import org.acacha.ebre_escool.ebre_escool_app.helpers.OnFragmentInteractionListener;
 
 
+import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.employees.FragmentEmployees;
 import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.person.FragmentPerson;
 import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.classroom_group.FragmentClassroomGroup;
 import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.teacher.TeacherFragment;
 import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.study_submodules.FragmentStudySubmodules;
+import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.incident.FragmentIncident;
+import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.users.FragmentUsers;
 
 
 public class ManagmentActivity extends ActionBarActivity
@@ -94,11 +97,11 @@ public class ManagmentActivity extends ActionBarActivity
                 break;
             case 5:
                 //managment_title_section6_users
-                fragment = (Fragment) new FragmentBase();
+                fragment = (Fragment) new FragmentUsers();
                 break;
             case 6:
                 //managment_title_section7_incidents
-                fragment = (Fragment) new FragmentBase();
+                fragment = (Fragment) new FragmentIncident();
                 break;
             case 7:
                 //managment_title_section8_study_submodules
@@ -110,7 +113,7 @@ public class ManagmentActivity extends ActionBarActivity
                 break;
             case 9:
                 //managment_title_section10_employees
-                fragment = (Fragment) new FragmentBase();
+                fragment = (Fragment) new FragmentEmployees();
                 break;
             case 10:
                 startActivity(new Intent(this, MainActivity.class));
