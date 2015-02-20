@@ -6,23 +6,26 @@
         xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/Sky"
+        android:gravity="center"
         android:orientation="vertical"
         tools:context="org.acacha.ebre_escool.ebre_escool_app.teacher.TeacherDetail">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="250dip"
+            android:gravity="center"
             android:layout_height="wrap_content"
             android:text="@string/labelTeacherId"
             android:id="@+id/textView2"
             android:layout_alignParentTop="true"
             android:textStyle="bold"
             android:textSize="20dip"
-            android:background="@color/orangelight"
+            android:background="@color/Aqua"
             android:layout_row="0"
             android:layout_column="0" />
         <TextView
-            android:layout_width="102dp"
-            android:layout_height="41dp"
+            android:layout_width="250dip"
+            android:gravity="center"
+            android:layout_height="41dip"
             android:text="New Text"
             android:textSize="20dip"
             android:textStyle="bold"
@@ -31,19 +34,22 @@
             android:layout_row="0"
             android:layout_column="1" />
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="250dip"
+            android:gravity="center"
             android:layout_height="wrap_content"
             android:text="@string/labelPersonId"
             android:id="@+id/labelPersonId"
             android:textStyle="bold"
             android:textSize="20dip"
-            android:background="@color/orangelight"
+            android:background="@color/Aqua"
             android:layout_row="1"
             android:layout_column="0" />
         <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="250dip"
+            android:gravity="center"
             android:layout_height="wrap_content"
             android:id="@+id/personId"
+            android:hint="@string/labelPersonId"
             android:textStyle="bold"
             android:inputType="number"
             android:textSize="20dip"
@@ -51,20 +57,23 @@
             android:layout_column="1" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="250dip"
+            android:gravity="center"
             android:layout_height="wrap_content"
             android:text="@string/labelUserId"
             android:textStyle="bold"
             android:textSize="20dip"
-            android:background="@color/orangelight"
+            android:background="@color/Aqua"
             android:id="@+id/textView4"
             android:layout_row="2"
             android:layout_column="0" />
 
         <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="250dip"
+            android:gravity="center"
             android:layout_height="wrap_content"
             android:id="@+id/userId"
+            android:hint="@string/labelUserId"
             android:inputType="number"
             android:textStyle="bold"
             android:textSize="20dip"
@@ -72,39 +81,44 @@
             android:layout_column="1" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="250dip"
+            android:gravity="center"
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:textSize="20dip"
-            android:background="@color/orangelight"
+            android:background="@color/Aqua"
             android:text="@string/labelEntryDate"
             android:id="@+id/textView5"
             android:layout_row="3"
             android:layout_column="0" />
 
         <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="250dip"
+            android:gravity="center"
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:textSize="20dip"
-            android:inputType="number"
+            android:hint="@string/edtEntryDate"
+            android:inputType="datetime"
             android:id="@+id/entryDate"
             android:layout_row="3"
             android:layout_column="1" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="250dip"
+            android:gravity="center"
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:textSize="20dip"
-            android:background="@color/orangelight"
+            android:background="@color/Aqua"
             android:text="@string/labelLastUpdate"
             android:id="@+id/textView6"
             android:layout_row="4"
             android:layout_column="0" />
 
         <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="250dip"
+            android:gravity="center"
             android:layout_height="wrap_content"
             android:clickable="false"
             android:cursorVisible="false"
@@ -112,15 +126,17 @@
             android:focusableInTouchMode="false"
             android:textStyle="bold"
             android:textSize="20dip"
+            android:hint="@string/labelLastUpdate"
             android:id="@+id/lastUpdate"
             android:layout_row="4"
             android:layout_column="1" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="250dip"
+            android:gravity="center"
             android:layout_height="wrap_content"
             android:textSize="20dip"
-            android:background="@color/orangelight"
+            android:background="@color/Aqua"
             android:textStyle="bold"
             android:text="@string/labelLastUpdateUserId"
             android:id="@+id/textView7"
@@ -128,54 +144,62 @@
             android:layout_column="0" />
 
         <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="250dip"
+            android:gravity="center"
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:textSize="20dip"
             android:inputType="number"
+            android:hint="@string/labelLastUpdateUserId"
             android:id="@+id/lastUpdateUserId"
             android:layout_row="5"
             android:layout_column="1" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="250dip"
+            android:gravity="center"
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:textSize="20dip"
-            android:background="@color/orangelight"
+            android:background="@color/Aqua"
             android:text="@string/labelCreatorId"
             android:id="@+id/textView8"
             android:layout_row="6"
             android:layout_column="0" />
 
         <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="250dip"
+            android:gravity="center"
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:textSize="20dip"
+            android:hint="@string/labelCreatorId"
             android:inputType="number"
             android:id="@+id/creatorId"
             android:layout_row="6"
             android:layout_column="1" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="250dip"
+            android:gravity="center"
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:textSize="20dip"
-            android:background="@color/orangelight"
+            android:background="@color/Aqua"
             android:text="@string/labelMarkedForDeletion"
             android:id="@+id/textView9"
             android:layout_row="7"
             android:layout_column="0" />
 
         <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="250dip"
+            android:gravity="center"
             android:layout_height="wrap_content"
             android:clickable="false"
             android:cursorVisible="false"
             android:focusable="false"
             android:focusableInTouchMode="false"
+            android:hint="@string/labelMarkedForDeletion"
             android:textStyle="bold"
             android:textSize="20dip"
             android:id="@+id/markedForDeletion"
@@ -183,22 +207,26 @@
             android:layout_column="1" />
 
         <TextView
-            android:layout_width="wrap_content"
+
+            android:layout_width="250dip"
+            android:gravity="center"
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:textSize="20dip"
-            android:background="@color/orangelight"
+            android:background="@color/Aqua"
             android:text="@string/labelMarkedForDeletionDate"
             android:id="@+id/textView10"
             android:layout_row="8"
             android:layout_column="0" />
 
         <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="250dip"
+            android:gravity="center"
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:textSize="20dip"
             android:clickable="false"
+            android:hint="@string/labelMarkedForDeletionDate"
             android:cursorVisible="false"
             android:focusable="false"
             android:focusableInTouchMode="false"
@@ -207,21 +235,24 @@
             android:layout_column="1" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="250dip"
+            android:gravity="center"
             android:layout_height="wrap_content"
             android:textStyle="bold"
-            android:textSize="20dip"
-            android:background="@color/orangelight"
-            android:text="@string/dni_nif"
+             android:textSize="20dip"
+            android:background="@color/Aqua"
+            android:text="@string/labelDni_nif"
             android:id="@+id/textView11"
             android:layout_row="9"
             android:layout_column="0" />
 
         <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="250dip"
+            android:gravity="center"
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:textSize="20dip"
+            android:hint="@string/labelDni_nif"
             android:id="@+id/dniNif"
             android:layout_row="9"
             android:layout_column="1" />
@@ -229,8 +260,22 @@
         <Button
             android:layout_width="148dp"
             android:layout_height="wrap_content"
+            android:background="@color/Teal"
+            android:textStyle="bold"
+            android:textSize="16dip"
             android:text="@string/btnUpdate"
             android:id="@+id/btnUpdate"
+            android:layout_row="10"
+            android:layout_column="1"
+            android:layout_gravity="center_horizontal" />
+        <Button
+            android:layout_width="148dp"
+            android:layout_height="wrap_content"
+            android:background="@color/Teal"
+            android:textStyle="bold"
+            android:textSize="16dip"
+            android:text="@string/btnPut"
+            android:id="@+id/btnPut"
             android:layout_row="10"
             android:layout_column="1"
             android:layout_gravity="center_horizontal" />
