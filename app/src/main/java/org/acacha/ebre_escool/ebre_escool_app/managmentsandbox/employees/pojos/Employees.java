@@ -5,7 +5,7 @@ import com.google.gson.annotations.Expose;
 /**
  * Created: pdavila on 11/02/15.
  */
-public class employees {
+public class Employees {
     @Expose
     private String id;
     @Expose
@@ -15,7 +15,7 @@ public class employees {
     @Expose
     private String type_id;
 
-    public employees() {
+    public Employees() {
 
     }
     /**
