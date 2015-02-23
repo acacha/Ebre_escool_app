@@ -15,19 +15,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
 import org.acacha.ebre_escool.ebre_escool_app.R;
 import org.acacha.ebre_escool.ebre_escool_app.apis.EbreEscoolAPI;
-import org.acacha.ebre_escool.ebre_escool_app.helpers.ConnectionDetector;
+import org.acacha.ebre_escool.ebre_escool_app.apis.EbreEscoolApiService;
 import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.person.pojos.Person;
 import org.acacha.ebre_escool.ebre_escool_app.pojos.School;
-import org.acacha.ebre_escool.ebre_escool_app.settings.SettingsActivity;
-import org.codepond.wizardroid.WizardStep;
 
-import java.net.URL;
 import java.util.ArrayList;
+import java.util.Map;
 
 import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.internal.CardArrayAdapter;
@@ -35,13 +34,18 @@ import it.gmariotti.cardslib.library.internal.CardHeader;
 import it.gmariotti.cardslib.library.internal.CardThumbnail;
 import it.gmariotti.cardslib.library.view.CardListView;
 
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+
+
 public class FragmentPerson extends Fragment {
 
     //Look up for shared preferences
     final String LOG_TAG = "Step1Persons";
 
     public static final String PERSONS_LIST_KEY = "person";
-
 
     /**
      * The collection of all schools in the app.
@@ -290,6 +294,41 @@ public class FragmentPerson extends Fragment {
         View v = inflater.inflate(R.layout.fragment_person, container, false);
         settings = PreferenceManager.getDefaultSharedPreferences(getActivity());
         return v;
+    }
+
+    private void download_initial_data() {
+        //Connect to api to download info during splash screen execution
+        RestAdapter restAdapter = new RestAdapter.Builder()
+                .setEndpoint(EbreEscoolAPI.EBRE_ESCOOL_PUBLIC_API_URL)
+                .build();
+
+        EbreEscoolApiService service = restAdapter.create(EbreEscoolApiService.class);
+
+        Callback callback = new Callback<Map<String, School>>() {
+            @Override
+            public void success(Map<String, School> schools, Response response) {
+                Log.d(LOG_TAG, "************ Schools ##################: " + schools);
+
+                //Save MAP AND LIST OF SCHOOLS as Shared Preferences
+                Gson gson = new Gson();
+                String schools_json = gson.toJson(schools);
+                String schools_list_json = gson.toJson(schools.values().toArray());
+                settings.edit().putString("schools_map", schools_json).apply();
+                settings.edit().putString("schools_list", schools_list_json).apply();
+
+            }
+            @Override
+            public void failure(RetrofitError retrofitError) {
+                String text = "!!!! ERROR: " + retrofitError;
+                Log.d(LOG_TAG, text);
+
+                int duration = Toast.LENGTH_LONG;
+                Toast toast = Toast.makeText(getApplicationContext(), text, duration);
+                toast.show();
+
+            }
+        };
+        service.schools(callback);
     }
 
 }
