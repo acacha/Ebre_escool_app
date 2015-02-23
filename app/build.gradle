@@ -22,28 +22,19 @@ android {
 repositories { mavenCentral() }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     compile files('libs/twitter4j-core-4.0.2.jar')
-
     //universal-image-loader
-
     //Core card library 1 stable
     //compile 'com.github.gabrielemariotti.cards:library:1.9.1'
-
     //Extra card library, it is required only if you want to use integrations with other libraries
     //compile 'com.github.gabrielemariotti.cards:library-extra:1.9.1'
-
     //CARDSLIB 2.0
     //Core
-
     //Optional for built-in cards
-
     //Optional for RecyclerView
-
     //Optional for staggered grid view
-
     //Optional for drag and drop
-
     //Optional for twoway  (coming soon)
     //compile 'com.github.gabrielemariotti.cards:cardslib-extra-twoway:2.0.1'
     compile 'com.android.support:appcompat-v7:21.0.3'
