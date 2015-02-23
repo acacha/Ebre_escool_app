@@ -16,12 +16,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.Toast;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 
 import com.google.gson.Gson;
 
 import org.acacha.ebre_escool.ebre_escool_app.R;
 import org.acacha.ebre_escool.ebre_escool_app.apis.EbreEscoolAPI;
 import org.acacha.ebre_escool.ebre_escool_app.apis.EbreEscoolApiService;
+import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.person.api.PersonAPI;
+import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.person.api.PersonApiService;
 import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.person.pojos.Person;
 import org.acacha.ebre_escool.ebre_escool_app.pojos.School;
 
@@ -74,15 +80,17 @@ public class FragmentPerson extends Fragment {
 
         settings = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
+        download_initial_data();
+
         //Retrieve persons on JSON format
         String json_persons_list = settings.getString("persons_list", "");
         Log.d(LOG_TAG,"###### json_persons_list: " + json_persons_list);
 
         Gson gson = new Gson();
-        //mPersons = gson.fromJson(json_persons_list, Person[].class);
+        mPersons = gson.fromJson(json_persons_list, Person[].class);
 
 
-        Person person1 = new Person();
+        /*Person person1 = new Person();
         Person person2 = new Person();
         Person person3 = new Person();
         Person person4 = new Person();
@@ -110,7 +118,7 @@ public class FragmentPerson extends Fragment {
         mPersons[0] = person1;
         mPersons[1] = person2;
         mPersons[2] = person3;
-        mPersons[3] = person4;
+        mPersons[3] = person4;*/
 
 
         ArrayList<Card> cards = new ArrayList<Card>();
@@ -299,36 +307,36 @@ public class FragmentPerson extends Fragment {
     private void download_initial_data() {
         //Connect to api to download info during splash screen execution
         RestAdapter restAdapter = new RestAdapter.Builder()
-                .setEndpoint(EbreEscoolAPI.EBRE_ESCOOL_PUBLIC_API_URL)
+                .setEndpoint(PersonAPI.EBRE_ESCOOL_PERSON_PUBLIC_API_URL)
                 .build();
 
-        EbreEscoolApiService service = restAdapter.create(EbreEscoolApiService.class);
+        PersonApiService service = restAdapter.create(PersonApiService.class);
 
-        Callback callback = new Callback<Map<String, School>>() {
+        Callback callback = new Callback<Map<String, Person>>() {
             @Override
-            public void success(Map<String, School> schools, Response response) {
-                Log.d(LOG_TAG, "************ Schools ##################: " + schools);
+            public void success(Map<String, Person> persons, Response response) {
+                Log.d(LOG_TAG, "************ Persons ##################: " + persons);
 
-                //Save MAP AND LIST OF SCHOOLS as Shared Preferences
+                //Save MAP AND LIST OF PERSONS as Shared Preferences
                 Gson gson = new Gson();
-                String schools_json = gson.toJson(schools);
-                String schools_list_json = gson.toJson(schools.values().toArray());
-                settings.edit().putString("schools_map", schools_json).apply();
-                settings.edit().putString("schools_list", schools_list_json).apply();
-
+                String persons_json = gson.toJson(persons);
+                String persons_list_json = gson.toJson(persons.values().toArray());
+                settings.edit().putString("persons_map", persons_json).apply();
+                settings.edit().putString("persons_list", persons_list_json).apply();
             }
+
             @Override
             public void failure(RetrofitError retrofitError) {
                 String text = "!!!! ERROR: " + retrofitError;
                 Log.d(LOG_TAG, text);
 
                 int duration = Toast.LENGTH_LONG;
-                Toast toast = Toast.makeText(getApplicationContext(), text, duration);
-                toast.show();
+                //Toast toast = Toast.makeText(getApplicationContext(), text, duration);
+                //toast.show();
 
             }
         };
-        service.schools(callback);
+        service.persons(callback);
     }
 
 }

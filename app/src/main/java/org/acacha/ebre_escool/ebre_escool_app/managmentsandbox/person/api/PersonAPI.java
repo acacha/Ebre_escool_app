@@ -4,8 +4,8 @@ package org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.person.api;
  * Created by nicolae on 30/01/15.
  */
 public class PersonAPI {
-    // URL OF PUBLIC API EBRE-ESCOOL
-    public final static String EBRE_ESCOOL_PUBLIC_API_URL =
+    // URL OF PUBLIC API PERSON
+    public final static String EBRE_ESCOOL_PERSON_PUBLIC_API_URL =
             "http://185.13.76.85:8770/ebre-escool/index.php/nicolaeturcan/api";
 
     //URL of image no available
