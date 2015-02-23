@@ -137,17 +137,17 @@ public class FragmentEmployees extends Fragment {
         Employees employees2 = new Employees();
         Employees employees3 = new Employees();
 
-        employees1.setId("employees1");
-        employees1.setPerson_id("employees1");
-        employees1.setCode("employees1");
+        employees1.setId("1");
+        employees1.setPerson_id("1072");
+        employees1.setCode("Leonord Agamundi");
 
-        employees2.setId("employees2");
-        employees2.setPerson_id("employees2");
-        employees2.setCode("employees2");
+        employees2.setId("2");
+        employees2.setPerson_id("1017");
+        employees2.setCode("Jordi Caudet");
 
-        employees3.setId("employees3");
-        employees3.setPerson_id("employees3");
-        employees3.setCode("employees3");
+        employees3.setId("3");
+        employees3.setPerson_id("1018");
+        employees3.setCode("Jaume Benaiges");
 
         mEmployees[0] = employees1;
         mEmployees[1] = employees2;
