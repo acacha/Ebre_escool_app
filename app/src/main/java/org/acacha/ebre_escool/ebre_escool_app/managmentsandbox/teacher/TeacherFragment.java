@@ -12,6 +12,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.util.SparseBooleanArray;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,6 +21,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,12 +39,15 @@ import java.util.List;
 
 import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.internal.CardArrayAdapter;
+import it.gmariotti.cardslib.library.internal.CardArrayMultiChoiceAdapter;
 import it.gmariotti.cardslib.library.internal.CardExpand;
 import it.gmariotti.cardslib.library.internal.CardHeader;
 import it.gmariotti.cardslib.library.internal.CardThumbnail;
 import it.gmariotti.cardslib.library.internal.ViewToClickToExpand;
 import it.gmariotti.cardslib.library.internal.base.BaseCard;
 import it.gmariotti.cardslib.library.view.CardListView;
+import it.gmariotti.cardslib.library.view.CardView;
+import it.gmariotti.cardslib.library.view.base.CardViewWrapper;
 import retrofit.Callback;
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
@@ -74,7 +80,8 @@ public class TeacherFragment extends Fragment  {
     //To get teachers/teacher
     private List<Teacher> teachersList;
     private final String TAG = "tag";
-    CardArrayAdapter mCardArrayAdapter;
+    //CardArrayAdapter mCardArrayAdapter;
+    MyCardArrayMultiChoiceAdapter mMyCardArrayMultiChoiceAdapter;
     CustomTeacherCard card_on_list;
     //This lets vibrate on click button actions
     Vibrator vibe;
@@ -296,10 +303,18 @@ public class TeacherFragment extends Fragment  {
                     public void onClick(Card card, View view) {
                         vibe.vibrate(60); // 6  0 is time in ms
                         Log.d(TAG, "Clickable card id: " + card.getId());
-                        int position = mCardArrayAdapter.getPosition(card);
+                        int position = mMyCardArrayMultiChoiceAdapter.getPosition(card);
                         list.setItemChecked(position, true);
                     }
 
+                });
+                //Set on long click listener
+                card_on_list.setOnLongClickListener(new Card.OnLongCardClickListener() {
+                    @Override
+                    public boolean onLongClick(Card card, View view) {
+                        return mMyCardArrayMultiChoiceAdapter.startActionMode(getActivity());
+
+                    }
                 });
                 //Now we add the thumbnail
                 //Create thumbnail
@@ -313,12 +328,13 @@ public class TeacherFragment extends Fragment  {
                 cards.add(card_on_list);
             }
 
-            mCardArrayAdapter = new CardArrayAdapter(getActivity(), cards );
+            mMyCardArrayMultiChoiceAdapter = new MyCardArrayMultiChoiceAdapter(getActivity(), cards );
             //enable swipe undo action
-            mCardArrayAdapter.setEnableUndo(true);
+            mMyCardArrayMultiChoiceAdapter.setEnableUndo(true);
 
             if (list != null) {
-               list.setAdapter(mCardArrayAdapter);
+               list.setAdapter(mMyCardArrayMultiChoiceAdapter);
+                list.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
                 //list.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
                 //GET FROM SETTINGS WHICH SCHOOL IS USED IN SETTINGS
 
@@ -568,5 +584,83 @@ public class CustomTeacherCard extends Card implements View.OnClickListener {
         });
 
     }
+
+    ///////////////////////////////my custom adapter///////////////////////////7
+    public class MyCardArrayMultiChoiceAdapter extends CardArrayMultiChoiceAdapter {
+
+        public MyCardArrayMultiChoiceAdapter(Context context, List<Card> cards) {
+            super(context, cards);
+        }
+
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            //It is very important to call the super method
+            super.onCreateActionMode(mode, menu);
+
+            //  mActionMode=mode; // to manage mode in your Fragment/Activity
+
+            //If you would like to inflate your menu
+            MenuInflater inflater = mode.getMenuInflater();
+            inflater.inflate(R.menu.carddemo_multichoice, menu);
+
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            return false;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            if (item.getItemId() == R.id.menu_share) {
+                Toast.makeText(getContext(), "Share;" + formatCheckedCard(), Toast.LENGTH_SHORT).show();
+                return true;
+            }
+            if (item.getItemId() == R.id.menu_discard) {
+                discardSelectedItems(mode);
+                return true;
+            }
+            return false;
+        }
+
+
+        public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked, CardView cardView, Card card) {
+            Toast.makeText(getContext(), "Click;" + position + " - " + checked, Toast.LENGTH_SHORT).show();
+        }
+
+        private void discardSelectedItems(ActionMode mode) {
+            ArrayList<Card> items = getSelectedCards();
+            for (Card item : items) {
+                //We call mark for deletion method and we delete the card from array
+                markForDeletion(item.getId(),"y");
+                remove(item);
+            }
+            mode.finish();
+        }
+
+
+        private String formatCheckedCard() {
+
+            SparseBooleanArray checked = mCardListView.getCheckedItemPositions();
+            StringBuffer sb = new StringBuffer();
+            for (int i = 0; i < checked.size(); i++) {
+                if (checked.valueAt(i) == true) {
+                    sb.append("\nPosition=" + checked.keyAt(i));
+                }
+            }
+            return sb.toString();
+        }
+
+        @Override
+        public void onItemCheckedStateChanged(ActionMode actionMode, int i, long l, boolean b, CardViewWrapper cardViewWrapper, Card card) {
+
+        }
+
+
+
+
+    }
+
 
 }

@@ -29,6 +29,8 @@
     <string name="otherActions">Action 2</string>
     <string name="deleteTeacher">Delete</string>
     <string name="put_teacher">CREATE</string>
+    <string name="menu_share">Share</string>
+    <string name="menu_discard">Discard</string>
 
 
 
