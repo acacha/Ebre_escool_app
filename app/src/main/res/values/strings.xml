@@ -30,8 +30,15 @@
     <string name="deleteTeacher">Delete</string>
     <string name="put_teacher">CREATE</string>
 
-
-
+    <string name="study_submodules_detail"> UPDATE STUDY SUBMODULES</string>
+    <string name="labelStudySubmodulesId">Study Submodule ID</string>
+    <string name="labelShortname">Shortname</string>
+    <string name="labelName">Name</string>
+    <string name="labelModuleId">Module ID</string>
+    <string name="labelCourseid">Courseid</string>
+    <string name="labelOrder">Order</string>
+    <string name="labelDescription">Description</string>
+    <string name="labelCreatorUserId">Creator User ID</string>
 
     <style name="ButtonText">
         <item name="android:layout_width">fill_parent</item>
