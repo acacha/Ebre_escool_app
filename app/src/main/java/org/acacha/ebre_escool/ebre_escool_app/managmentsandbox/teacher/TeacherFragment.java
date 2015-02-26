@@ -295,7 +295,7 @@ public class TeacherFragment extends Fragment  {
                ViewToClickToExpand viewToClickToExpand =
                         ViewToClickToExpand.builder()
                                 .highlightView(false)
-                                .setupCardElement(ViewToClickToExpand.CardElementUI.THUMBNAIL);
+                                .setupCardElement(ViewToClickToExpand.CardElementUI.HEADER);
                 card_on_list.setViewToClickToExpand(viewToClickToExpand);
                 //card_on_list.setBackgroundColorResourceId(R.color.Silver);==>this don't works
               /* card_on_list.setOnClickListener( new Card.OnCardClickListener() {
