@@ -1,32 +1,166 @@
 package org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.employees;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
+import java.lang.*;
 
 import org.acacha.ebre_escool.ebre_escool_app.R;
-import org.acacha.ebre_escool.ebre_escool_app.helpers.FragmentBase;
 import org.acacha.ebre_escool.ebre_escool_app.helpers.OnFragmentInteractionListener;
 import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.employees.api.EmployeesAPI;
+import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.employees.pojos.Employees;
+import org.acacha.ebre_escool.ebre_escool_app.settings.SettingsActivity;
 
+import java.util.ArrayList;
+
+import it.gmariotti.cardslib.library.internal.Card;
+import it.gmariotti.cardslib.library.internal.CardArrayAdapter;
+import it.gmariotti.cardslib.library.internal.CardHeader;
+import it.gmariotti.cardslib.library.internal.CardThumbnail;
 import it.gmariotti.cardslib.library.view.CardListView;
-import retrofit.RestAdapter;
 
 /**
  * Create by PaoloDavila
  *
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link FragmentEmployees.OnFragmentInteractionListener} interface
  * to handle interaction events.
  * Use the {@link FragmentEmployees#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class FragmentEmployees extends Fragment {
+
+    /*NUEVAS LINIAS INSERTADAS QUE POCO A POCO SE LO QUE HACEN*/
+
+    public static final String EMPLOYEES_LIST_KEY = "employees";
+
+    //declaració de vector Employees[] mEmployees
+    private static Employees[] mEmployees = new Employees[3];
+
+    private ListView lstEmployees;
+
+
+    //settings
+    private SharedPreferences settings;
+
+    CardArrayAdapter mCardArrayAdapter;
+
+    private AlertDialog alert = null;
+
+    final String LOG_TAG = "InitialSettingsStep1Employees";
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        settings = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
+        Employees employees1 = new Employees();
+        Employees employees2 = new Employees();
+        Employees employees3 = new Employees();
+
+        employees1.setId("1");
+        employees1.setPerson_id("1072");
+        employees1.setCode("Leonord Agamundi");
+
+        employees2.setId("2");
+        employees2.setPerson_id("1017");
+        employees2.setCode("Jordi Caudet");
+
+        employees3.setId("3");
+        employees3.setPerson_id("1018");
+        employees3.setCode("Jaume Benaiges");
+
+        mEmployees[0] = employees1;
+        mEmployees[1] = employees2;
+        mEmployees[2] = employees3;
+
+        ArrayList<Card> cards = new ArrayList<Card>();
+
+        for (int i = 0; i < mEmployees.length; i++) {
+            Log.d("########## TEST: ", mEmployees[i].getPerson_id());
+            // Create a Card
+            Card card_on_list = new Card(getActivity());
+
+            // Create a CardHeader and add Header to card_on_list
+            CardHeader header = new CardHeader(getActivity());
+            header.setTitle(mEmployees[i].getCode());
+
+            card_on_list.addCardHeader(header);
+
+            //card_on_list.setId(mEmployees[i].getCode());
+            card_on_list.setTitle(mEmployees[i].getCode());
+            card_on_list.setClickable(true);
+
+            card_on_list.setOnClickListener( new Card.OnCardClickListener() {
+                @Override
+                public void onClick(Card card, View view) {
+                    Log.d(LOG_TAG, "Clickable card id: " + card.getId());
+                }
+            });
+
+            //Obtain thumbnail from an URL and add to card
+            /*
+            CardThumbnail thumb = new CardThumbnail(getActivity());
+            thumb.setDrawableResource(listImages[i]);
+
+            if (mEmployees[i]){
+                thumb.setUrlResource(mEmployees[i]);
+            } else {
+                thumb.setUrlResource(EmployeesAPI.EBRE_ESCOOL_PUBLIC_IMAGE_NOT_AVAILABLE);
+
+            }
+
+            card_on_list.addCardThumbnail(thumb);
+            */
+
+            //Add card to car List
+            cards.add(card_on_list);
+        }
+
+        mCardArrayAdapter = new CardArrayAdapter(getActivity(), cards );
+
+        lstEmployees = (CardListView) getActivity().findViewById(R.id.employeesList);
+        if (lstEmployees != null) {
+            lstEmployees.setAdapter(mCardArrayAdapter);
+            lstEmployees.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+            //GET FROM SETTINGS WHICH EMPLOYEES IS USED IN SETTINGS
+
+            String current_selected_employees =
+                    settings.getString(EMPLOYEES_LIST_KEY,"0");
+
+            Log.d(LOG_TAG,"Getted current selected employees: " + current_selected_employees);
+
+            lstEmployees.setItemChecked(Integer.parseInt(current_selected_employees), true);
+
+            //Check All data is completed before continue
+           /* boolean data_is_ok = check_all_data_is_ok(0);
+            if(data_is_ok) {
+                notifyCompleted();
+            } else {
+                notifyIncomplete();
+                // Show alert
+                showAlertDialog(getActivity(), getString(R.string.incorrect_school_data_title),
+                        error_message_validating_employees + ". " + getString(R.string.incorrect_school_data_label), false);
+            }*/
+
+            String current_value = settings.getString(EMPLOYEES_LIST_KEY,"0");
+            settings.edit().putString(EMPLOYEES_LIST_KEY, current_value).apply();
+        }
+    }
+
+    /*##############################################################################################*/
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -99,5 +233,4 @@ public class FragmentEmployees extends Fragment {
         super.onDetach();
         mListener = null;
     }
-
 }
