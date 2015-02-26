@@ -85,7 +85,7 @@ public class TeacherFragment extends Fragment  {
     CustomTeacherCard card_on_list;
     //This lets vibrate on click button actions
     Vibrator vibe;
-
+    ActionMode mActionMode;
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -287,7 +287,7 @@ public class TeacherFragment extends Fragment  {
 
 
                 card_on_list.setTitle("DNI/NIF\n"+arrayTeacher[i].getDNINIF());
-                card_on_list.setClickable(true);
+                //card_on_list.setClickable(true);
                 card_on_list.setShadow(true);
                CustomExpandCard expand= new CustomExpandCard(getActivity(),arrayTeacher[i]);
                 card_on_list.addCardExpand(expand);
@@ -295,23 +295,26 @@ public class TeacherFragment extends Fragment  {
                ViewToClickToExpand viewToClickToExpand =
                         ViewToClickToExpand.builder()
                                 .highlightView(false)
-                                .setupCardElement(ViewToClickToExpand.CardElementUI.CARD);
+                                .setupCardElement(ViewToClickToExpand.CardElementUI.HEADER);
                 card_on_list.setViewToClickToExpand(viewToClickToExpand);
                 //card_on_list.setBackgroundColorResourceId(R.color.Silver);==>this don't works
-                card_on_list.setOnClickListener(new Card.OnCardClickListener() {
+              /* card_on_list.setOnClickListener( new Card.OnCardClickListener() {
                     @Override
                     public void onClick(Card card, View view) {
                         vibe.vibrate(60); // 6  0 is time in ms
                         Log.d(TAG, "Clickable card id: " + card.getId());
                         int position = mMyCardArrayMultiChoiceAdapter.getPosition(card);
                         list.setItemChecked(position, true);
+
+
                     }
 
-                });
+                });*/
                 //Set on long click listener
                 card_on_list.setOnLongClickListener(new Card.OnLongCardClickListener() {
                     @Override
                     public boolean onLongClick(Card card, View view) {
+                        vibe.vibrate(60); // 60 is time in ms
                         return mMyCardArrayMultiChoiceAdapter.startActionMode(getActivity());
 
                     }
@@ -334,7 +337,7 @@ public class TeacherFragment extends Fragment  {
 
             if (list != null) {
                list.setAdapter(mMyCardArrayMultiChoiceAdapter);
-                list.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+                list.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);//CHOICE_MODE_MULTIPLE_MODAL
                 //list.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
                 //GET FROM SETTINGS WHICH SCHOOL IS USED IN SETTINGS
 
@@ -597,7 +600,7 @@ public class CustomTeacherCard extends Card implements View.OnClickListener {
             //It is very important to call the super method
             super.onCreateActionMode(mode, menu);
 
-            //  mActionMode=mode; // to manage mode in your Fragment/Activity
+              mActionMode=mode; // to manage mode in your Fragment/Activity
 
             //If you would like to inflate your menu
             MenuInflater inflater = mode.getMenuInflater();
@@ -618,6 +621,7 @@ public class CustomTeacherCard extends Card implements View.OnClickListener {
                 return true;
             }
             if (item.getItemId() == R.id.menu_discard) {
+                vibe.vibrate(60); // 60 is time in ms
                 discardSelectedItems(mode);
                 return true;
             }
@@ -625,9 +629,7 @@ public class CustomTeacherCard extends Card implements View.OnClickListener {
         }
 
 
-        public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked, CardView cardView, Card card) {
-            Toast.makeText(getContext(), "Click;" + position + " - " + checked, Toast.LENGTH_SHORT).show();
-        }
+
 
         private void discardSelectedItems(ActionMode mode) {
             ArrayList<Card> items = getSelectedCards();
@@ -654,6 +656,11 @@ public class CustomTeacherCard extends Card implements View.OnClickListener {
 
         @Override
         public void onItemCheckedStateChanged(ActionMode actionMode, int i, long l, boolean b, CardViewWrapper cardViewWrapper, Card card) {
+
+                            //Do something here if we want when card is selected in multichoice
+
+
+
 
         }
 
