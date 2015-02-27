@@ -2,7 +2,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.employees.FragmentEmployees">
+    xmlns:card="http://schemas.android.com/apk/res-auto"
+    tools:context="org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.employees.FragmentEmployees"
+    android:background="@drawable/balloon_bg">
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -18,5 +20,7 @@
         android:id="@+id/employeesList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        card:list_card_layout_resourceID="@layout/list_card_thumbnail_layout"
+        style="@style/list_card.thumbnail"
         />
 </FrameLayout>
