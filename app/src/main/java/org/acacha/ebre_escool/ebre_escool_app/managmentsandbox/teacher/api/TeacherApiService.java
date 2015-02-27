@@ -47,12 +47,12 @@ public interface TeacherApiService {
     //@FormUrlEncoded
     @Headers("X-API-KEY:"+TeacherApi.API_KEY)
     @POST("/teacher")
-    public void updateTeacher(@Body Teacher teacher,Callback<Result> callback);
+    public void insertTeacher(@Body Teacher teacher,Callback<Result> callback);
 
     //PUT method
     @Headers("X-API-KEY:"+TeacherApi.API_KEY)
     @PUT("/teacher")
-    public void putTeacher(@Body Teacher teacher,Callback<Result> callback);
+    public void updateTeacher(@Body Teacher teacher,Callback<Result> callback);
 
     //DELETE teacher
     @Headers("X-API-KEY:"+TeacherApi.API_KEY)
@@ -61,7 +61,7 @@ public interface TeacherApiService {
 
     //Mark for deletion
     @Headers("X-API-KEY:"+TeacherApi.API_KEY)
-    @POST("/markForDeletion")
+    @PUT("/markForDeletion")
     public void markForDeletion(@Body Teacher teacher,Callback<Result> callback);
 
 
