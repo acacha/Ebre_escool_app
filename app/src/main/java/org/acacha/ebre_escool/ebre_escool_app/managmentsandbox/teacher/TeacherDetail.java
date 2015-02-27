@@ -1,15 +1,18 @@
 package org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.teacher;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.net.Uri;
 import android.os.Bundle;
 
 import android.support.v4.app.Fragment;
+import android.text.format.Time;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,6 +23,10 @@ import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.teacher.api.Teach
 import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.teacher.api.TeacherApiService;
 import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.teacher.pojos.Result;
 import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.teacher.pojos.Teacher;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
 import retrofit.Callback;
 import retrofit.RestAdapter;
@@ -63,7 +70,7 @@ public class TeacherDetail extends Fragment {
     private Button btnUpdate;
     private Button btnPut;
     private String TAG = "tag";
-
+    private Calendar myCalendar;
 
 
     /**
@@ -101,37 +108,33 @@ public class TeacherDetail extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-       // View view= inflater.inflate(R.layout.fragment_teacher_detail, container, false);
-        View view= inflater.inflate(R.layout.fragment_teacher_detail, container, false);
+        // View view= inflater.inflate(R.layout.fragment_teacher_detail, container, false);
+        View view = inflater.inflate(R.layout.fragment_teacher_detail, container, false);
         //Get controls
-        ID =(TextView)view.findViewById(R.id.teacherId);
-        personId =(EditText)view.findViewById(R.id.personId);
-        userId = (EditText)view.findViewById(R.id.userId);
-        entryDate = (EditText)view.findViewById(R.id.entryDate);
-        lastUpdate = (EditText)view.findViewById(R.id.lastUpdate);
-        lastUpdateUserId = (EditText)view.findViewById(R.id.lastUpdateUserId);
-        creatorId = (EditText)view.findViewById(R.id.creatorId);
-        markedForDeletion = (EditText)view.findViewById(R.id.markedForDeletion);
-        markedForDeletionDate = (EditText)view.findViewById(R.id.markedForDeletionDate);
-        dniNif =(EditText)view.findViewById(R.id.dniNif);
-        btnUpdate = (Button)view.findViewById(R.id.btnUpdate);
-        btnPut = (Button)view.findViewById(R.id.btnPut);
+        ID = (TextView) view.findViewById(R.id.teacherId);
+        personId = (EditText) view.findViewById(R.id.personId);
+        userId = (EditText) view.findViewById(R.id.userId);
+        entryDate = (EditText) view.findViewById(R.id.entryDate);
+        lastUpdate = (EditText) view.findViewById(R.id.lastUpdate);
+        lastUpdateUserId = (EditText) view.findViewById(R.id.lastUpdateUserId);
+        creatorId = (EditText) view.findViewById(R.id.creatorId);
+        markedForDeletion = (EditText) view.findViewById(R.id.markedForDeletion);
+        markedForDeletionDate = (EditText) view.findViewById(R.id.markedForDeletionDate);
+        dniNif = (EditText) view.findViewById(R.id.dniNif);
+        btnUpdate = (Button) view.findViewById(R.id.btnUpdate);
+        btnPut = (Button) view.findViewById(R.id.btnPut);
         //Set click listener for button update
-        btnUpdate.setOnClickListener(new View.OnClickListener()
-        {
+        btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
-              //Toast.makeText(getActivity(),"Teacher ID: "+ID.getText().toString(),Toast.LENGTH_LONG).show();
-              updateTeacher();
+            public void onClick(View v) {
+                //Toast.makeText(getActivity(),"Teacher ID: "+ID.getText().toString(),Toast.LENGTH_LONG).show();
+                updateTeacher();
 
             }
         });
-        btnPut.setOnClickListener(new View.OnClickListener()
-        {
+        btnPut.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 //Toast.makeText(getActivity(),"Teacher ID: "+ID.getText().toString(),Toast.LENGTH_LONG).show();
                 putTeacher();
 
@@ -145,11 +148,11 @@ public class TeacherDetail extends Fragment {
         Bundle extras = getArguments();
         if (extras != null) {
             teacherId = extras.getInt("id");
-            String action =extras.getString(TeacherApi.ACTION);
+            String action = extras.getString(TeacherApi.ACTION);
             Log.d("tag", "detail id :" + teacherId);
-            switch(action){
+            switch (action) {
                 case TeacherApi.DETAIL:
-                btnUpdate.setVisibility(View.INVISIBLE);
+                    btnUpdate.setVisibility(View.INVISIBLE);
                     btnPut.setVisibility(View.INVISIBLE);
                     getOneTeacher(teacherId);
                     break;
@@ -165,12 +168,48 @@ public class TeacherDetail extends Fragment {
 
             }
         }
+        //open calendar when click on entry date edittext
+         myCalendar = Calendar.getInstance();
 
+        final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
 
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                // TODO Auto-generated method stub
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH, monthOfYear);
+                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                updateLabel();
+            }
+
+        };
+
+        entryDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus){
+                    new DatePickerDialog(getActivity(), date, myCalendar
+                            .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                            myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+                }
+            }
+        });
 
 
         return view;
     }
+        //Set the new entry date
+        private void updateLabel() {
+
+            String myFormat = "yyyy-MM-dd HH:mm:ss"; //In which you need put here
+            SimpleDateFormat sdf = new SimpleDateFormat(myFormat);
+            entryDate.setText(sdf.format(myCalendar.getTime()));
+        }
+
+
+
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
