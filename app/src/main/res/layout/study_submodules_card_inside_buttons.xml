@@ -12,14 +12,14 @@
         android:layout_height="wrap_content">
         <Button
             android:id="@+id/btnDetail"
-            android:background="@drawable/SeeStudySubmodules"
+            android:background="@drawable/studysubmodulessee"
             android:layout_marginLeft="80dip"
             android:layout_width="50dp"
             android:layout_height="40dp" />
         <Button
             android:id="@+id/btnEdit"
             android:layout_marginLeft="50dip"
-            android:background="@drawable/EditStudySubmodules"
+            android:background="@drawable/editstudysubmodules"
             android:layout_width="50dp"
             android:layout_height="40dp" />
     </LinearLayout>
