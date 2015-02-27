@@ -72,14 +72,17 @@ public class FragmentEmployees extends Fragment {
         employees1.setId("1");
         employees1.setPerson_id("1072");
         employees1.setCode("Leonord Agamundi");
+        employees1.setType_id("Empleat");
 
         employees2.setId("2");
         employees2.setPerson_id("1017");
         employees2.setCode("Jordi Caudet");
+        employees2.setType_id("Empleat");
 
         employees3.setId("3");
         employees3.setPerson_id("1018");
         employees3.setCode("Jaume Benaiges");
+        employees3.setType_id("Empleat");
 
         mEmployees[0] = employees1;
         mEmployees[1] = employees2;
@@ -88,41 +91,28 @@ public class FragmentEmployees extends Fragment {
         ArrayList<Card> cards = new ArrayList<Card>();
 
         for (int i = 0; i < mEmployees.length; i++) {
-            Log.d("########## TEST: ", mEmployees[i].getPerson_id());
+            Log.d("########## TEST: ", mEmployees[i].getCode());
             // Create a Card
             Card card_on_list = new Card(getActivity());
 
             // Create a CardHeader and add Header to card_on_list
             CardHeader header = new CardHeader(getActivity());
-            header.setTitle(mEmployees[i].getCode());
+            header.setTitle(mEmployees[i].getType_id());
 
             card_on_list.addCardHeader(header);
 
             //card_on_list.setId(mEmployees[i].getCode());
-            card_on_list.setTitle(mEmployees[i].getCode());
+            card_on_list.setTitle(mEmployees[i].getCode() + "\n" + mEmployees[i].getPerson_id()  + "\n");
             card_on_list.setClickable(true);
 
-            card_on_list.setOnClickListener( new Card.OnCardClickListener() {
-                @Override
-                public void onClick(Card card, View view) {
-                    Log.d(LOG_TAG, "Clickable card id: " + card.getId());
-                }
-            });
-
             //Obtain thumbnail from an URL and add to card
-            /*
+
             CardThumbnail thumb = new CardThumbnail(getActivity());
-            thumb.setDrawableResource(listImages[i]);
+            //thumb.setDrawableResource(listImages[i]);
 
-            if (mEmployees[i]){
-                thumb.setUrlResource(mEmployees[i]);
-            } else {
-                thumb.setUrlResource(EmployeesAPI.EBRE_ESCOOL_PUBLIC_IMAGE_NOT_AVAILABLE);
-
-            }
+            thumb.setUrlResource(EmployeesAPI.IMAGE);
 
             card_on_list.addCardThumbnail(thumb);
-            */
 
             //Add card to car List
             cards.add(card_on_list);
