@@ -2,8 +2,8 @@ package org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.incident.pojos;
 
 
 
-        import com.google.gson.annotations.Expose;
-        import com.google.gson.annotations.SerializedName;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 public class incident {
 
@@ -59,6 +59,7 @@ public class incident {
     @SerializedName("incident_markedForDeletionDate")
     @Expose
     private String incidentMarkedForDeletionDate;
+
 
     /**
      *

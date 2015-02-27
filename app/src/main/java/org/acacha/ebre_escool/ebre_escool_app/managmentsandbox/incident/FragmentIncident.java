@@ -10,23 +10,30 @@ import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.app.Fragment;
 import android.widget.ListView;
+import android.widget.Toast;
+
+import com.google.gson.Gson;
 
 import org.acacha.ebre_escool.ebre_escool_app.R;
-import org.acacha.ebre_escool.ebre_escool_app.apis.EbreEscoolAPI;
+import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.incident.api.IncidentApi;
 import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.incident.pojos.incident;
 import org.acacha.ebre_escool.ebre_escool_app.settings.SettingsActivity;
 
 import java.util.ArrayList;
 
+import it.gmariotti.cardslib.library.*;
 import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.internal.CardArrayAdapter;
 import it.gmariotti.cardslib.library.internal.CardHeader;
 import it.gmariotti.cardslib.library.internal.CardThumbnail;
+import it.gmariotti.cardslib.library.internal.base.BaseCard;
 import it.gmariotti.cardslib.library.view.CardListView;
+
 
 public class FragmentIncident extends Fragment {
     /**
@@ -53,77 +60,99 @@ public class FragmentIncident extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         settings = PreferenceManager.getDefaultSharedPreferences(getActivity());
-/*
-        Fer quan es agafin les dades de l'API
+
 
         //Retrieve schools on JSON format
-        //String json_schools_list = settings.getString("schools_list", "");
-        //Log.d(LOG_TAG, "###### json_schools_list: " + json_schools_list);
+        //String json_incidents_list = settings.getString("incidents_list", "");
+        //Json Manual
+        String json_incidents_list = "[{\"incident_id\":\"1\",\"incident_student_id\":\"5758\",\"incident_time_slot_id\":\"11\",\"incident_day\":\"4\",\"incident_date\":\"2014-12-04\",\"incident_study_submodule_id\":\"179\",\"incident_type\":\"3\",\"incident_notes\":\"\",\"incident_entryDate\":\"2014-12-04 17:11:49\",\"incident_last_update\":\"2014-12-04 17:11:49\",\"incident_creationUserId\":\"1\",\"incident_lastupdateUserId\":\"1\",\"incident_markedForDeletion\":\"n\",\"incident_markedForDeletionDate\":\"0000-00-00 00:00:00\"}," +
+                "{\"incident_id\":\"2\",\"incident_student_id\":\"5758\",\"incident_time_slot_id\":\"11\",\"incident_day\":\"4\",\"incident_date\":\"2014-12-04\",\"incident_study_submodule_id\":\"179\",\"incident_type\":\"3\",\"incident_notes\":sdfsdf\",\"incident_entryDate\":\"2014-12-04 17:11:49\",\"incident_last_update\":\"2014-12-04 17:11:49\",\"incident_creationUserId\":\"1\",\"incident_lastupdateUserId\":\"1\",\"incident_markedForDeletion\":\"n\",\"incident_markedForDeletionDate\":\"0000-00-00 00:00:00\"}]";
+        Log.d(LOG_TAG, "###### json_incidents_list: " + json_incidents_list);
 
-        //Gson gson = new Gson();
-        //mIncidents = gson.fromJson(json_schools_list, School[].class);
-
-*/
-
-        mIncidents = new incident[3];
-
-        incident incident1 = new incident();
-        incident incident2 = new incident();
-        incident incident3 = new incident();
-
-        incident1.setIncidentId("Hola Sergi");
-        incident2.setIncidentId("2");
-        incident3.setIncidentId("3");
-
-        mIncidents[0] = incident1;
-        mIncidents[1] = incident2;
-        mIncidents[2] = incident3;
-
+        Gson gson = new Gson();
+        mIncidents = gson.fromJson(json_incidents_list, incident[].class);
 
         ArrayList<Card> cards = new ArrayList<Card>();
-
-
-
-        Log.d(LOG_TAG,"Incident 0"+mIncidents[0]);
 
 
         for (int i = 0; i < mIncidents.length; i++) {
             //Log.d("########## TEST: ", mIncidents[i].getFullname());
             // Create a Card
             Card card_on_list = new Card(getActivity());
+            //Swipe Acction
+            card_on_list.setSwipeable(true);
+            card_on_list.setClickable(true);
+            card_on_list.setId(mIncidents[i].getIncidentId());
+            card_on_list.setTitle(mIncidents[i].getIncidentNotes());
 
             // Create a CardHeader and add Header to card_on_list
             CardHeader header = new CardHeader(getActivity());
-            header.setTitle(mIncidents[i].getIncidentType());
-
+            header.setTitle(mIncidents[i].getIncidentId());
             card_on_list.addCardHeader(header);
 
-            card_on_list.setId(mIncidents[i].getIncidentId());
-            card_on_list.setTitle(mIncidents[i].getIncidentId());
-            card_on_list.setClickable(true);
+            //Inner Text
+            card_on_list.setTitle(mIncidents[i].getIncidentDate());
+
+            //Add a popup menu. This method sets OverFlow button to visibile
+            header.setPopupMenu(R.menu.incident_menu, new CardHeader.OnClickCardHeaderPopupMenuListener(){
+
+                public void onButtonItemClick(Card card, View view) {
+                    //Example to change dinamically the button resources
+
+                    card.getCardView().refreshCard(card);
+
+                }
+
+
+
+                @Override
+                public void onMenuItemClick(BaseCard baseCard, MenuItem menuItem) {
+
+
+
+                }
+            });
+
+
+            card_on_list.setOnSwipeListener(new Card.OnSwipeListener() {
+                @Override
+                public void onSwipe(Card card) {
+
+
+                }
+            });
+            //swipe undo action
+            card_on_list.setOnUndoSwipeListListener(new Card.OnUndoSwipeListListener() {
+                @Override
+                public void onUndoSwipe(Card card) {
+
+                }
+            });
+
+            // Image Not Available
+            CardThumbnail thumb = new CardThumbnail(getActivity());
+            thumb.setUrlResource(IncidentApi.EBRE_ESCOOL_PUBLIC_IMAGE_NOT_AVAILABLE);
+            card_on_list.addCardThumbnail(thumb);
 
             card_on_list.setOnClickListener(new Card.OnCardClickListener() {
-              @Override
-              public void onClick(Card card, View view) {
-                  Log.d(LOG_TAG,"Clickable card id: " + card.getId());
-                  //Toast.makeText(getActivity(), "Clickable card id: " + card.getId(), Toast.LENGTH_LONG).show();
-                  int position = mCardArrayAdapter.getPosition(card);
-                  lstIncidents.setItemChecked(position, true);
-                  //settings.edit().putString(SettingsActivity.SCHOOLS_LIST_KEY, Integer.toString(position)).apply();
-              }
-             }
+                                                @Override
+                                                public void onClick(Card card, View view) {
+                                                    Log.d(LOG_TAG,"Clickable card id: " + card.getId());
+                                                    Toast.makeText(getActivity(), "Clickable card id: " + card.getId(), Toast.LENGTH_LONG).show();
+
+                                                }
+                                            }
             );
 
             //Obtain thumbnail from an URL and add to card
-            CardThumbnail thumb = new CardThumbnail(getActivity());
+            //CardThumbnail thumb = new CardThumbnail(getActivity());
             //thumb.setDrawableResource(listImages[i]);
-            if (mIncidents[i].getLogoURL() != "") {
-                thumb.setUrlResource(mIncidents[i].getLogoURL());
-            } else {
-                thumb.setUrlResource(EbreEscoolAPI.EBRE_ESCOOL_PUBLIC_IMAGE_NOT_AVAILABLE);
-
-            }
-            card_on_list.addCardThumbnail(thumb);
+            // if (mIncidents[i].getLogoURL() != "") {
+            //     thumb.setUrlResource(mIncidents[i].getLogoURL());
+            //} else {
+            //    thumb.setUrlResource(IncidentApi.EBRE_ESCOOL_PUBLIC_IMAGE_NOT_AVAILABLE);
+            // }
+            // card_on_list.addCardThumbnail(thumb);
 
             //Add card to car List
             cards.add(card_on_list);
@@ -131,7 +160,7 @@ public class FragmentIncident extends Fragment {
 
         mCardArrayAdapter = new CardArrayAdapter(getActivity(), cards);
 
-       lstIncidents = (CardListView) getActivity().findViewById(R.id.schoolsList);
+        lstIncidents = (CardListView) getActivity().findViewById(R.id.incidentList);
         if (lstIncidents != null) {
             lstIncidents.setAdapter(mCardArrayAdapter);
             lstIncidents.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
@@ -142,19 +171,6 @@ public class FragmentIncident extends Fragment {
 
             Log.d(LOG_TAG, "Getted current selected school: " + current_selected_school);
 
-            lstIncidents.setItemChecked(Integer.parseInt(current_selected_school), true);
-/*
-
-            boolean data_is_ok = check_all_data_is_ok(0);
-            if (data_is_ok) {
-                notifyCompleted();
-            } else {
-                notifyIncomplete();
-                // Show alert
-                showAlertDialog(getActivity(), getString(R.string.incorrect_school_data_title),
-                        error_message_validating_school + ". " + getString(R.string.incorrect_school_data_label), false);
-            }
-*/
             String current_value = settings.getString(SettingsActivity.SCHOOLS_LIST_KEY, "0");
             settings.edit().putString(SettingsActivity.SCHOOLS_LIST_KEY, current_value).apply();
         }

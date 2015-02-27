@@ -29,6 +29,7 @@
     <string name="otherActions">Action 2</string>
     <string name="deleteTeacher">Delete</string>
     <string name="put_teacher">CREATE</string>
+    <string name="deleteIncident">Delete Incident</string>
 
 
 
