@@ -11,6 +11,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.app.Activity;
 import android.support.v4.app.Fragment;
+import android.util.JsonReader;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
@@ -35,6 +36,7 @@ import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.person.api.Person
 import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.person.pojos.Person;
 import org.acacha.ebre_escool.ebre_escool_app.pojos.School;
 
+import java.io.StringReader;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -71,6 +73,7 @@ public class FragmentPerson extends Fragment {
     // List of Card
     private CardListView lstPersons;
     private Card card_on_list;
+    private RestAdapter restAdapter;
 
 
     //settings
@@ -89,15 +92,23 @@ public class FragmentPerson extends Fragment {
     }
 
 
+
+    /*
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         //settings = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
-        reload_data();
+        // Connect to api to download info.
+        restAdapter = new RestAdapter.Builder()
+                .setEndpoint(PersonAPI.EBRE_ESCOOL_PERSON_PUBLIC_API_URL)
+                .build();
+
+        get_data();
 
     }
+    */
 
 
     /**
@@ -142,33 +153,79 @@ public class FragmentPerson extends Fragment {
     }
 
 
-
-
     @Override
-    public  void onStart(){
+    public void onStart() {
         super.onStart();
-        reload_data();
-    }
 
-
-
-    protected void reload_data() {
+        Log.d(LOG_TAG, "************ Persons ##################: " + PersonAPI.EBRE_ESCOOL_PERSON_PUBLIC_API_URL);
 
         // Connect to api to download info.
-        RestAdapter restAdapter = new RestAdapter.Builder()
+        restAdapter = new RestAdapter.Builder()
                 .setEndpoint(PersonAPI.EBRE_ESCOOL_PERSON_PUBLIC_API_URL)
                 .build();
 
+        get_data();
+    }
+
+    protected void get_data() {
+
         PersonApiService service = restAdapter.create(PersonApiService.class);
 
-        Callback callback = new Callback<List<Person>>() {
+        //Callback callback = new Callback<List<Person>>() {
+
+        //service.personsAsList(new Callback<List<Person>>() {
+
+
+        //Callback callback = new Callback<Map<String, School>>() {
+        //  @Override
+        //public void success(Map<String, School> schools, Response response) {
+
+        /*service.persons(new Callback<Map<String, Person>>(){
             @Override
-            public void success(List<Person> persons, Response response) {
+            public void success(Map<String, Person> persons, Response response) {
                 Log.d(LOG_TAG, "************ Persons ##################: " + persons);
 
                 // Saving the LIST OF PERSONS.
                 listOfPersons = persons;
+                reload_data();
+            }*/
+
+        /*
+                Callback callback = new Callback<Map<String, School>>() {
+            @Override
+            public void success(Map<String, School> schools, Response response) {
+                Log.d(LOG_TAG, "************ Schools ##################: " + schools);
+
+                //Save MAP AND LIST OF SCHOOLS as Shared Preferences
+                Gson gson = new Gson();
+                String schools_json = gson.toJson(schools);
+                String schools_list_json = gson.toJson(schools.values().toArray());
+                settings.edit().putString("schools_map", schools_json).apply();
+                settings.edit().putString("schools_list", schools_list_json).apply();
+
             }
+        * */
+
+
+
+
+
+
+        Callback callback = new Callback<Map<String, Person>>() {
+        //Callback callback = new Callback<List<Person>>() {
+            @Override
+            public void success(Map<String, Person> persons, Response response) {
+            //public void success(List<Person> persons, Response response) {
+                Log.d(LOG_TAG, "************ Persons ##################: " + persons);
+                listOfPersons = (List<Person>) persons;
+                reload_data();
+            }
+
+           /* @Override
+            public void failure(RetrofitError error) {
+                Toast.makeText(getActivity(), error.toString(), Toast.LENGTH_LONG).show();
+
+            }*/
 
             @Override
             public void failure(RetrofitError retrofitError) {
@@ -180,38 +237,62 @@ public class FragmentPerson extends Fragment {
                 Toast toast = Toast.makeText(activity.getApplicationContext(), text, duration);
                 toast.show();
             }
+
         };
+        service.persons(callback);
+    }
+
+
+    protected void reload_data() {
 
         if (listOfPersons != null) {
-            //Retrieve persons on JSON format
-            String json_persons_list = settings.getString("persons_list", "");
-            Log.d(LOG_TAG, "###### json_persons_list: " + json_persons_list);
+
+            /*
+            Gson gson = new Gson();
+            JsonReader reader = new JsonReader(new StringReader(result1));
+            reader.setLenient(true);
+            Userinfo userinfo1 = gson.fromJson(reader, Userinfo.class);
+            *
+            * */
+
 
             Gson gson = new Gson();
             String grossData = gson.toJson(listOfPersons);
+            //JsonReader reader = new JsonReader(new StringReader(grossData));
+            //reader.setLenient(true);
 
-            Person[] arrayData = gson.fromJson(grossData, Person[].class);
+
+
+            Log.d(LOG_TAG, "###### json_persons_list: " + grossData);
+
+            //Retrieve persons on JSON format
+            //String json_persons_list = gson.toString("persons_list", "" + listOfPersons);
+            //Log.d(LOG_TAG, "###### json_persons_list: " + json_persons_list);
+
+            Person[] arrayData = gson.fromJson(grossData.trim(), Person[].class);
+
+
 
             lstPersons = (CardListView) getActivity().findViewById(R.id.personsList);
 
             ArrayList<Card> cards = new ArrayList<Card>();
 
-            for (int i = 0; i < mPersons.length; i++) {
-                Log.d("########## TEST: ", mPersons[i].getGivenName());//getFullname());
+            for (int i = 0; i < arrayData.length; i++) {
+                Log.d("########## TEST: ", arrayData[i].getGivenName());//getFullname());
                 // Create a Card
                 card_on_list = new Card(getActivity());
 
                 // Create a CardHeader and add Header to card_on_list
                 CardHeader header = new CardHeader(getActivity());
 
-                header.setTitle(mPersons[i].getNotes());//getFullname());
+                header.setTitle(arrayData[i].getNotes());//getFullname());
                 //header.setTitle(mPersons[i].getGivenName()+ " " + mPersons[i].getSn1());//getFullname());
 
                 card_on_list.addCardHeader(header);
 
                 //card_on_list.setId(mPersons[i].getId());
 
-                card_on_list.setTitle("Nom: " + mPersons[i].getGivenName() + "\n" + "Cognom: " + mPersons[i].getSn1() + "\n" + "Correu: " + mPersons[i].getEmail1());
+                card_on_list.setTitle("Nom: " + arrayData[i].getGivenName() + "\n" + "Cognom: " + arrayData[i].getSn1() + "\n" + "Correu: " + arrayData[i].getEmail1());
 
                 //card_on_list.setTitle(mPersons[i].getNotes()); //.getSchoolNotes());
 
@@ -221,8 +302,8 @@ public class FragmentPerson extends Fragment {
                 //Obtain thumbnail from an URL and add to card
                 CardThumbnail thumb = new CardThumbnail(getActivity());
                 //thumb.setDrawableResource(listImages[i]);
-                if (mPersons[i].getPhoto() != "") {//getLogoURL()!=""){
-                    thumb.setUrlResource(mPersons[i].getPhoto());//getLogoURL());
+                if (arrayData[i].getPhoto() != "") {//getLogoURL()!=""){
+                    thumb.setUrlResource(arrayData[i].getPhoto());//getLogoURL());
                 } else {
                     thumb.setUrlResource(EbreEscoolAPI.EBRE_ESCOOL_PUBLIC_IMAGE_NOT_AVAILABLE);
 
