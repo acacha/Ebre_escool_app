@@ -39,6 +39,14 @@ public class lesson { //TODO Es una copia de theacher per a poder fer l'array, j
     @Expose
     private String DNINIF;
 
+
+     public lesson(String id, String personid, String userid){
+        this.id = id;
+        this.personId = personid;
+        this.userId = userid;
+    }
+
+
     /**
      *
      * @return

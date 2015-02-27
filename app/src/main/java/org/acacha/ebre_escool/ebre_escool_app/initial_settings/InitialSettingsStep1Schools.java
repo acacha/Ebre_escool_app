@@ -72,6 +72,7 @@ public class InitialSettingsStep1Schools extends WizardStep {
         Gson gson = new Gson();
         mSchools = gson.fromJson(json_schools_list, School[].class);
 
+
         ArrayList<Card> cards = new ArrayList<Card>();
 
         for (int i = 0; i < mSchools.length; i++) {
