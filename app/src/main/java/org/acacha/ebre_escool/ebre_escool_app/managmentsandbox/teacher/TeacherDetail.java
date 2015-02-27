@@ -136,7 +136,7 @@ public class TeacherDetail extends Fragment {
             @Override
             public void onClick(View v) {
                 //Toast.makeText(getActivity(),"Teacher ID: "+ID.getText().toString(),Toast.LENGTH_LONG).show();
-                putTeacher();
+                insertTeacher();
 
             }
         });
@@ -373,7 +373,7 @@ public class TeacherDetail extends Fragment {
      }
 
     //Method to put teacher
-    private void putTeacher() {
+    private void insertTeacher() {
         Teacher teacher = getDataTeacher();
         if (!(teacher == null)){
             teacher.setId("");
@@ -382,7 +382,7 @@ public class TeacherDetail extends Fragment {
         RestAdapter adapter = new RestAdapter.Builder()
                 .setEndpoint(TeacherApi.ENDPOINT).build();
         TeacherApiService api = adapter.create(TeacherApiService.class);
-        api.putTeacher(teacher, new Callback<Result>() {
+        api.insertTeacher(teacher, new Callback<Result>() {
             @Override
             public void success(Result result, Response response) {
                 Toast.makeText(getActivity(), "Teacher " + result.getId() + " " + result.getMessage(), Toast.LENGTH_LONG).show();
@@ -390,7 +390,9 @@ public class TeacherDetail extends Fragment {
 
             @Override
             public void failure(RetrofitError error) {
-                Toast.makeText(getActivity(), "PUT ERROR! " + error.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "INSERT" +
+                        "" +
+                        " ERROR! " + error.getMessage(), Toast.LENGTH_LONG).show();
 
             }
         });
