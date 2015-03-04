@@ -1,13 +1,20 @@
-<?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:card="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.users.FragmentUsers">
+    tools:context="org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.users.FragmentUsers"
+    >
 
-    <TextView
+    <it.gmariotti.cardslib.library.view.CardListView
+        android:id="@+id/schoolsList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/managment_title_section6_users"/>
+        android:background="@color/Silver"
+        card:list_card_layout_resourceID="@layout/list_card_thumbnail_layout"
+        style="@style/list_card.thumbnail"
+        />
+
+    <include layout="@layout/user_card_undo_message"/>
 </FrameLayout>
