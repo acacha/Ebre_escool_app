@@ -2,6 +2,7 @@ package org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.person;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,6 +14,7 @@ import android.app.Activity;
 import android.support.v4.app.Fragment;
 import android.util.JsonReader;
 import android.util.Log;
+import android.util.MalformedJsonException;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -27,6 +29,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonIOException;
+import com.google.gson.JsonSyntaxException;
 
 import org.acacha.ebre_escool.ebre_escool_app.R;
 import org.acacha.ebre_escool.ebre_escool_app.apis.EbreEscoolAPI;
@@ -34,9 +38,7 @@ import org.acacha.ebre_escool.ebre_escool_app.apis.EbreEscoolApiService;
 import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.person.api.PersonAPI;
 import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.person.api.PersonApiService;
 import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.person.pojos.Person;
-import org.acacha.ebre_escool.ebre_escool_app.pojos.School;
 
-import java.io.StringReader;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -82,6 +84,9 @@ public class FragmentPerson extends Fragment {
     CardArrayAdapter mCardArrayAdapter;
 
     private AlertDialog alert = null;
+
+    private ProgressDialog progress;
+
 
     private String error_message_validating_person = "";
 
@@ -163,8 +168,8 @@ public class FragmentPerson extends Fragment {
         restAdapter = new RestAdapter.Builder()
                 .setEndpoint(PersonAPI.EBRE_ESCOOL_PERSON_PUBLIC_API_URL)
                 .build();
-
         get_data();
+        progress = ProgressDialog.show(getActivity(), "", "Carregant llista de persones...", true);
     }
 
     protected void get_data() {
@@ -207,17 +212,15 @@ public class FragmentPerson extends Fragment {
         * */
 
 
-
-
-
-
-        Callback callback = new Callback<Map<String, Person>>() {
-        //Callback callback = new Callback<List<Person>>() {
+        //Callback callback = new Callback<Map<String, Person>>() {
+        //Callback callback = new Callback<Person>() {
+        Callback callback = new Callback<List<Person>>() {
             @Override
-            public void success(Map<String, Person> persons, Response response) {
-            //public void success(List<Person> persons, Response response) {
+            //public void success(Map<String, Person> persons, Response response) {
+            //public void success(Person persons, Response response) {
+            public void success(List<Person> persons, Response response) {
                 Log.d(LOG_TAG, "************ Persons ##################: " + persons);
-                listOfPersons = (List<Person>) persons;
+                listOfPersons = persons;
                 reload_data();
             }
 
@@ -239,13 +242,16 @@ public class FragmentPerson extends Fragment {
             }
 
         };
-        service.persons(callback);
+        service.personsAsList(callback);
     }
 
 
     protected void reload_data() {
 
         if (listOfPersons != null) {
+
+
+
 
             /*
             Gson gson = new Gson();
@@ -255,22 +261,25 @@ public class FragmentPerson extends Fragment {
             *
             * */
 
-
+             // try {
             Gson gson = new Gson();
             String grossData = gson.toJson(listOfPersons);
             //JsonReader reader = new JsonReader(new StringReader(grossData));
-            //reader.setLenient(true);
+//                //reader.setLenient(true);
+//            } catch (MalformedJsonException e) {
+//                throw new JsonSyntaxException(e);
+//            } catch (IOException e) {
+//                throw new JsonIOException(e);
+//            }
 
-
-
-            Log.d(LOG_TAG, "###### json_persons_list: " + grossData);
 
             //Retrieve persons on JSON format
             //String json_persons_list = gson.toString("persons_list", "" + listOfPersons);
             //Log.d(LOG_TAG, "###### json_persons_list: " + json_persons_list);
 
-            Person[] arrayData = gson.fromJson(grossData.trim(), Person[].class);
 
+            Person[] arrayData = gson.fromJson(grossData.trim(), Person[].class);
+            Log.d(LOG_TAG, "###### json_persons_list: " + grossData);
 
 
             lstPersons = (CardListView) getActivity().findViewById(R.id.personsList);
@@ -279,13 +288,19 @@ public class FragmentPerson extends Fragment {
 
             for (int i = 0; i < arrayData.length; i++) {
                 Log.d("########## TEST: ", arrayData[i].getGivenName());//getFullname());
+
                 // Create a Card
                 card_on_list = new Card(getActivity());
+
+                // Person ID
+                card_on_list.setId(arrayData[i].getId());
 
                 // Create a CardHeader and add Header to card_on_list
                 CardHeader header = new CardHeader(getActivity());
 
-                header.setTitle(arrayData[i].getNotes());//getFullname());
+                header.setTitle("Persona: "+arrayData[i].getId());
+
+                //header.setTitle(arrayData[i].getNotes());//getFullname());
                 //header.setTitle(mPersons[i].getGivenName()+ " " + mPersons[i].getSn1());//getFullname());
 
                 card_on_list.addCardHeader(header);
@@ -296,24 +311,32 @@ public class FragmentPerson extends Fragment {
 
                 //card_on_list.setTitle(mPersons[i].getNotes()); //.getSchoolNotes());
 
-                card_on_list.setClickable(true);
+                //card_on_list.setClickable(true);
                 card_on_list.setSwipeable(true);
 
                 //Obtain thumbnail from an URL and add to card
                 CardThumbnail thumb = new CardThumbnail(getActivity());
                 //thumb.setDrawableResource(listImages[i]);
-                if (arrayData[i].getPhoto() != "") {//getLogoURL()!=""){
-                    thumb.setUrlResource(arrayData[i].getPhoto());//getLogoURL());
+                Log.d("########## IMAGE URL: ", PersonAPI.EBRE_ESCOOL_PUBLIC_IMAGE + arrayData[i].getPhoto().toString());//getFullname());
+
+
+                if (arrayData[i].getPhoto() != "" ) {//getLogoURL()!=""){
+                    thumb.setUrlResource(PersonAPI.EBRE_ESCOOL_PUBLIC_IMAGE + arrayData[i].getPhoto());//getLogoURL());
+                    //thumb.
                 } else {
                     thumb.setUrlResource(EbreEscoolAPI.EBRE_ESCOOL_PUBLIC_IMAGE_NOT_AVAILABLE);
 
                 }
+
+
                 //thumb.setUrlResource(EbreEscoolAPI.EBRE_ESCOOL_PUBLIC_IMAGE_NOT_AVAILABLE); //temporal
 
                 card_on_list.addCardThumbnail(thumb);
 
                 //Add card to car List
                 cards.add(card_on_list);
+                progress.dismiss();
+
             }
 
             mCardArrayAdapter = new CardArrayAdapter(getActivity(), cards);
