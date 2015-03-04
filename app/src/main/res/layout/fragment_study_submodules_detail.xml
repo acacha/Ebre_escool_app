@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/greenlight"
+        android:gravity="center"
+        android:orientation="vertical"
+        tools:context="org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.study_submodules.StudySubmodules_Detail">
+
+        <TextView
+            android:layout_width="250dip"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:text="@string/labelStudySubmodulesId"
+            android:id="@+id/textView2"
+            android:layout_alignParentTop="true"
+            android:textStyle="bold"
+            android:textSize="20dip"
+            android:textColor="@color/White"
+            android:background="@color/greendark"
+            android:layout_row="0"
+            android:layout_column="0" />
+        <TextView
+            android:layout_width="250dip"
+            android:gravity="center"
+            android:layout_height="41dip"
+            android:text="New Text"
+            android:textSize="20dip"
+            android:textStyle="bold"
+            android:id="@+id/StudySubmodules_Id"
+            android:layout_alignTop="@+id/textView2"
+            android:layout_row="0"
+            android:layout_column="1" />
+
+        <TextView
+            android:layout_width="250dip"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:text="@string/labelShortname"
+            android:id="@+id/labelShortname"
+            android:textStyle="bold"
+            android:textSize="20dip"
+            android:textColor="@color/White"
+            android:background="@color/greendark"
+            android:layout_row="1"
+            android:layout_column="0" />
+        <EditText
+            android:layout_width="250dip"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:id="@+id/Shortname"
+            android:hint="@string/labelShortname"
+            android:textStyle="bold"
+            android:inputType="number"
+            android:textSize="20dip"
+            android:layout_row="1"
+            android:layout_column="1" />
+
+        <TextView
+            android:layout_width="250dip"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:text="@string/labelName"
+            android:textStyle="bold"
+            android:textSize="20dip"
+            android:textColor="@color/White"
+            android:background="@color/greendark"
+            android:id="@+id/textView4"
+            android:layout_row="2"
+            android:layout_column="0" />
+        <EditText
+            android:layout_width="250dip"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:id="@+id/Name"
+            android:hint="@string/labelName"
+            android:inputType="number"
+            android:textStyle="bold"
+            android:textSize="20dip"
+            android:layout_row="2"
+            android:layout_column="1" />
+
+        <TextView
+            android:layout_width="250dip"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:text="@string/labelModuleId"
+            android:textStyle="bold"
+            android:textSize="20dip"
+            android:textColor="@color/White"
+            android:background="@color/greendark"
+            android:id="@+id/textView5"
+            android:layout_row="3"
+            android:layout_column="0" />
+        <EditText
+            android:layout_width="250dip"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:id="@+id/ModuleId"
+            android:hint="@string/labelModuleId"
+            android:inputType="number"
+            android:textStyle="bold"
+            android:textSize="20dip"
+            android:layout_row="3"
+            android:layout_column="1" />
+
+        <TextView
+            android:layout_width="250dip"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:text="@string/labelCourseid"
+            android:textStyle="bold"
+            android:textSize="20dip"
+            android:textColor="@color/White"
+            android:background="@color/greendark"
+            android:id="@+id/textView6"
+            android:layout_row="4"
+            android:layout_column="0" />
+        <EditText
+            android:layout_width="250dip"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:id="@+id/Courseid"
+            android:hint="@string/labelCourseid"
+            android:inputType="number"
+            android:textStyle="bold"
+            android:textSize="20dip"
+            android:layout_row="4"
+            android:layout_column="1" />
+
+        <TextView
+            android:layout_width="250dip"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:text="@string/labelOrder"
+            android:textStyle="bold"
+            android:textSize="20dip"
+            android:textColor="@color/White"
+            android:background="@color/greendark"
+            android:id="@+id/textView7"
+            android:layout_row="5"
+            android:layout_column="0" />
+        <EditText
+            android:layout_width="250dip"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:id="@+id/Order"
+            android:hint="@string/labelOrder"
+            android:inputType="number"
+            android:textStyle="bold"
+            android:textSize="20dip"
+            android:layout_row="5"
+            android:layout_column="1" />
+
+        <TextView
+            android:layout_width="250dip"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:text="@string/labelDescription"
+            android:textStyle="bold"
+            android:textSize="20dip"
+            android:textColor="@color/White"
+            android:background="@color/greendark"
+            android:id="@+id/textView8"
+            android:layout_row="6"
+            android:layout_column="0" />
+        <EditText
+            android:layout_width="250dip"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:id="@+id/Description"
+            android:hint="@string/labelDescription"
+            android:inputType="number"
+            android:textStyle="bold"
+            android:textSize="20dip"
+            android:layout_row="6"
+            android:layout_column="1" />
+
+        <TextView
+            android:layout_width="250dip"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="20dip"
+            android:textColor="@color/White"
+            android:background="@color/greendark"
+            android:text="@string/labelEntryDate"
+            android:id="@+id/textView9"
+            android:layout_row="7"
+            android:layout_column="0" />
+        <EditText
+            android:layout_width="250dip"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="20dip"
+            android:hint="@string/edtEntryDate"
+            android:inputType="datetime"
+            android:id="@+id/entryDate"
+            android:layout_row="7"
+            android:layout_column="1" />
+
+        <TextView
+            android:layout_width="250dip"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="20dip"
+            android:textColor="@color/White"
+            android:background="@color/greendark"
+            android:text="@string/labelLastUpdate"
+            android:id="@+id/textView10"
+            android:layout_row="8"
+            android:layout_column="0" />
+        <EditText
+            android:layout_width="250dip"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:textStyle="bold"
+            android:textSize="20dip"
+            android:hint="@string/labelLastUpdate"
+            android:id="@+id/lastUpdate"
+            android:layout_row="8"
+            android:layout_column="1" />
+
+        <TextView
+            android:layout_width="250dip"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:textSize="20dip"
+            android:textColor="@color/White"
+            android:background="@color/greendark"
+            android:textStyle="bold"
+            android:text="@string/labelLastUpdateUserId"
+            android:id="@+id/textView11"
+            android:layout_row="9"
+            android:layout_column="0" />
+        <EditText
+            android:layout_width="250dip"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="20dip"
+            android:inputType="number"
+            android:hint="@string/labelLastUpdateUserId"
+            android:id="@+id/lastUpdateUserId"
+            android:layout_row="9"
+            android:layout_column="1" />
+
+        <TextView
+            android:layout_width="250dip"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="20dip"
+            android:textColor="@color/White"
+            android:background="@color/greendark"
+            android:text="@string/labelCreatorUserId"
+            android:id="@+id/textView12"
+            android:layout_row="10"
+            android:layout_column="0" />
+        <EditText
+            android:layout_width="250dip"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="20dip"
+            android:hint="@string/labelCreatorUserId"
+            android:inputType="number"
+            android:id="@+id/creatoruserId"
+            android:layout_row="10"
+            android:layout_column="1" />
+
+        <TextView
+            android:layout_width="250dip"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="20dip"
+            android:textColor="@color/White"
+            android:background="@color/greendark"
+            android:text="@string/labelMarkedForDeletion"
+            android:id="@+id/textView13"
+            android:layout_row="11"
+            android:layout_column="0" />
+        <EditText
+            android:layout_width="250dip"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:hint="@string/labelMarkedForDeletion"
+            android:textStyle="bold"
+            android:textSize="20dip"
+            android:id="@+id/markedForDeletion"
+            android:layout_row="11"
+            android:layout_column="1" />
+
+        <TextView
+            android:layout_width="250dip"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="20dip"
+            android:textColor="@color/White"
+            android:background="@color/greendark"
+            android:text="@string/labelMarkedForDeletionDate"
+            android:id="@+id/textView14"
+            android:layout_row="12"
+            android:layout_column="0" />
+        <EditText
+            android:layout_width="250dip"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="20dip"
+            android:clickable="false"
+            android:hint="@string/labelMarkedForDeletionDate"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:id="@+id/markedForDeletionDate"
+            android:layout_row="12"
+            android:layout_column="1" />
+
+        <Button
+            android:layout_width="148dp"
+            android:layout_height="wrap_content"
+            android:background="@color/Teal"
+            android:textStyle="bold"
+            android:textSize="16dip"
+            android:text="@string/btnUpdate"
+            android:id="@+id/btnUpdate"
+            android:layout_row="13"
+            android:layout_column="1"
+            android:layout_gravity="center_horizontal" />
+        <Button
+            android:layout_width="148dp"
+            android:layout_height="wrap_content"
+            android:background="@color/Teal"
+            android:textStyle="bold"
+            android:textSize="16dip"
+            android:text="@string/btnPut"
+            android:id="@+id/btnPut"
+            android:layout_row="13"
+            android:layout_column="1"
+            android:layout_gravity="center_horizontal" />
+
+
+    </LinearLayout>
+</ScrollView>
