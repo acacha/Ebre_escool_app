@@ -261,7 +261,7 @@ public class FragmentPerson extends Fragment {
             *
             * */
 
-             // try {
+            // try {
             Gson gson = new Gson();
             String grossData = gson.toJson(listOfPersons);
             //JsonReader reader = new JsonReader(new StringReader(grossData));
@@ -286,7 +286,7 @@ public class FragmentPerson extends Fragment {
 
             ArrayList<Card> cards = new ArrayList<Card>();
 
-            for (int i = 0; i < arrayData.length; i++) {
+            for (int i = 0; i < 50; i++) { //arrayData.length
                 Log.d("########## TEST: ", arrayData[i].getGivenName());//getFullname());
 
                 // Create a Card
@@ -298,7 +298,7 @@ public class FragmentPerson extends Fragment {
                 // Create a CardHeader and add Header to card_on_list
                 CardHeader header = new CardHeader(getActivity());
 
-                header.setTitle("Persona: "+arrayData[i].getId());
+                header.setTitle("Persona: " + arrayData[i].getId());
 
                 //header.setTitle(arrayData[i].getNotes());//getFullname());
                 //header.setTitle(mPersons[i].getGivenName()+ " " + mPersons[i].getSn1());//getFullname());
@@ -312,7 +312,35 @@ public class FragmentPerson extends Fragment {
                 //card_on_list.setTitle(mPersons[i].getNotes()); //.getSchoolNotes());
 
                 //card_on_list.setClickable(true);
+
+
+                // Enable the swipe action on the single Cards
                 card_on_list.setSwipeable(true);
+
+                //
+                final String markedForDeletionPerson = "Persona: " + arrayData[i].getId();
+
+                // Swipe to delete person from list.
+                card_on_list.setOnSwipeListener(new Card.OnSwipeListener() {
+                    @Override
+                    public void onSwipe(Card card) {
+
+                        Toast.makeText(getActivity(), "S'ha eliminat = " + markedForDeletionPerson, Toast.LENGTH_SHORT).show();
+                        markedForDeletion(card.getId(), "y");
+
+                    }
+                });
+                // Swipe to undo deleted person
+                card_on_list.setOnUndoSwipeListListener(new Card.OnUndoSwipeListListener() {
+                    @Override
+                    public void onUndoSwipe(Card card) {
+
+                        Toast.makeText(getActivity(), "Undo card=" + markedForDeletionPerson, Toast.LENGTH_SHORT).show();
+                        markedForDeletion(card.getId(), "n");
+
+                    }
+                });
+
 
                 //Obtain thumbnail from an URL and add to card
                 CardThumbnail thumb = new CardThumbnail(getActivity());
@@ -320,7 +348,7 @@ public class FragmentPerson extends Fragment {
                 Log.d("########## IMAGE URL: ", PersonAPI.EBRE_ESCOOL_PUBLIC_IMAGE + arrayData[i].getPhoto().toString());//getFullname());
 
 
-                if (arrayData[i].getPhoto() != "" ) {//getLogoURL()!=""){
+                if (arrayData[i].getPhoto() != "") {//getLogoURL()!=""){
                     thumb.setUrlResource(PersonAPI.EBRE_ESCOOL_PUBLIC_IMAGE + arrayData[i].getPhoto());//getLogoURL());
                     //thumb.
                 } else {
@@ -366,4 +394,32 @@ public class FragmentPerson extends Fragment {
         }
 
     }
+
+    //Method to mark for deletion
+    private void markedForDeletion(String id, String action) {
+        Person person = new Person();
+        person.setId(id);
+        person.setMarkedForDeletion(action);
+        restAdapter = new RestAdapter.Builder()
+                .setEndpoint(PersonAPI.EBRE_ESCOOL_PERSON_PUBLIC_API_URL)
+                .build();
+        PersonApiService service = restAdapter.create(PersonApiService.class);
+
+        Callback callback = new Callback<Person>() {
+            @Override
+            public void success(Person person, Response response) {
+                Log.d(LOG_TAG, "************ Person to delete from list ##################: " + person);
+                Toast.makeText(getActivity(), "Person " + person.getId(), Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void failure(RetrofitError retrofitError) {
+                Toast.makeText(getActivity(), "UPDATE ERROR! " + retrofitError.getMessage(), Toast.LENGTH_LONG).show();
+
+            }
+
+        };
+        service.markedForDeletion(person, callback);
+    }
+
 }
