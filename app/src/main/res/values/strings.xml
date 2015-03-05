@@ -32,6 +32,8 @@
     <string name="menu_share">Share</string>
     <string name="menu_discard">Discard</string>
 
+
+    <!--Strings de Alex-->
     <string name="study_submodules_detail"> UPDATE STUDY SUBMODULES</string>
     <string name="labelStudySubmodulesId">Study Submodule ID</string>
     <string name="labelShortname">Shortname</string>
@@ -41,6 +43,9 @@
     <string name="labelOrder">Order</string>
     <string name="labelDescription">Description</string>
     <string name="labelCreatorUserId">Creator User ID</string>
+    <string name="deleteStudySubmodules">Delete</string>
+    <string name="put_studysubmodules">CREATE</string>
+    <!--Alex-->
 
     <style name="ButtonText">
         <item name="android:layout_width">fill_parent</item>

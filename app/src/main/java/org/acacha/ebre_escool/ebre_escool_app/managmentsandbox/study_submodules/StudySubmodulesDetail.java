@@ -42,9 +42,6 @@ import retrofit.client.Response;
  * create an instance of this fragment.
  */
 
-
-
-
 public class StudySubmodulesDetail extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -122,9 +119,9 @@ public class StudySubmodulesDetail extends Fragment {
         shortname = (EditText) view.findViewById(R.id.Shortname);
         name = (EditText) view.findViewById(R.id.Name);
         moduleId = (EditText) view.findViewById(R.id.ModuleId);
-        courseId = (EditText) view.findViewById(R.id.Name);
-        order = (EditText) view.findViewById(R.id.ModuleId);
-        description = (EditText) view.findViewById(R.id.Name);
+        courseId = (EditText) view.findViewById(R.id.Courseid);
+        order = (EditText) view.findViewById(R.id.Order);
+        description = (EditText) view.findViewById(R.id.Description);
         entryDate = (EditText) view.findViewById(R.id.entryDate);
         lastUpdate = (EditText) view.findViewById(R.id.lastUpdate);
         lastUpdateUserId = (EditText) view.findViewById(R.id.lastUpdateUserId);
