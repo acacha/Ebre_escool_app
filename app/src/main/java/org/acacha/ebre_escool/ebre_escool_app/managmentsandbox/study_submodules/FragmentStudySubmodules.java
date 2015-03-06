@@ -481,7 +481,7 @@ public class FragmentStudySubmodules extends Fragment {
 
             //int color = Color.argb(255,255, 255, 0);
             //parent.setBackgroundColor(color);
-            parent.setBackgroundColor(mContext.getResources().getColor(R.color.Yellow));
+            parent.setBackgroundColor(mContext.getResources().getColor(R.color.greendark));
         }
     }
 
