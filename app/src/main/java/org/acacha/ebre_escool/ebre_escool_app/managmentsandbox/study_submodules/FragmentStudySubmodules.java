@@ -429,7 +429,7 @@ public class FragmentStudySubmodules extends Fragment {
             TextView shortname = (TextView) view.findViewById(R.id.contentShortname);
             TextView name = (TextView) view.findViewById(R.id.contentName);
             TextView moduleId = (TextView) view.findViewById(R.id.contentModuleId);
-            //TextView courseId = (TextView) view.findViewById(R.id.contentCourseId);
+            TextView courseId = (TextView) view.findViewById(R.id.contentCourseId);
             TextView order = (TextView) view.findViewById(R.id.contentOrder);
             TextView description = (TextView) view.findViewById(R.id.contentDescription);
             TextView entryDate = (TextView) view.findViewById(R.id.contentEntryDate);
@@ -443,22 +443,22 @@ public class FragmentStudySubmodules extends Fragment {
                 id.setText("ID:"+studySubmodules.getId());
             }
             if (shortname != null) {
-                shortname.setText("Person ID:" + studySubmodules.getShortname());
+                shortname.setText("Shortname:" + studySubmodules.getShortname());
             }
             if (name!= null) {
-                name.setText("User ID:" + studySubmodules.getName());
+                name.setText("Name:" + studySubmodules.getName());
             }
             if (moduleId!= null) {
-                moduleId.setText("User ID:" + studySubmodules.getModuleId());
+                moduleId.setText("Module ID:" + studySubmodules.getModuleId());
             }
-            /*if (courseId!= null) {
-                courseId.setText("User ID:" + studySubmodules.getCourseid());
-            }*/
+            if (courseId!= null) {
+                courseId.setText("Course ID:" + studySubmodules.getCourseId());
+            }
             if (order!= null) {
-                order.setText("User ID:" + studySubmodules.getOrder());
+                order.setText("Order:" + studySubmodules.getOrder());
             }
             if (description!= null) {
-                description.setText("User ID:" + studySubmodules.getDescription());
+                description.setText("Description:" + studySubmodules.getDescription());
             }
             if (entryDate != null) {
                 entryDate.setText("Entry Date:" + studySubmodules.getEntryDate());
@@ -470,7 +470,7 @@ public class FragmentStudySubmodules extends Fragment {
                 lastUpdateUserId.setText("Last Update user ID:" + studySubmodules.getLastupdateUserId());
             }
             if (CreationUserId != null) {
-                CreationUserId.setText("Creator ID:" + studySubmodules.getCreationUserId());
+                CreationUserId.setText("Creator User ID:" + studySubmodules.getCreationUserId());
             }
             if (markedForDeletion != null) {
                 markedForDeletion.setText("Marked For Deletion:" + studySubmodules.getMarkedForDeletion());
