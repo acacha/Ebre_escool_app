@@ -16,6 +16,7 @@ import android.util.JsonReader;
 import android.util.Log;
 import android.util.MalformedJsonException;
 import android.util.Patterns;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -49,6 +50,7 @@ import it.gmariotti.cardslib.library.internal.CardHeader;
 import it.gmariotti.cardslib.library.internal.CardThumbnail;
 import it.gmariotti.cardslib.library.view.CardListView;
 
+import it.gmariotti.cardslib.library.view.listener.UndoBarController;
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
@@ -154,6 +156,7 @@ public class FragmentPerson extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_person, container, false);
         //settings = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
         return v;
     }
 
@@ -369,6 +372,19 @@ public class FragmentPerson extends Fragment {
 
             mCardArrayAdapter = new CardArrayAdapter(getActivity(), cards);
 
+            mCardArrayAdapter.setUndoBarUIElements(new UndoBarController.DefaultUndoBarUIElements(){
+
+                @Override
+                public SwipeDirectionEnabled isEnabledUndoBarSwipeAction() {
+                    return SwipeDirectionEnabled.TOPBOTTOM;
+                }
+
+                @Override
+                public AnimationType getAnimationType() {
+                    return AnimationType.TOPBOTTOM;
+                }
+            });
+
             mCardArrayAdapter.setEnableUndo(true);
 
             /*lstPersons = (CardListView) getActivity().findViewById(R.id.personsList);
@@ -395,6 +411,14 @@ public class FragmentPerson extends Fragment {
 
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        mCardArrayAdapter.getUndoBarController().onSaveInstanceState(outState);
+    }
+
+
+
     //Method to mark for deletion
     private void markedForDeletion(String id, String action) {
         Person person = new Person();
@@ -420,6 +444,6 @@ public class FragmentPerson extends Fragment {
 
         };
         service.markedForDeletion(person, callback);
-    }
 
+    }
 }
