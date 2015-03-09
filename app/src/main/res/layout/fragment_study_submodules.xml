@@ -8,7 +8,7 @@
     <!-- TODO: Update blank fragment layout -->
 
     <it.gmariotti.cardslib.library.view.CardListView
-        android:id="@+id/schoolsList"
+        android:id="@+id/studysubmodulesList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/greenlight"
