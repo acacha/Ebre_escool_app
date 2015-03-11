@@ -308,13 +308,10 @@ public class FragmentPerson extends Fragment {
 
                 card_on_list.addCardHeader(header);
 
-                //card_on_list.setId(mPersons[i].getId());
 
-                card_on_list.setTitle("Nom: " + arrayData[i].getGivenName() + "\n" + "Cognom: " + arrayData[i].getSn1() + "\n" + "Correu: " + arrayData[i].getEmail1());
 
-                //card_on_list.setTitle(mPersons[i].getNotes()); //.getSchoolNotes());
 
-                //card_on_list.setClickable(true);
+
 
 
                 // Enable the swipe action on the single Cards
@@ -345,6 +342,24 @@ public class FragmentPerson extends Fragment {
                 });
 
 
+
+
+
+
+
+
+
+
+
+                //card_on_list.setId(mPersons[i].getId());
+
+                card_on_list.setTitle("Nom: " + arrayData[i].getGivenName() + "\n" + "Cognom: " + arrayData[i].getSn1() + "\n" + "Correu: " + arrayData[i].getEmail1());
+
+                //card_on_list.setTitle(mPersons[i].getNotes()); //.getSchoolNotes());
+
+                //card_on_list.setClickable(true);
+
+
                 //Obtain thumbnail from an URL and add to card
                 CardThumbnail thumb = new CardThumbnail(getActivity());
                 //thumb.setDrawableResource(listImages[i]);
@@ -358,6 +373,15 @@ public class FragmentPerson extends Fragment {
                     thumb.setUrlResource(EbreEscoolAPI.EBRE_ESCOOL_PUBLIC_IMAGE_NOT_AVAILABLE);
 
                 }
+
+
+
+
+
+
+
+
+
 
 
                 //thumb.setUrlResource(EbreEscoolAPI.EBRE_ESCOOL_PUBLIC_IMAGE_NOT_AVAILABLE); //temporal

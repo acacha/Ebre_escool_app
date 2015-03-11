@@ -21,6 +21,6 @@
         card:list_card_layout_resourceID="@layout/list_card_thumbnail_layout" />
 
     <!-- Include undo message layout -->
-    <include layout="@layout/person_list_card_undo_message" />
+    <include layout="@layout/list_card_undo_message"/>
 
 </LinearLayout>
