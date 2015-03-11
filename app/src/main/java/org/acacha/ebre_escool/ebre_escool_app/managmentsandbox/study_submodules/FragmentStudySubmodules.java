@@ -428,16 +428,8 @@ public class FragmentStudySubmodules extends Fragment {
             TextView id = (TextView) view.findViewById(R.id.contentId);
             TextView shortname = (TextView) view.findViewById(R.id.contentShortname);
             TextView name = (TextView) view.findViewById(R.id.contentName);
-            //TextView moduleId = (TextView) view.findViewById(R.id.contentModuleId);
-            //TextView courseId = (TextView) view.findViewById(R.id.contentCourseId);
-            //TextView order = (TextView) view.findViewById(R.id.contentOrder);
             TextView description = (TextView) view.findViewById(R.id.contentDescription);
-            /*TextView entryDate = (TextView) view.findViewById(R.id.contentEntryDate);
-            TextView lastUpdate = (TextView) view.findViewById(R.id.contentLastUpdate);
-            TextView lastUpdateUserId = (TextView) view.findViewById(R.id.contentLastUpdateUserId);
-            TextView CreationUserId = (TextView) view.findViewById(R.id.contentCreatorUserId);
-            TextView markedForDeletion = (TextView) view.findViewById(R.id.contentMarkedForDeletion);
-            TextView markedForDeletionDate = (TextView) view.findViewById(R.id.contentMarkedForDeletionDate);*/
+
             //Set value in text views
             if (id != null) {
                 id.setText("ID:"+studySubmodules.getId());
@@ -448,36 +440,10 @@ public class FragmentStudySubmodules extends Fragment {
             if (name!= null) {
                 name.setText("Name:" + studySubmodules.getName());
             }
-            /*if (moduleId!= null) {
-                moduleId.setText("Module ID:" + studySubmodules.getModuleId());
-            }
-            if (courseId!= null) {
-                courseId.setText("Course ID:" + studySubmodules.getCourseId());
-            }
-            if (order!= null) {
-                order.setText("Order:" + studySubmodules.getOrder());
-            }*/
+
             if (description!= null) {
                 description.setText("Description:" + studySubmodules.getDescription());
             }
-            /*if (entryDate != null) {
-                entryDate.setText("Entry Date:" + studySubmodules.getEntryDate());
-            }
-            if (lastUpdate != null) {
-                lastUpdate.setText("Last Update:" + studySubmodules.getLastUpdate());
-            }
-            if (lastUpdateUserId != null) {
-                lastUpdateUserId.setText("Last Update user ID:" + studySubmodules.getLastupdateUserId());
-            }
-            if (CreationUserId != null) {
-                CreationUserId.setText("Creator User ID:" + studySubmodules.getCreationUserId());
-            }
-            if (markedForDeletion != null) {
-                markedForDeletion.setText("Marked For Deletion:" + studySubmodules.getMarkedForDeletion());
-            }
-            if (markedForDeletionDate != null) {
-                markedForDeletionDate.setText("Marked For Deletion Date:"+studySubmodules.getMarkedForDeletionDate());
-            }*/
 
             //int color = Color.argb(255,255, 255, 0);
             //parent.setBackgroundColor(color);
