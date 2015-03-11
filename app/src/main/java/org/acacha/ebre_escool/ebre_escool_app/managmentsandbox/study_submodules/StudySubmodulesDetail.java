@@ -119,7 +119,7 @@ public class StudySubmodulesDetail extends Fragment {
         shortname = (EditText) view.findViewById(R.id.Shortname);
         name = (EditText) view.findViewById(R.id.Name);
         moduleId = (EditText) view.findViewById(R.id.ModuleId);
-        courseId = (EditText) view.findViewById(R.id.Courseid);
+        courseId = (EditText) view.findViewById(R.id.CourseId);
         order = (EditText) view.findViewById(R.id.Order);
         description = (EditText) view.findViewById(R.id.Description);
         entryDate = (EditText) view.findViewById(R.id.entryDate);
@@ -288,7 +288,7 @@ public class StudySubmodulesDetail extends Fragment {
         shortname.setText(studySubmodulesObject.getShortname());
         name.setText(studySubmodulesObject.getName());
         moduleId.setText(studySubmodulesObject.getModuleId());
-        courseId.setText(studySubmodulesObject.getCourseid());
+        courseId.setText(studySubmodulesObject.getCourseId());
         order.setText(studySubmodulesObject.getOrder());
         description.setText(studySubmodulesObject.getDescription());
         entryDate.setText(studySubmodulesObject.getEntryDate());
@@ -304,7 +304,7 @@ public class StudySubmodulesDetail extends Fragment {
         studysubmodules.setId(ID.getText().toString());
         Log.d(TAG, "shortname length: " + shortname.getText().toString().length());
         Log.d(TAG, courseId.getText().toString());
-        Log.d(TAG,entryDate.getText().toString());
+        Log.d(TAG, entryDate.getText().toString());
         Log.d(TAG, moduleId.getText().toString());
 
 
@@ -318,7 +318,7 @@ public class StudySubmodulesDetail extends Fragment {
         }
 
         if(!(courseId.getText().toString().length()==0)) {
-            studysubmodules.setCourseid(courseId.getText().toString());
+            studysubmodules.setCourseId(courseId.getText().toString());
         }else{
             Toast.makeText(getActivity(),"Some field is empty",Toast.LENGTH_LONG).show();
             return null;
