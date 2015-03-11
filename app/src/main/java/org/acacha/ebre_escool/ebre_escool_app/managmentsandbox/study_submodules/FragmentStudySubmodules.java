@@ -279,7 +279,7 @@ public class FragmentStudySubmodules extends Fragment {
                 });
 
 
-                card_on_list.setTitle("Shorname\n"+arrayStudySubmodules[i].getShortname());
+                card_on_list.setTitle("Name\n"+arrayStudySubmodules[i].getName());
                 //card_on_list.setClickable(true);
                 card_on_list.setShadow(true);
                 CustomExpandCard expand= new CustomExpandCard(getActivity(),arrayStudySubmodules[i]);
