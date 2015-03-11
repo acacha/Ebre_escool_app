@@ -24,6 +24,9 @@ public interface PersonApiService {
     @GET("/persons/person/id/{id}")
     void person(Callback<Person> cb, @Path("id") String id);
 
+    @PUT("/person")
+    public void addPerson(@Body Person person,Callback<Person> cb);
+
     @PUT("/markedForDeletion")
-    void markedForDeletion(@Body Person person,Callback<Person> callback);
+    void markedForDeletion(@Body Person person,Callback<Person> cb);
 }

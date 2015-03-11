@@ -12,6 +12,8 @@ import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.app.Activity;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.JsonReader;
 import android.util.Log;
 import android.util.MalformedJsonException;
@@ -20,6 +22,7 @@ import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
@@ -157,8 +160,30 @@ public class FragmentPerson extends Fragment {
         View v = inflater.inflate(R.layout.fragment_person, container, false);
         //settings = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
+        setHasOptionsMenu(true);
+
         return v;
     }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.person_action_button, menu);
+        super.onCreateOptionsMenu(menu,inflater);
+
+        MenuItem addPerson = (MenuItem)menu.findItem(R.id.add_Person);
+
+        addPerson.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                Log.d(LOG_TAG, "************ ADD PERSON ##################: ");
+                int put = 9999;
+                onPersonAdd(put,"put");
+                return false;
+            }
+        });
+
+    }
+
 
 
     @Override
@@ -289,7 +314,7 @@ public class FragmentPerson extends Fragment {
 
             ArrayList<Card> cards = new ArrayList<Card>();
 
-            for (int i = 0; i < 50; i++) { //arrayData.length
+            for (int i = 0; i < 10; i++) { //arrayData.length
                 Log.d("########## TEST: ", arrayData[i].getGivenName());//getFullname());
 
                 // Create a Card
@@ -307,11 +332,6 @@ public class FragmentPerson extends Fragment {
                 //header.setTitle(mPersons[i].getGivenName()+ " " + mPersons[i].getSn1());//getFullname());
 
                 card_on_list.addCardHeader(header);
-
-
-
-
-
 
 
                 // Enable the swipe action on the single Cards
@@ -469,5 +489,23 @@ public class FragmentPerson extends Fragment {
         };
         service.markedForDeletion(person, callback);
 
+    }
+
+    public void onPersonAdd(int id,String action){
+        //Change the fragment
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        Fragment personInfo = new FragmentPersonInfo();
+
+        transaction.replace(R.id.container,personInfo);
+        transaction.addToBackStack(null);
+        transaction.commit();
+
+
+        //Pass the id to the fragment info
+        Bundle extras = new Bundle();
+        extras.putInt("id",id);
+        extras.putString("action",action);
+        personInfo.setArguments(extras);
     }
 }
