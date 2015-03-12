@@ -3,10 +3,19 @@ package org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.person;
 import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
+//import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import android.support.v4.app.Fragment;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.person.pojos.Person;
+import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.person.api.PersonAPI;
+import org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.person.api.PersonApiService;
+
 
 import org.acacha.ebre_escool.ebre_escool_app.R;
 
@@ -27,6 +36,20 @@ public class FragmentPersonInfo extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    protected EditText mId;
+    protected EditText mGivenName;
+    protected EditText mSurName1;
+    protected EditText mSurName2;
+    protected EditText mEmail;
+    protected EditText mDniNif;
+    protected EditText mEntryDate;
+    protected EditText mLastUpdate;
+    protected EditText mCreationUserId;
+    protected EditText mLastUpdateUserId;
+    protected EditText mMarkedForDeletion;
+    protected EditText mMarkedForDeletionDate;
+
 
     private OnFragmentInteractionListener mListener;
 
@@ -61,12 +84,38 @@ public class FragmentPersonInfo extends Fragment {
         }
     }
 
-    @Override
+    /*@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_person_info, container, false);
+    }*/
+
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        // View view= inflater.inflate(R.layout.fragment_teacher_detail, container, false);
+        View v = inflater.inflate(R.layout.fragment_teacher_detail, container, false);
+
+        mId = (TextView) v.findViewById(R.id.);
+        mGivenName
+        mSurName1
+        mSurName2
+        mEmail
+        mDniNif
+        mEntryDate;
+        mLastUpdate
+        mCreationUserId
+        mLastUpdateUserId
+        mMarkedForDeletion
+        mMarkedForDeletionDate
+
+
+        return v;
     }
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

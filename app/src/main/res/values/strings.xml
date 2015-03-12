@@ -158,5 +158,6 @@
 
     <!-- Strings de Nicolae -->
     <string name="choose_a_person">Escolliu una persona.</string>
+    <string name="add_person">ADD</string>
 
 </resources>

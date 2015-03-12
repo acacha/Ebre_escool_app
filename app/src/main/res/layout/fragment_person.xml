@@ -1,24 +1,26 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    xmlns:card="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:card="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/balloon_bg">
+    android:background="@drawable/balloon_bg"
+    android:orientation="vertical">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="#FFFFFFFF"
-        android:text="@string/choose_a_person"
         android:layout_gravity="center"
-        android:layout_margin="10dp" />
+        android:layout_margin="10dp"
+        android:text="@string/choose_a_person"
+        android:textColor="#FFFFFFFF" />
 
     <it.gmariotti.cardslib.library.view.CardListView
         android:id="@+id/personsList"
+        style="@style/list_card.thumbnail"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        card:list_card_layout_resourceID="@layout/list_card_thumbnail_layout"
-        style="@style/list_card.thumbnail"
-        />
+        card:list_card_layout_resourceID="@layout/list_card_thumbnail_layout" />
+
+    <!-- Include undo message layout -->
+    <include layout="@layout/list_card_undo_message"/>
 
 </LinearLayout>
