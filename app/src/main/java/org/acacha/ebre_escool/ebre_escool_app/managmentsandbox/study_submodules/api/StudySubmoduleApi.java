@@ -10,7 +10,7 @@ public class StudySubmoduleApi {
     ////////////////////////////////////////////////////////////////////////////////////
 
     //endpoint URL personal virtual machine
-    public final static String ENDPOINT = "http://192.168.202.205/ebre-escool/index.php/alexMartinez/api/studysubmodules/";
+    public final static String ENDPOINT = "http://192.168.202.155/ebre-escool/index.php/alexMartinez/api/studysubmodules/";
 
     public static final String API_KEY ="856486bb57a9d48eec1b475e8e57998c";
 

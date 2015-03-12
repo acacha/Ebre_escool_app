@@ -35,36 +35,6 @@
         android:paddingTop="6dip"
         android:textColor="#000000" />
 
-
-    <!-- content -->
-    <TextView
-        android:id="@+id/contentModuleId"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="2dip"
-        android:paddingTop="6dip"
-        android:textColor="#000000" />
-
-    <!-- content -->
-    <TextView
-        android:id="@+id/contentCourseId"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="2dip"
-        android:paddingTop="6dip"
-        android:textColor="#000000" />
-
-
-    <!-- content -->
-    <TextView
-        android:id="@+id/contentOrder"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="2dip"
-        android:paddingTop="6dip"
-        android:textColor="#000000" />
-
-
     <!-- content -->
     <TextView
         android:id="@+id/contentDescription"
@@ -73,65 +43,6 @@
         android:paddingBottom="2dip"
         android:paddingTop="6dip"
         android:textColor="#000000" />
-
-
-    <!-- content -->
-    <TextView
-        android:id="@+id/contentEntryDate"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="2dip"
-        android:paddingTop="6dip"
-        android:textColor="#000000" />
-
-    <!-- content -->
-    <TextView
-        android:id="@+id/contentLastUpdate"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="2dip"
-        android:paddingTop="6dip"
-        android:textColor="#000000" />
-
-
-    <!-- content -->
-    <TextView
-        android:id="@+id/contentCreatorUserId"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="2dip"
-        android:paddingTop="6dip"
-        android:textColor="#000000" />
-
-    <!-- content -->
-    <TextView
-        android:id="@+id/contentLastUpdateUserId"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="2dip"
-        android:paddingTop="6dip"
-        android:textColor="#000000" />
-
-
-    <!-- content -->
-    <TextView
-        android:id="@+id/contentMarkedForDeletion"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="2dip"
-        android:paddingTop="6dip"
-        android:textColor="#000000" />
-
-
-    <!-- content -->
-    <TextView
-        android:id="@+id/contentMarkedForDeletionDate"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="2dip"
-        android:paddingTop="6dip"
-        android:textColor="#000000" />
-
 
 </LinearLayout>
 
