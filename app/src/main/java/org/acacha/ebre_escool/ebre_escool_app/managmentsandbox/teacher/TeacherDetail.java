@@ -2,6 +2,7 @@ package org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.teacher;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -50,7 +51,7 @@ public class TeacherDetail extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
+    private ProgressDialog progressDialog;
     private OnFragmentInteractionListener mListener;
     //Retrofit adapter
     private RestAdapter adapter;
@@ -255,7 +256,8 @@ public class TeacherDetail extends Fragment {
     }*/
     //EXECUTE RETROFIT GET ONE TEACHER METHOD
     public void getOneTeacher(Integer id){
-
+        //Show progress dialog
+        progressDialog = ProgressDialog.show(getActivity(), "", "Loading Teacher data...", true);
         Log.d("tag","get :"+id);
         TeacherApiService api =adapter.create(TeacherApiService.class);
         api.getTeacher(id,new Callback<Teacher>() {
@@ -292,7 +294,7 @@ public class TeacherDetail extends Fragment {
         markedForDeletion.setText(teacherObject.getMarkedForDeletion());
         markedForDeletionDate.setText(teacherObject.getMarkedForDeletionDate());
         dniNif.setText(teacherObject.getDNINIF());
-
+         progressDialog.dismiss();
 
     }
     private Teacher getDataTeacher() {

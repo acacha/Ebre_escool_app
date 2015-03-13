@@ -2,6 +2,7 @@ package org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.teacher;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -73,7 +74,7 @@ public class TeacherFragment extends Fragment  {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
-
+    private ProgressDialog progressDialog;
     ////Teacher fields//////////////////////
     private CardListView list;
     private RestAdapter adapter;
@@ -160,6 +161,8 @@ public class TeacherFragment extends Fragment  {
         adapter = new RestAdapter.Builder()
                 .setEndpoint(TeacherApi.ENDPOINT).build();
         getAllTeachers();
+        //Show progress dialog
+        progressDialog = ProgressDialog.show(getActivity(), "", "Loading Teacher's list...", true);
 
 
     }
@@ -336,6 +339,7 @@ public class TeacherFragment extends Fragment  {
             mMyCardArrayMultiChoiceAdapter.setEnableUndo(true);
 
             if (list != null) {
+                progressDialog.dismiss();
                list.setAdapter(mMyCardArrayMultiChoiceAdapter);
                 list.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);//CHOICE_MODE_MULTIPLE_MODAL
                 //list.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
