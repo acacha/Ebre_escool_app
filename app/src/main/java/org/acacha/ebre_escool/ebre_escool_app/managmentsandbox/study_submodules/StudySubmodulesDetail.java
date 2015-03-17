@@ -317,12 +317,6 @@ public class StudySubmodulesDetail extends Fragment {
             return null;
         }
 
-        if(!(courseId.getText().toString().length()==0)) {
-            studysubmodules.setCourseId(courseId.getText().toString());
-        }else{
-            Toast.makeText(getActivity(),"Some field is empty",Toast.LENGTH_LONG).show();
-            return null;
-        }
         if(!(entryDate.getText().toString().length()==0)) {
 
             studysubmodules.setEntryDate(entryDate.getText().toString());
@@ -346,6 +340,13 @@ public class StudySubmodulesDetail extends Fragment {
 
         if(!(moduleId.getText().toString().length()==0)) {
             studysubmodules.setModuleId(moduleId.getText().toString());
+        }else{
+            Toast.makeText(getActivity(),"Some field is empty",Toast.LENGTH_LONG).show();
+            return null;
+        }
+
+        if(!(courseId.getText().toString().length()==0)) {
+            studysubmodules.setCourseId(courseId.getText().toString());
         }else{
             Toast.makeText(getActivity(),"Some field is empty",Toast.LENGTH_LONG).show();
             return null;

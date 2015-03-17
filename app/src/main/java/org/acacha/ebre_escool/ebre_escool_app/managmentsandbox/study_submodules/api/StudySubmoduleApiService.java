@@ -35,7 +35,7 @@ public interface StudySubmoduleApiService {
     //Get all Study submodules method
     //Get all Study Submodules method
     @Headers("X-API-KEY:"+ StudySubmoduleApi.API_KEY)
-    @GET("/StudySubmodules")
+    @GET("/studysubmodules")
     public void getStudySubmodules(Callback<List<StudySubmodules>> callback);
 
     //Get one study submodule method
