@@ -164,9 +164,15 @@ public class FragmentPersonInfo extends Fragment {
                     break;
                 case PersonAPI.UPDATE:
                     Log.d("#Opció no implementada!", LOG_TAG);
+                    button_person_update.setVisibility(View.VISIBLE);
+                    button_person_create.setVisibility(View.INVISIBLE);
+                    getPerson(id);
+
                     break;
                 case PersonAPI.CREATE:
                     Log.d("#Opció no implementada!", LOG_TAG);
+                    button_person_update.setVisibility(View.VISIBLE);
+                    button_person_create.setVisibility(View.INVISIBLE);
                     break;
             }
         }

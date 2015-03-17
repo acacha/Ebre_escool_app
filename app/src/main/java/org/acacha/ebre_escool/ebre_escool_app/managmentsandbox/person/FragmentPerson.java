@@ -51,6 +51,7 @@ import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.internal.CardArrayAdapter;
 import it.gmariotti.cardslib.library.internal.CardHeader;
 import it.gmariotti.cardslib.library.internal.CardThumbnail;
+import it.gmariotti.cardslib.library.internal.base.BaseCard;
 import it.gmariotti.cardslib.library.view.CardListView;
 
 import it.gmariotti.cardslib.library.view.listener.UndoBarController;
@@ -168,23 +169,22 @@ public class FragmentPerson extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.person_action_button, menu);
-        super.onCreateOptionsMenu(menu,inflater);
+        super.onCreateOptionsMenu(menu, inflater);
 
-        MenuItem addPerson = (MenuItem)menu.findItem(R.id.add_Person);
+        MenuItem createPerson = (MenuItem) menu.findItem(R.id.add_Person);
 
-        addPerson.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+        createPerson.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 Log.d(LOG_TAG, "************ ADD PERSON ##################: ");
                 int put = 9999;
                 //onPersonAdd(put,"put");
-                //showPersonInfo(crea)
+                showPersonInfo(put, PersonAPI.CREATE);
                 return false;
             }
         });
 
     }
-
 
 
     @Override
@@ -279,33 +279,8 @@ public class FragmentPerson extends Fragment {
 
         if (listOfPersons != null) {
 
-
-
-
-            /*
-            Gson gson = new Gson();
-            JsonReader reader = new JsonReader(new StringReader(result1));
-            reader.setLenient(true);
-            Userinfo userinfo1 = gson.fromJson(reader, Userinfo.class);
-            *
-            * */
-
-            // try {
             Gson gson = new Gson();
             String grossData = gson.toJson(listOfPersons);
-            //JsonReader reader = new JsonReader(new StringReader(grossData));
-//                //reader.setLenient(true);
-//            } catch (MalformedJsonException e) {
-//                throw new JsonSyntaxException(e);
-//            } catch (IOException e) {
-//                throw new JsonIOException(e);
-//            }
-
-
-            //Retrieve persons on JSON format
-            //String json_persons_list = gson.toString("persons_list", "" + listOfPersons);
-            //Log.d(LOG_TAG, "###### json_persons_list: " + json_persons_list);
-
 
             Person[] arrayData = gson.fromJson(grossData.trim(), Person[].class);
             Log.d(LOG_TAG, "###### json_persons_list: " + grossData);
@@ -329,8 +304,23 @@ public class FragmentPerson extends Fragment {
 
                 header.setTitle("Persona: " + arrayData[i].getId());
 
-                //header.setTitle(arrayData[i].getNotes());//getFullname());
-                //header.setTitle(mPersons[i].getGivenName()+ " " + mPersons[i].getSn1());//getFullname());
+                header.setPopupMenu(R.menu.teacher_card_overflow_menu, new CardHeader.OnClickCardHeaderPopupMenuListener() {
+                    @Override
+                    public void onMenuItemClick(BaseCard baseCard, MenuItem menuItem) {
+
+                        switch(menuItem.getItemId()){
+                            case(R.id.oneAction):
+                                Toast.makeText(getActivity(),"Opció 1: Persona " + baseCard.getId(),Toast.LENGTH_SHORT).show();
+                                break;
+                            case(R.id.otherActions):
+                                Toast.makeText(getActivity(),"Opció 2: Persona " + baseCard.getId(),Toast.LENGTH_SHORT).show();
+                                break;
+                            case(R.id.deleteTeacher):
+                                deleteperson(Integer.valueOf(baseCard.getId()));
+                                break;
+                        }
+                    }
+                });
 
                 card_on_list.addCardHeader(header);
 
@@ -371,7 +361,7 @@ public class FragmentPerson extends Fragment {
                     public void onClick(Card card, View view) {
                         showPersonInfo(showPerson, PersonAPI.SHOW_DATA);
 
-                        Toast.makeText(getActivity(),"Clickable card" +getId(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), "Clickable card" + getId(), Toast.LENGTH_LONG).show();
                     }
                 });
 
@@ -381,7 +371,6 @@ public class FragmentPerson extends Fragment {
                 card_on_list.setTitle("Nom: " + arrayData[i].getGivenName() + "\n" + "Cognom: " + arrayData[i].getSn1() + "\n" + "Correu: " + arrayData[i].getEmail1());
 
                 //card_on_list.setTitle(mPersons[i].getNotes()); //.getSchoolNotes());
-
 
 
                 //Obtain thumbnail from an URL and add to card
@@ -399,15 +388,6 @@ public class FragmentPerson extends Fragment {
                 }
 
 
-
-
-
-
-
-
-
-
-
                 //thumb.setUrlResource(EbreEscoolAPI.EBRE_ESCOOL_PUBLIC_IMAGE_NOT_AVAILABLE); //temporal
 
                 card_on_list.addCardThumbnail(thumb);
@@ -420,7 +400,7 @@ public class FragmentPerson extends Fragment {
 
             mCardArrayAdapter = new CardArrayAdapter(getActivity(), cards);
 
-            mCardArrayAdapter.setUndoBarUIElements(new UndoBarController.DefaultUndoBarUIElements(){
+            mCardArrayAdapter.setUndoBarUIElements(new UndoBarController.DefaultUndoBarUIElements() {
 
                 @Override
                 public SwipeDirectionEnabled isEnabledUndoBarSwipeAction() {
@@ -466,7 +446,6 @@ public class FragmentPerson extends Fragment {
     }
 
 
-
     //Method to mark for deletion
     private void markedForDeletion(String id, String action) {
         Person person = new Person();
@@ -495,11 +474,11 @@ public class FragmentPerson extends Fragment {
 
     }
 
-    public void showPersonInfo(Integer id,String action){
+    public void showPersonInfo(Integer id, String action) {
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         Fragment fragmentPersonInfo = new FragmentPersonInfo();
-        transaction.replace(R.id.container,fragmentPersonInfo);
+        transaction.replace(R.id.container, fragmentPersonInfo);
         transaction.addToBackStack(null);
         transaction.commit();
 
@@ -510,7 +489,15 @@ public class FragmentPerson extends Fragment {
         fragmentPersonInfo.setArguments(extras);
     }
 
-    public void onPersonAdd(int id,String action){
+    private void deleteperson(final int id) {
+
+        Log.d(LOG_TAG, "esborrant persona: " + id);
+        Toast.makeText(getActivity(),"Opció esborrar: Persona " + id ,Toast.LENGTH_SHORT).show();
+
+    }
+
+    /*
+        public void onPersonAdd(int id,String action){
         //Change the fragment
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
@@ -527,6 +514,6 @@ public class FragmentPerson extends Fragment {
         extras.putString("action",action);
         personInfo.setArguments(extras);
     }
-
+*/
 
 }
