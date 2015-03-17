@@ -159,5 +159,15 @@
     <!-- Strings de Nicolae -->
     <string name="choose_a_person">Escolliu una persona.</string>
     <string name="add_person">ADD</string>
+    <string name="label_person_id">Id:</string>
+    <string name="label_person_givenname">Nom:</string>
+    <string name="label_person_surname1">Primer Cognom:</string>
+    <string name="label_person_surname2">Segon Cognom:</string>
+    <string name="label_person_email">Correu:</string>
+    <string name="label_person_dni">DNI/NIE:</string>
+    <string name="label_person_telefon">Telèfon o Mòbil:</string>
+    <string name="label_person_notes">Notes:</string>
+    <string name="button_person_guardar">Guardar:</string>
+    <string name="button_person_cancelar">Cancelar:</string>
 
 </resources>

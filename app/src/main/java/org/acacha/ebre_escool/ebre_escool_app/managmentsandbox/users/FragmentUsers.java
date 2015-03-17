@@ -65,6 +65,7 @@ import retrofit.client.Response;
  * create an instance of this fragment.
  */
 public class FragmentUsers extends Fragment {
+/*
 //    // TODO: Rename parameter arguments, choose names that match
 //    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -90,14 +91,16 @@ public class FragmentUsers extends Fragment {
 
 
 
-//    /**
+//    */
+/**
 //     * Use this factory method to create a new instance of
 //     * this fragment using the provided parameters.
 //     *
 //     * @param param1 Parameter 1.
 //     * @param param2 Parameter 2.
 //     * @return A new instance of fragment FragmentUsers.
-//     */
+//     *//*
+
 //    // TODO: Rename and change types and number of parameters
     public static FragmentUsers newInstance(String param1, String param2) {
         FragmentUsers fragment = new FragmentUsers();
@@ -387,7 +390,8 @@ public class FragmentUsers extends Fragment {
 //     * See the Android Training lesson <a href=
 //     * "http://developer.android.com/training/basics/fragments/communicating.html"
 //     * >Communicating with Other Fragments</a> for more information.
-//     */
+//     *//*
+
 //    public interface OnFragmentInteractionListener {
 //        // TODO: Update argument type and name
 //        public void onFragmentInteraction(Uri uri);
@@ -618,14 +622,16 @@ public class FragmentUsers extends Fragment {
 //        super.onActivityCreated(savedInstanceState);
 //        settings = PreferenceManager.getDefaultSharedPreferences(getActivity());
 //
-//        /*
+//        */
+/*
 //        Fer quan es agafin les dades de l'API
 //        //Retrieve schools on JSON format
 //        //String json_schools_list = settings.getString("schools_list", "");
 //        //Log.d(LOG_TAG, "###### json_schools_list: " + json_schools_list);
 //        //Gson gson = new Gson();
 //        //mStudySubmodules = gson.fromJson(json_schools_list, School[].class);
-//        */
+//        *//*
+
 //
 //        mUsers = new Users[3];
 //        Users user1 = new Users();
@@ -710,5 +716,6 @@ public class FragmentUsers extends Fragment {
 ////        settings = PreferenceManager.getDefaultSharedPreferences(getActivity());
 ////        return v;
 ////    }
+*/
 
 }

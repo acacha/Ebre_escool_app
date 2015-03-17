@@ -4,11 +4,13 @@ import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 //import android.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import android.support.v4.app.Fragment;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -43,12 +45,17 @@ public class FragmentPersonInfo extends Fragment {
     protected EditText mSurName2;
     protected EditText mEmail;
     protected EditText mDniNif;
+    protected EditText mTelephoneNumber;
+    protected EditText mNotes;
     protected EditText mEntryDate;
     protected EditText mLastUpdate;
     protected EditText mCreationUserId;
     protected EditText mLastUpdateUserId;
     protected EditText mMarkedForDeletion;
     protected EditText mMarkedForDeletionDate;
+    protected Button button_person_create;
+    protected Button button_person_update;
+
 
 
     private OnFragmentInteractionListener mListener;
@@ -96,21 +103,40 @@ public class FragmentPersonInfo extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        // View view= inflater.inflate(R.layout.fragment_teacher_detail, container, false);
-        View v = inflater.inflate(R.layout.fragment_teacher_detail, container, false);
+        View v = inflater.inflate(R.layout.fragment_person_info, container, false);
 
-        mId = (TextView) v.findViewById(R.id.);
-        mGivenName
-        mSurName1
-        mSurName2
-        mEmail
-        mDniNif
-        mEntryDate;
-        mLastUpdate
-        mCreationUserId
-        mLastUpdateUserId
-        mMarkedForDeletion
-        mMarkedForDeletionDate
+        mId = (EditText) v.findViewById(R.id.editText_person_id);
+        mGivenName = (EditText) v.findViewById(R.id.editText_person_nom);
+        mSurName1 = (EditText) v.findViewById(R.id.editText_person_cognom1);
+        mSurName2 = (EditText) v.findViewById(R.id.editText_person_cognom2);
+        mEmail = (EditText) v.findViewById(R.id.editText_person_email);
+        mDniNif = (EditText) v.findViewById(R.id.editText_person_dni);
+        mTelephoneNumber = (EditText) v.findViewById(R.id.editText_person_telefon);
+        mNotes = (EditText) v.findViewById(R.id.editText_person_notes);
+        button_person_create = (Button) v.findViewById(R.id.button_person_create);
+        button_person_update = (Button) v.findViewById(R.id.button_person_update);
+
+
+        button_person_create.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Log.d("#Crear persona: ", mId.getText().toString());
+                //createPerson();
+
+            }
+        });
+
+        button_person_update.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("#Actualitzar persona: ", mId.getText().toString());
+                //updatePerson();
+
+            }
+        });
+
+
 
 
         return v;
