@@ -162,7 +162,7 @@
     <string name="nonStandartOption">Opció 1</string>
     <string name="nonStandartOption2">Opció 2</string>
     <string name="deletePerson">Esborrar</string>
-
+    <string name="editPerson">Edit</string>
 
     <string name="label_person_id">Id:</string>
     <string name="label_person_givenname">Nom:</string>

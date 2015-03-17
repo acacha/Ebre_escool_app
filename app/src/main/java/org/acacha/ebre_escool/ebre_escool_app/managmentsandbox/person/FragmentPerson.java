@@ -26,6 +26,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -54,6 +55,8 @@ import it.gmariotti.cardslib.library.internal.CardThumbnail;
 import it.gmariotti.cardslib.library.internal.base.BaseCard;
 import it.gmariotti.cardslib.library.view.CardListView;
 
+import it.gmariotti.cardslib.library.view.base.CardViewWrapper;
+import it.gmariotti.cardslib.library.view.component.CardThumbnailView;
 import it.gmariotti.cardslib.library.view.listener.UndoBarController;
 import retrofit.Callback;
 import retrofit.RestAdapter;
@@ -68,6 +71,12 @@ public class FragmentPerson extends Fragment {
 
     public static final String PERSONS_LIST_KEY = "person";
 
+    /*
+        public MayKnowCard(Context context) {
+        this(context, R.layout.carddemo_mayknow_inner_content);
+    }
+
+    * */
 
     /**
      * The collection of all persons in the app.
@@ -294,13 +303,14 @@ public class FragmentPerson extends Fragment {
                 Log.d("########## TEST: ", arrayData[i].getGivenName());//getFullname());
 
                 // Create a Card
-                card_on_list = new Card(getActivity());
+                card_on_list = new MayKnowCard(getActivity());
+
 
                 // Person ID
                 card_on_list.setId(arrayData[i].getId());
 
                 // Create a CardHeader and add Header to card_on_list
-                CardHeader header = new CardHeader(getActivity());
+                CardHeader header = new CardHeader(getActivity()); //R.layout.person_mayknow_inner_content
 
                 header.setTitle("Persona: " + arrayData[i].getId());
 
@@ -308,14 +318,14 @@ public class FragmentPerson extends Fragment {
                     @Override
                     public void onMenuItemClick(BaseCard baseCard, MenuItem menuItem) {
 
-                        switch(menuItem.getItemId()){
-                            case(R.id.oneAction):
-                                Toast.makeText(getActivity(),"Opció 1: Persona " + baseCard.getId(),Toast.LENGTH_SHORT).show();
+                        switch (menuItem.getItemId()) {
+                            case (R.id.oneAction):
+                                Toast.makeText(getActivity(), "Opció 1: Persona " + baseCard.getId(), Toast.LENGTH_SHORT).show();
                                 break;
-                            case(R.id.otherActions):
-                                Toast.makeText(getActivity(),"Opció 2: Persona " + baseCard.getId(),Toast.LENGTH_SHORT).show();
+                            case (R.id.otherActions):
+                                Toast.makeText(getActivity(), "Opció 2: Persona " + baseCard.getId(), Toast.LENGTH_SHORT).show();
                                 break;
-                            case(R.id.deleteTeacher):
+                            case (R.id.deleteTeacher):
                                 deleteperson(Integer.valueOf(baseCard.getId()));
                                 break;
                         }
@@ -356,14 +366,15 @@ public class FragmentPerson extends Fragment {
 
                 final Integer showPerson = Integer.valueOf(arrayData[i].getId());
                 //Set onClick listener
-                card_on_list.setOnClickListener(new Card.OnCardClickListener() {
+                Card.OnCardClickListener clickListener = new Card.OnCardClickListener() {
                     @Override
                     public void onClick(Card card, View view) {
                         showPersonInfo(showPerson, PersonAPI.SHOW_DATA);
 
                         Toast.makeText(getActivity(), "Clickable card" + getId(), Toast.LENGTH_LONG).show();
                     }
-                });
+                };
+                card_on_list.addPartialOnClickListener(Card.CLICK_LISTENER_CONTENT_VIEW, clickListener);
 
 
                 //card_on_list.setId(mPersons[i].getId());
@@ -492,7 +503,7 @@ public class FragmentPerson extends Fragment {
     private void deleteperson(final int id) {
 
         Log.d(LOG_TAG, "esborrant persona: " + id);
-        Toast.makeText(getActivity(),"Opció esborrar: Persona " + id ,Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), "Opció esborrar: Persona " + id, Toast.LENGTH_SHORT).show();
 
     }
 
@@ -515,5 +526,63 @@ public class FragmentPerson extends Fragment {
         personInfo.setArguments(extras);
     }
 */
+
+    public class MayKnowCard extends Card implements View.OnClickListener{
+
+        public MayKnowCard(Context context) {
+            this(context, R.layout.person_mayknow_inner_content);
+        }
+
+        public MayKnowCard(Context context, int innerLayout) {
+            super(context, innerLayout);
+        }
+        private String title;
+
+
+        @Override
+        public void setupInnerViewElements(ViewGroup parent, View view) {
+
+            TextView tvTitle = (TextView) view.findViewById(R.id.carddemo_mayknow_main_inner_title);
+            TextView subtitle = (TextView) view.findViewById(R.id.carddemo_mayknow_main_inner_subtitle);
+            TextView add = (TextView) view.findViewById(R.id.carddemo_mayknow_main_inner_button);
+
+
+            tvTitle.setText(title);
+            add.setClickable(true);
+
+
+            add.setOnClickListener((View.OnClickListener) this);
+
+            CardViewWrapper cardView = getCardView();
+            CardThumbnailView thumb = cardView.getInternalThumbnailLayout();
+            if (thumb != null) {
+                ViewGroup.LayoutParams lp = thumb.getLayoutParams();
+                if (lp instanceof ViewGroup.MarginLayoutParams) {
+                    ((ViewGroup.MarginLayoutParams) lp).setMargins(25, 0, 0, 5);
+                }
+            }
+
+        }
+
+        //@Override
+        public void onClick(View v) {
+
+            switch(v.getId()){
+                case R.id.carddemo_mayknow_main_inner_button:
+                    showPersonInfo(Integer.valueOf(getId()), PersonAPI.UPDATE);
+                    break;
+            }
+
+        }
+        @Override
+        public String getTitle() {
+            return title;
+        }
+
+        @Override
+        public void setTitle(String title) {
+            this.title = title;
+        }
+    }
 
 }

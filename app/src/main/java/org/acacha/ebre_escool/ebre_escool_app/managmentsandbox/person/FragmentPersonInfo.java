@@ -267,8 +267,8 @@ public class FragmentPersonInfo extends Fragment {
 //            mLastUpdateUserId.setText(personData.getLastupdateUserId());
 //            mMarkedForDeletion.setText(personData.getMarkedForDeletion());
 //            mMarkedForDeletionDate.setText(personData.getMarkedForDeletionDate());
-            button_person_create.setText(personData.getId());
-            button_person_update.setText(personData.getId());
+//            button_person_create.setText(personData.getId());
+//            button_person_update.setText(personData.getId());
 
 
         } else
