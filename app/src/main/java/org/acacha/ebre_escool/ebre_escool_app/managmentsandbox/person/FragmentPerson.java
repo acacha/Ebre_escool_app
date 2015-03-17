@@ -177,7 +177,8 @@ public class FragmentPerson extends Fragment {
             public boolean onMenuItemClick(MenuItem item) {
                 Log.d(LOG_TAG, "************ ADD PERSON ##################: ");
                 int put = 9999;
-                onPersonAdd(put,"put");
+                //onPersonAdd(put,"put");
+                //showPersonInfo(crea)
                 return false;
             }
         });
@@ -361,14 +362,17 @@ public class FragmentPerson extends Fragment {
                     }
                 });
 
+                card_on_list.setClickable(true);
 
+                //Set onClick listener
+                card_on_list.setOnClickListener(new Card.OnCardClickListener() {
+                    @Override
+                    public void onClick(Card card, View view) {
+                        showPersonInfo(Integer.valueOf(getId()), PersonAPI.SHOW_DATA);
 
-
-
-
-
-
-
+                        Toast.makeText(getActivity(),"Clickable card", Toast.LENGTH_LONG).show();
+                    }
+                });
 
 
                 //card_on_list.setId(mPersons[i].getId());
@@ -377,7 +381,6 @@ public class FragmentPerson extends Fragment {
 
                 //card_on_list.setTitle(mPersons[i].getNotes()); //.getSchoolNotes());
 
-                //card_on_list.setClickable(true);
 
 
                 //Obtain thumbnail from an URL and add to card
@@ -491,6 +494,21 @@ public class FragmentPerson extends Fragment {
 
     }
 
+    public void showPersonInfo(int id,String action){
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        Fragment fragmentPersonInfo = new FragmentPersonInfo();
+        transaction.replace(R.id.container,fragmentPersonInfo);
+        transaction.addToBackStack(null);
+        transaction.commit();
+
+
+        Bundle extras = new Bundle();
+        extras.putInt("id",id);
+        extras.putString(PersonAPI.TAP,action);
+        fragmentPersonInfo.setArguments(extras);
+    }
+
     public void onPersonAdd(int id,String action){
         //Change the fragment
         FragmentManager fragmentManager = getFragmentManager();
@@ -508,4 +526,6 @@ public class FragmentPerson extends Fragment {
         extras.putString("action",action);
         personInfo.setArguments(extras);
     }
+
+
 }

@@ -20,4 +20,9 @@ public class PersonAPI {
     public final static String EBRE_ESCOOL_PUBLIC_IMAGE=
             "http://185.13.76.85:8770/ebre-escool/uploads/person_photos/";
 
+    public static final String TAP ="tap";
+    public static final String SHOW_DATA ="show_data";
+    public static final String UPDATE ="update";
+    public static final String CREATE ="put";
+
 }
