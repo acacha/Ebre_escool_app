@@ -90,7 +90,7 @@
 
         <EditText
             android:id="@+id/editText_person_email"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/textView_person_email"

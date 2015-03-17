@@ -255,12 +255,12 @@ public class FragmentPersonInfo extends Fragment {
             mDniNif.setText(personData.getOfficialId());
             mTelephoneNumber.setText(personData.getTelephoneNumber());
             mNotes.setText(personData.getNotes());
-            mEntryDate.setText(personData.getEntryDate());
-            mLastUpdate.setText(personData.getLastUpdate());
-            mCreationUserId.setText(personData.getCreationUserId());
-            mLastUpdateUserId.setText(personData.getLastupdateUserId());
-            mMarkedForDeletion.setText(personData.getMarkedForDeletion());
-            mMarkedForDeletionDate.setText(personData.getMarkedForDeletionDate());
+//            mEntryDate.setText(personData.getEntryDate());
+//            mLastUpdate.setText(personData.getLastUpdate());
+//            mCreationUserId.setText(personData.getCreationUserId());
+//            mLastUpdateUserId.setText(personData.getLastupdateUserId());
+//            mMarkedForDeletion.setText(personData.getMarkedForDeletion());
+//            mMarkedForDeletionDate.setText(personData.getMarkedForDeletionDate());
             button_person_create.setText(personData.getId());
             button_person_update.setText(personData.getId());
 

@@ -315,7 +315,7 @@ public class FragmentPerson extends Fragment {
 
             ArrayList<Card> cards = new ArrayList<Card>();
 
-            for (int i = 0; i < 10; i++) { //arrayData.length
+            for (int i = 0; i < 5; i++) { //arrayData.length
                 Log.d("########## TEST: ", arrayData[i].getGivenName());//getFullname());
 
                 // Create a Card
@@ -364,13 +364,14 @@ public class FragmentPerson extends Fragment {
 
                 card_on_list.setClickable(true);
 
+                final Integer showPerson = Integer.valueOf(arrayData[i].getId());
                 //Set onClick listener
                 card_on_list.setOnClickListener(new Card.OnCardClickListener() {
                     @Override
                     public void onClick(Card card, View view) {
-                        showPersonInfo(Integer.valueOf(getId()), PersonAPI.SHOW_DATA);
+                        showPersonInfo(showPerson, PersonAPI.SHOW_DATA);
 
-                        Toast.makeText(getActivity(),"Clickable card", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(),"Clickable card" +getId(), Toast.LENGTH_LONG).show();
                     }
                 });
 
@@ -494,7 +495,7 @@ public class FragmentPerson extends Fragment {
 
     }
 
-    public void showPersonInfo(int id,String action){
+    public void showPersonInfo(Integer id,String action){
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         Fragment fragmentPersonInfo = new FragmentPersonInfo();
@@ -504,8 +505,8 @@ public class FragmentPerson extends Fragment {
 
 
         Bundle extras = new Bundle();
-        extras.putInt("id",id);
-        extras.putString(PersonAPI.TAP,action);
+        extras.putInt("id", id);
+        extras.putString(PersonAPI.TAP, action);
         fragmentPersonInfo.setArguments(extras);
     }
 
