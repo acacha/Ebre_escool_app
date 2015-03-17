@@ -6,11 +6,11 @@ package org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.study_submodules
 public class StudySubmoduleApi {
 
     //endpoint URL
-    /* public final static String ENDPOINT = "http://185.13.76.85:8765/ebre-escool/index.php/alexMartinez/api/studysubmodules/"*/;
+    public final static String ENDPOINT = "http://185.13.76.85:8765/ebre-escool/index.php/alexMartinez/api/studysubmodules/";
     ////////////////////////////////////////////////////////////////////////////////////
 
     //endpoint URL personal virtual machine
-    public final static String ENDPOINT = "http://192.168.202.155/ebre-escool/index.php/alexMartinez/api/studysubmodules/";
+    //public final static String ENDPOINT = "http://192.168.202.106/ebre-escool/index.php/alexMartinez/api/studysubmodules/";
 
     public static final String API_KEY ="856486bb57a9d48eec1b475e8e57998c";
 
