@@ -64,6 +64,7 @@ import retrofit.client.Response;
  * Use the {@link org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.users.FragmentUsers#newInstance} factory method to
  * create an instance of this fragment.
  */
+
 public class FragmentUsers extends Fragment {
 //    // TODO: Rename parameter arguments, choose names that match
 //    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER

@@ -2,6 +2,7 @@ package org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.study_submodules
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -51,7 +52,7 @@ public class StudySubmodulesDetail extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
+    private ProgressDialog progressDialog;
     private OnFragmentInteractionListener mListener;
     //Retrofit adapter
     private RestAdapter adapter;
@@ -206,6 +207,7 @@ public class StudySubmodulesDetail extends Fragment {
 
         return view;
     }
+
     //Set the new entry date
     private void updateLabel() {
 
@@ -258,6 +260,8 @@ public class StudySubmodulesDetail extends Fragment {
     //EXECUTE RETROFIT GET ONE StudySubmodules METHOD
     public void getOneStudySubmodulesId(Integer id){
 
+        //Show progress dialog
+        progressDialog = ProgressDialog.show(getActivity(), "", "Loading Study Submodules data...", true);
         Log.d("tag","get :"+id);
         StudySubmoduleApiService api =adapter.create(StudySubmoduleApiService.class);
         api.getStudySubmodule(id,new Callback<StudySubmodules>() {
@@ -297,21 +301,59 @@ public class StudySubmodulesDetail extends Fragment {
         creationUserId.setText(studySubmodulesObject.getCreationUserId());
         markedForDeletion.setText(studySubmodulesObject.getMarkedForDeletion());
         markedForDeletionDate.setText(studySubmodulesObject.getMarkedForDeletionDate());
+        progressDialog.dismiss();
     }
 
     private StudySubmodules getDataStudySubmodules() {
         StudySubmodules studysubmodules = new StudySubmodules();
         studysubmodules.setId(ID.getText().toString());
         Log.d(TAG, "shortname length: " + shortname.getText().toString().length());
+        Log.d(TAG, name.getText().toString());
+        Log.d(TAG, moduleId.getText().toString());
         Log.d(TAG, courseId.getText().toString());
         Log.d(TAG, entryDate.getText().toString());
+        Log.d(TAG, order.getText().toString());
+        Log.d(TAG, description.getText().toString());
         Log.d(TAG, moduleId.getText().toString());
-
-
 
         //Check if fields are empty
         if(!(shortname.getText().toString().length() ==0)){
             studysubmodules.setShortname(shortname.getText().toString());
+        }else{
+            Toast.makeText(getActivity(),"Some field is empty",Toast.LENGTH_LONG).show();
+            return null;
+        }
+
+        if(!(name.getText().toString().length()==0)) {
+            studysubmodules.setCourseId(name.getText().toString());
+        }else{
+            Toast.makeText(getActivity(),"Some field is empty",Toast.LENGTH_LONG).show();
+            return null;
+        }
+
+        if(!(moduleId.getText().toString().length()==0)) {
+            studysubmodules.setModuleId(moduleId.getText().toString());
+        }else{
+            Toast.makeText(getActivity(),"Some field is empty",Toast.LENGTH_LONG).show();
+            return null;
+        }
+
+        if(!(courseId.getText().toString().length()==0)) {
+            studysubmodules.setCourseId(courseId.getText().toString());
+        }else{
+            Toast.makeText(getActivity(),"Some field is empty",Toast.LENGTH_LONG).show();
+            return null;
+        }
+
+        if(!(order.getText().toString().length()==0)) {
+            studysubmodules.setCourseId(order.getText().toString());
+        }else{
+            Toast.makeText(getActivity(),"Some field is empty",Toast.LENGTH_LONG).show();
+            return null;
+        }
+
+        if(!(description.getText().toString().length()==0)) {
+            studysubmodules.setCourseId(description.getText().toString());
         }else{
             Toast.makeText(getActivity(),"Some field is empty",Toast.LENGTH_LONG).show();
             return null;
@@ -338,19 +380,6 @@ public class StudySubmodulesDetail extends Fragment {
 
         studysubmodules.setMarkedForDeletionDate(markedForDeletionDate.getText().toString());
 
-        if(!(moduleId.getText().toString().length()==0)) {
-            studysubmodules.setModuleId(moduleId.getText().toString());
-        }else{
-            Toast.makeText(getActivity(),"Some field is empty",Toast.LENGTH_LONG).show();
-            return null;
-        }
-
-        if(!(courseId.getText().toString().length()==0)) {
-            studysubmodules.setCourseId(courseId.getText().toString());
-        }else{
-            Toast.makeText(getActivity(),"Some field is empty",Toast.LENGTH_LONG).show();
-            return null;
-        }
         //Return object studysubmodules
         return studysubmodules;
     }

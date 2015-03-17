@@ -26,6 +26,7 @@ import retrofit.http.RestMethod;
  * Created by alex on 09/02/15.
  */
 public interface StudySubmoduleApiService {
+
     /**CallBacks specifies de type of object we are going to get
      *and we use CallBack to make async request.
      * If we don't it will be a sync request and it will block
@@ -33,14 +34,13 @@ public interface StudySubmoduleApiService {
      **/
 
     //Get all Study submodules method
-    //Get all Study Submodules method
     @Headers("X-API-KEY:"+ StudySubmoduleApi.API_KEY)
     @GET("/studysubmodules")
     public void getStudySubmodules(Callback<List<StudySubmodules>> callback);
 
     //Get one study submodule method
     @Headers("X-API-KEY:"+StudySubmoduleApi.API_KEY)
-    @GET("/studysubmodule/id/{id}")
+    @GET("/StudySubmodule/id/{id}")
     public void getStudySubmodule(@Path("id") Integer id, Callback<StudySubmodules> callback);
 
     //Post Study Submodules method(Update one StudySubmodule)

@@ -242,11 +242,11 @@ public class FragmentStudySubmodules extends Fragment {
                             case(R.id.oneAction):
                                 Log.d(TAG,"CARD ID PUT"+baseCard.getId());
                                 //Future actions here
-                                Toast.makeText(getActivity(),"Future action 1",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(),"Futura acció 1",Toast.LENGTH_SHORT).show();
                                 break;
                             case(R.id.otherActions):
                                 //Future actions here
-                                Toast.makeText(getActivity(),"Future action 2",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(),"Future acció 2",Toast.LENGTH_SHORT).show();
                                 break;
                             case(R.id.deleteStudySubmodules):
                                 //Call the method to delete
