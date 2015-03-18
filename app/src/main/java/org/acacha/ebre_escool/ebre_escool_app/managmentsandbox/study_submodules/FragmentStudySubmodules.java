@@ -482,7 +482,7 @@ public class FragmentStudySubmodules extends Fragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         builder.setTitle("DELETE");
-        builder.setMessage("Are you sure to delete " + studysubmodulesId + "?");
+        builder.setMessage("Estàs segur que vols eliminar Study Submodule " + studysubmodulesId + "?");
         builder.setIcon(R.drawable.advise);
         builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
 
