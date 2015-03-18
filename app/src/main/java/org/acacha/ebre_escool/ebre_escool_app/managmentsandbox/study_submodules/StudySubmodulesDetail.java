@@ -261,7 +261,7 @@ public class StudySubmodulesDetail extends Fragment {
     public void getOneStudySubmodulesId(Integer id){
 
         //Show progress dialog
-        progressDialog = ProgressDialog.show(getActivity(), "", "Loading Study Submodules data...", true);
+        progressDialog = ProgressDialog.show(getActivity(), "", "Carregant dades de Study Submodules...", true);
         Log.d("tag","get :"+id);
         StudySubmoduleApiService api =adapter.create(StudySubmoduleApiService.class);
         api.getStudySubmodule(id,new Callback<StudySubmodules>() {

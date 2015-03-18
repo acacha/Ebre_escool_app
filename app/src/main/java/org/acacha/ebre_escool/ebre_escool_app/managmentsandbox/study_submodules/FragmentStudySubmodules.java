@@ -162,7 +162,7 @@ public class FragmentStudySubmodules extends Fragment {
                 .setEndpoint(StudySubmoduleApi.ENDPOINT).build();
         getAllStudySubmodules();
         //Show progress dialog
-        progressDialog = ProgressDialog.show(getActivity(), "", "Loading Study Submodules list...", true);
+        progressDialog = ProgressDialog.show(getActivity(), "", "Carregant llista de Study Submodules...", true);
 
     }
 
