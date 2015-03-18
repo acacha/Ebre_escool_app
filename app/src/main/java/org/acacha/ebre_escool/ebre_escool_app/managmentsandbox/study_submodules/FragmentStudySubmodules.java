@@ -2,6 +2,7 @@ package org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.study_submodules
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -74,7 +75,7 @@ public class FragmentStudySubmodules extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
-
+    private ProgressDialog progressDialog;
     ////StudySubmodules fields//////////////////////
     private CardListView list;
     private RestAdapter adapter;
@@ -160,6 +161,9 @@ public class FragmentStudySubmodules extends Fragment {
         adapter = new RestAdapter.Builder()
                 .setEndpoint(StudySubmoduleApi.ENDPOINT).build();
         getAllStudySubmodules();
+        //Show progress dialog
+        progressDialog = ProgressDialog.show(getActivity(), "", "Loading Study Submodules list...", true);
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -246,7 +250,7 @@ public class FragmentStudySubmodules extends Fragment {
                                 break;
                             case(R.id.otherActions):
                                 //Future actions here
-                                Toast.makeText(getActivity(),"Future acció 2",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(),"Futura acció 2",Toast.LENGTH_SHORT).show();
                                 break;
                             case(R.id.deleteStudySubmodules):
                                 //Call the method to delete
@@ -329,6 +333,7 @@ public class FragmentStudySubmodules extends Fragment {
             mMyCardArrayMultiChoiceAdapter.setEnableUndo(true);
 
             if (list != null) {
+                progressDialog.dismiss();
                 list.setAdapter(mMyCardArrayMultiChoiceAdapter);
                 list.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);//CHOICE_MODE_MULTIPLE_MODAL
                 //list.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
