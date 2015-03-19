@@ -36,6 +36,18 @@
         <!--<item name="android:fontFamily">sans-serif-condensed</item>-->
     </style>
 
+    <!--You may know card -->
+    <style name="carddemo_mayknow_main_inner_title">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:layout_marginLeft">@dimen/card_header_simple_title_margin_left</item>
+    </style>
+    <style name="carddemo_mayknow_main_inner_title.sub">
+        <item name="android:textSize">1sp</item>
+        <item name="android:textColor">@android:color/darker_gray</item>
+    </style>
+
+
     <!-- EXAMPLE HOWTO CHANGE MAIN CARD STYLE -->
     <!--
     <style name="card.main_layout">

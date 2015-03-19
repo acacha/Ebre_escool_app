@@ -24,6 +24,9 @@ public interface PersonApiService {
     @GET("/persons/person/id/{id}")
     void person(Callback<Person> cb, @Path("id") String id);
 
+    @GET("/person/id/{id}")
+    public void getPerson(@Path("id") Integer id, Callback<Person> callback);
+
     @PUT("/person")
     public void addPerson(@Body Person person,Callback<Person> cb);
 

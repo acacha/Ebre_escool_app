@@ -26,6 +26,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -51,8 +52,11 @@ import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.internal.CardArrayAdapter;
 import it.gmariotti.cardslib.library.internal.CardHeader;
 import it.gmariotti.cardslib.library.internal.CardThumbnail;
+import it.gmariotti.cardslib.library.internal.base.BaseCard;
 import it.gmariotti.cardslib.library.view.CardListView;
 
+import it.gmariotti.cardslib.library.view.base.CardViewWrapper;
+import it.gmariotti.cardslib.library.view.component.CardThumbnailView;
 import it.gmariotti.cardslib.library.view.listener.UndoBarController;
 import retrofit.Callback;
 import retrofit.RestAdapter;
@@ -67,6 +71,12 @@ public class FragmentPerson extends Fragment {
 
     public static final String PERSONS_LIST_KEY = "person";
 
+    /*
+        public MayKnowCard(Context context) {
+        this(context, R.layout.carddemo_mayknow_inner_content);
+    }
+
+    * */
 
     /**
      * The collection of all persons in the app.
@@ -168,22 +178,22 @@ public class FragmentPerson extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.person_action_button, menu);
-        super.onCreateOptionsMenu(menu,inflater);
+        super.onCreateOptionsMenu(menu, inflater);
 
-        MenuItem addPerson = (MenuItem)menu.findItem(R.id.add_Person);
+        MenuItem createPerson = (MenuItem) menu.findItem(R.id.add_Person);
 
-        addPerson.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+        createPerson.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 Log.d(LOG_TAG, "************ ADD PERSON ##################: ");
                 int put = 9999;
-                onPersonAdd(put,"put");
+                //onPersonAdd(put,"put");
+                showPersonInfo(put, PersonAPI.CREATE);
                 return false;
             }
         });
 
     }
-
 
 
     @Override
@@ -278,33 +288,8 @@ public class FragmentPerson extends Fragment {
 
         if (listOfPersons != null) {
 
-
-
-
-            /*
-            Gson gson = new Gson();
-            JsonReader reader = new JsonReader(new StringReader(result1));
-            reader.setLenient(true);
-            Userinfo userinfo1 = gson.fromJson(reader, Userinfo.class);
-            *
-            * */
-
-            // try {
             Gson gson = new Gson();
             String grossData = gson.toJson(listOfPersons);
-            //JsonReader reader = new JsonReader(new StringReader(grossData));
-//                //reader.setLenient(true);
-//            } catch (MalformedJsonException e) {
-//                throw new JsonSyntaxException(e);
-//            } catch (IOException e) {
-//                throw new JsonIOException(e);
-//            }
-
-
-            //Retrieve persons on JSON format
-            //String json_persons_list = gson.toString("persons_list", "" + listOfPersons);
-            //Log.d(LOG_TAG, "###### json_persons_list: " + json_persons_list);
-
 
             Person[] arrayData = gson.fromJson(grossData.trim(), Person[].class);
             Log.d(LOG_TAG, "###### json_persons_list: " + grossData);
@@ -314,22 +299,38 @@ public class FragmentPerson extends Fragment {
 
             ArrayList<Card> cards = new ArrayList<Card>();
 
-            for (int i = 0; i < 10; i++) { //arrayData.length
+            for (int i = 0; i < 5; i++) { //arrayData.length
                 Log.d("########## TEST: ", arrayData[i].getGivenName());//getFullname());
 
                 // Create a Card
-                card_on_list = new Card(getActivity());
+                card_on_list = new MayKnowCard(getActivity());
+
 
                 // Person ID
                 card_on_list.setId(arrayData[i].getId());
 
                 // Create a CardHeader and add Header to card_on_list
-                CardHeader header = new CardHeader(getActivity());
+                CardHeader header = new CardHeader(getActivity()); //R.layout.person_mayknow_inner_content
 
                 header.setTitle("Persona: " + arrayData[i].getId());
 
-                //header.setTitle(arrayData[i].getNotes());//getFullname());
-                //header.setTitle(mPersons[i].getGivenName()+ " " + mPersons[i].getSn1());//getFullname());
+                header.setPopupMenu(R.menu.teacher_card_overflow_menu, new CardHeader.OnClickCardHeaderPopupMenuListener() {
+                    @Override
+                    public void onMenuItemClick(BaseCard baseCard, MenuItem menuItem) {
+
+                        switch (menuItem.getItemId()) {
+                            case (R.id.oneAction):
+                                Toast.makeText(getActivity(), "Opció 1: Persona " + baseCard.getId(), Toast.LENGTH_SHORT).show();
+                                break;
+                            case (R.id.otherActions):
+                                Toast.makeText(getActivity(), "Opció 2: Persona " + baseCard.getId(), Toast.LENGTH_SHORT).show();
+                                break;
+                            case (R.id.deleteTeacher):
+                                deleteperson(Integer.valueOf(baseCard.getId()));
+                                break;
+                        }
+                    }
+                });
 
                 card_on_list.addCardHeader(header);
 
@@ -361,14 +362,19 @@ public class FragmentPerson extends Fragment {
                     }
                 });
 
+                card_on_list.setClickable(true);
 
+                final Integer showPerson = Integer.valueOf(arrayData[i].getId());
+                //Set onClick listener
+                Card.OnCardClickListener clickListener = new Card.OnCardClickListener() {
+                    @Override
+                    public void onClick(Card card, View view) {
+                        showPersonInfo(showPerson, PersonAPI.SHOW_DATA);
 
-
-
-
-
-
-
+                        Toast.makeText(getActivity(), "Clickable card" + getId(), Toast.LENGTH_LONG).show();
+                    }
+                };
+                card_on_list.addPartialOnClickListener(Card.CLICK_LISTENER_CONTENT_VIEW, clickListener);
 
 
                 //card_on_list.setId(mPersons[i].getId());
@@ -376,8 +382,6 @@ public class FragmentPerson extends Fragment {
                 card_on_list.setTitle("Nom: " + arrayData[i].getGivenName() + "\n" + "Cognom: " + arrayData[i].getSn1() + "\n" + "Correu: " + arrayData[i].getEmail1());
 
                 //card_on_list.setTitle(mPersons[i].getNotes()); //.getSchoolNotes());
-
-                //card_on_list.setClickable(true);
 
 
                 //Obtain thumbnail from an URL and add to card
@@ -395,15 +399,6 @@ public class FragmentPerson extends Fragment {
                 }
 
 
-
-
-
-
-
-
-
-
-
                 //thumb.setUrlResource(EbreEscoolAPI.EBRE_ESCOOL_PUBLIC_IMAGE_NOT_AVAILABLE); //temporal
 
                 card_on_list.addCardThumbnail(thumb);
@@ -416,7 +411,7 @@ public class FragmentPerson extends Fragment {
 
             mCardArrayAdapter = new CardArrayAdapter(getActivity(), cards);
 
-            mCardArrayAdapter.setUndoBarUIElements(new UndoBarController.DefaultUndoBarUIElements(){
+            mCardArrayAdapter.setUndoBarUIElements(new UndoBarController.DefaultUndoBarUIElements() {
 
                 @Override
                 public SwipeDirectionEnabled isEnabledUndoBarSwipeAction() {
@@ -462,7 +457,6 @@ public class FragmentPerson extends Fragment {
     }
 
 
-
     //Method to mark for deletion
     private void markedForDeletion(String id, String action) {
         Person person = new Person();
@@ -491,7 +485,30 @@ public class FragmentPerson extends Fragment {
 
     }
 
-    public void onPersonAdd(int id,String action){
+    public void showPersonInfo(Integer id, String action) {
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        Fragment fragmentPersonInfo = new FragmentPersonInfo();
+        transaction.replace(R.id.container, fragmentPersonInfo);
+        transaction.addToBackStack(null);
+        transaction.commit();
+
+
+        Bundle extras = new Bundle();
+        extras.putInt("id", id);
+        extras.putString(PersonAPI.TAP, action);
+        fragmentPersonInfo.setArguments(extras);
+    }
+
+    private void deleteperson(final int id) {
+
+        Log.d(LOG_TAG, "esborrant persona: " + id);
+        Toast.makeText(getActivity(), "Opció esborrar: Persona " + id, Toast.LENGTH_SHORT).show();
+
+    }
+
+    /*
+        public void onPersonAdd(int id,String action){
         //Change the fragment
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
@@ -508,4 +525,64 @@ public class FragmentPerson extends Fragment {
         extras.putString("action",action);
         personInfo.setArguments(extras);
     }
+*/
+
+    public class MayKnowCard extends Card implements View.OnClickListener{
+
+        public MayKnowCard(Context context) {
+            this(context, R.layout.person_mayknow_inner_content);
+        }
+
+        public MayKnowCard(Context context, int innerLayout) {
+            super(context, innerLayout);
+        }
+        private String title;
+
+
+        @Override
+        public void setupInnerViewElements(ViewGroup parent, View view) {
+
+            TextView tvTitle = (TextView) view.findViewById(R.id.carddemo_mayknow_main_inner_title);
+            TextView subtitle = (TextView) view.findViewById(R.id.carddemo_mayknow_main_inner_subtitle);
+            TextView add = (TextView) view.findViewById(R.id.carddemo_mayknow_main_inner_button);
+
+
+            tvTitle.setText(title);
+            add.setClickable(true);
+
+
+            add.setOnClickListener((View.OnClickListener) this);
+
+            CardViewWrapper cardView = getCardView();
+            CardThumbnailView thumb = cardView.getInternalThumbnailLayout();
+            if (thumb != null) {
+                ViewGroup.LayoutParams lp = thumb.getLayoutParams();
+                if (lp instanceof ViewGroup.MarginLayoutParams) {
+                    ((ViewGroup.MarginLayoutParams) lp).setMargins(25, 0, 0, 5);
+                }
+            }
+
+        }
+
+        //@Override
+        public void onClick(View v) {
+
+            switch(v.getId()){
+                case R.id.carddemo_mayknow_main_inner_button:
+                    showPersonInfo(Integer.valueOf(getId()), PersonAPI.UPDATE);
+                    break;
+            }
+
+        }
+        @Override
+        public String getTitle() {
+            return title;
+        }
+
+        @Override
+        public void setTitle(String title) {
+            this.title = title;
+        }
+    }
+
 }
