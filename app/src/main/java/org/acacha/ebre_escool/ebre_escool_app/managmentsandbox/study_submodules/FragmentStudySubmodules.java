@@ -2,6 +2,7 @@ package org.acacha.ebre_escool.ebre_escool_app.managmentsandbox.study_submodules
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -74,7 +75,7 @@ public class FragmentStudySubmodules extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
-
+    private ProgressDialog progressDialog;
     ////StudySubmodules fields//////////////////////
     private CardListView list;
     private RestAdapter adapter;
@@ -160,6 +161,9 @@ public class FragmentStudySubmodules extends Fragment {
         adapter = new RestAdapter.Builder()
                 .setEndpoint(StudySubmoduleApi.ENDPOINT).build();
         getAllStudySubmodules();
+        //Show progress dialog
+        progressDialog = ProgressDialog.show(getActivity(), "", "Carregant llista de Study Submodules...", true);
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -242,11 +246,11 @@ public class FragmentStudySubmodules extends Fragment {
                             case(R.id.oneAction):
                                 Log.d(TAG,"CARD ID PUT"+baseCard.getId());
                                 //Future actions here
-                                Toast.makeText(getActivity(),"Future action 1",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(),"Futura acció 1",Toast.LENGTH_SHORT).show();
                                 break;
                             case(R.id.otherActions):
                                 //Future actions here
-                                Toast.makeText(getActivity(),"Future action 2",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(),"Futura acció 2",Toast.LENGTH_SHORT).show();
                                 break;
                             case(R.id.deleteStudySubmodules):
                                 //Call the method to delete
@@ -329,6 +333,7 @@ public class FragmentStudySubmodules extends Fragment {
             mMyCardArrayMultiChoiceAdapter.setEnableUndo(true);
 
             if (list != null) {
+                progressDialog.dismiss();
                 list.setAdapter(mMyCardArrayMultiChoiceAdapter);
                 list.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);//CHOICE_MODE_MULTIPLE_MODAL
                 //list.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
@@ -447,7 +452,7 @@ public class FragmentStudySubmodules extends Fragment {
 
             //int color = Color.argb(255,255, 255, 0);
             //parent.setBackgroundColor(color);
-            parent.setBackgroundColor(mContext.getResources().getColor(R.color.greendark));
+            parent.setBackgroundColor(mContext.getResources().getColor(R.color.White));
         }
     }
 
@@ -477,7 +482,7 @@ public class FragmentStudySubmodules extends Fragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         builder.setTitle("DELETE");
-        builder.setMessage("Are you sure to delete " + studysubmodulesId + "?");
+        builder.setMessage("Estàs segur que vols eliminar Study Submodule " + studysubmodulesId + "?");
         builder.setIcon(R.drawable.advise);
         builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
 
